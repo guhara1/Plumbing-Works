@@ -396,6 +396,15 @@ def service_page(slug, name, eyebrow, h1, hero_sub, title, desc,
     <div class="prose">
       <p class="lead">{hero_sub}</p>
 
+      <div class="scope-note">
+        <span class="scope-badge">🏠 가정집</span>
+        <span class="scope-badge">🏢 상업시설</span>
+        <p><strong>가정집부터 상업시설까지 모두 작업합니다.</strong> 아파트·빌라·주택 등 가정집 {name}은 물론, 호텔·상가·오피스빌딩·음식점 등 상업시설까지 현장 규모에 맞춰 신속하게 출동합니다.</p>
+      </div>
+
+      <h2>가정집·상업시설 {name} 모두 가능합니다</h2>
+      <p>스피드 배관공사는 가정집(아파트·빌라·단독주택)의 생활 {name}과 상업시설(호텔·상가·빌딩·음식점)의 대형 배관 작업을 함께 진행합니다. 가정집은 머리카락·음식물·비누 찌꺼기가, 영업장은 기름때·퇴적물이 주요 원인이 되는 등 현장마다 원인과 장비가 다르므로, 증상과 건물 형태를 먼저 확인한 뒤 작업 방향을 안내드립니다.</p>
+
       <h2>이런 증상이라면 {name} 점검이 필요합니다</h2>
       <ul class="ticks">{sym}</ul>
 

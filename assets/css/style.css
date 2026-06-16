@@ -832,3 +832,21 @@ body{ background:#E7ECF5; }
 .footer-ad-btn::before{content:"✈";font-size:15px;}
 .footer-ad-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(201,162,75,.52);text-decoration:none;color:#1A1206;}
 @media (max-width:560px){ .footer-adbar{flex-direction:column;align-items:flex-start;} .footer-ad-btn{width:100%;justify-content:center;} }
+
+/* =========================================================================
+   ✦ 서비스 상세 — 가정집·상업시설 안내 콜아웃
+   ========================================================================= */
+.scope-note{
+  display:flex;flex-wrap:wrap;align-items:center;gap:12px;
+  margin:6px 0 26px;padding:18px 22px;border-radius:14px;
+  background:linear-gradient(135deg, rgba(42,125,225,.08), rgba(201,162,75,.10));
+  border:1px solid #C6D2E6;
+}
+.scope-note .scope-badge{
+  display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
+  background:#fff;border:1px solid var(--brass);color:var(--navy);
+  font-weight:800;font-size:14px;padding:8px 14px;border-radius:999px;
+  box-shadow:0 4px 12px rgba(11,37,69,.08);
+}
+.scope-note p{margin:0;flex:1 1 280px;color:#41526B;font-size:15px;line-height:1.65;}
+.scope-note p strong{color:var(--navy);}
