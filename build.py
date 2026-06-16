@@ -234,8 +234,21 @@ AD_POPUP = """<div class="ad-popup" id="adPopup" role="dialog" aria-modal="true"
 """
 
 
+def clip_desc(s, n=80):
+    """메타 설명을 n자 이내로 — 단어/구분자 경계에서 깔끔하게 컷."""
+    s = " ".join(s.split())
+    if len(s) <= n:
+        return s
+    cut = s[:n]
+    for i in range(len(cut) - 1, n - 22, -1):
+        if cut[i] in " .,·":
+            return cut[:i].rstrip(" .,·")
+    return cut.rstrip(" .,·")
+
+
 def page(path, title, desc, canonical, body, jsonld="", og_title=None, og_desc=None, noindex=False):
     robots = "noindex, follow" if noindex else "index, follow"
+    desc = clip_desc(desc)          # 네이버 권장: 설명 80자 이내 보장
     html = head(title, desc, canonical, jsonld, og_title, og_desc, robots) + HEADER + body + FOOTER + MOBILE_BAR + AD_POPUP + SCRIPTS
     full = os.path.join(ROOT, path)
     os.makedirs(os.path.dirname(full), exist_ok=True)
