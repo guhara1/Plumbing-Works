@@ -104,9 +104,9 @@
     };
     var onEsc = function (e) { if (e.key === "Escape") closePop(); };
 
-    // 검색 유입 직후 본문을 가리지 않도록 6초 지연 + 세션/하루 빈도 제한
+    // 검색 유입 직후 본문을 가리지 않도록 10초 지연 + 세션/하루 빈도 제한
     if (!seen && Date.now() > hideUntil) {
-      setTimeout(openPop, 6000);
+      setTimeout(openPop, 10000);
     }
     pop.querySelector(".ad-popup-close").addEventListener("click", closePop);
     pop.addEventListener("click", function (e) { if (e.target === pop) closePop(); });
