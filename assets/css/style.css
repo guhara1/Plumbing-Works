@@ -898,3 +898,42 @@ body{ background:#E7ECF5; }
   .ad-popup.open .ad-popup-card{transform:none;}
 }
 @media (prefers-reduced-motion:reduce){.ad-popup,.ad-popup-card{transition:none;}}
+
+/* =========================================================================
+   ✦ 히어로 우측 16:9 이미지 (홈) — 업로드 전엔 심볼 플레이스홀더
+   ========================================================================= */
+.hero--media .hero-inner{
+  max-width:none;display:grid;align-items:center;
+  grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+  gap:clamp(28px,5vw,64px);
+}
+.hero--media .hero-text{max-width:640px;}
+.hero--media::after{opacity:.06;}   /* 큰 배경 심볼은 더 은은하게(이미지와 충돌 방지) */
+
+.hero-photo-frame{
+  position:relative;margin:0;aspect-ratio:16/9;width:100%;
+  border-radius:20px;overflow:hidden;
+  border:1px solid rgba(201,162,75,.4);
+  box-shadow:0 30px 70px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.04);
+  background:
+    url("/assets/logo/symbol.png") center/40% no-repeat,
+    radial-gradient(120% 120% at 80% 10%, rgba(201,162,75,.18), transparent 55%),
+    linear-gradient(160deg,#0E2F5A,#0A1E3C 60%,#070F1F);
+}
+.hero-photo-frame::after{   /* 업로드 전 안내 라벨 */
+  content:"16:9 이미지 영역";position:absolute;left:0;right:0;bottom:14px;
+  text-align:center;color:rgba(255,255,255,.42);font-size:12px;letter-spacing:.04em;
+}
+.hero-photo{position:relative;z-index:1;width:100%;height:100%;object-fit:cover;display:block;}
+.hero-photo[src]{}  /* 이미지 로드 시 라벨은 자연히 가려짐 */
+
+@media (max-width:900px){
+  .hero--media .hero-inner{grid-template-columns:1fr;gap:30px;}
+  .hero--media .hero-text{max-width:none;order:1;}
+  .hero--media .hero-media{order:2;}
+  .hero--media::after{display:none;}
+}
+
+/* 히어로 이미지 stacking 보정: 업로드된 이미지가 라벨/플레이스홀더를 덮도록 */
+.hero-photo-frame::after{z-index:0;}
+.hero-photo{z-index:2;}
