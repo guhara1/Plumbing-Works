@@ -346,8 +346,8 @@ HOME_BODY = ("<main>\n" + HERO + TRUST_RIBBON + TRUST + SERVICE_GRID + AREA_BLOC
              PRICE_PREVIEW + case_grid() + REVIEWS + NAVER_SECTION + HOME_FAQ + bottom_cta() + "</main>\n")
 
 page("index.html",
-     "스피드 배관공사 | 하수구막힘·배관공사 호텔·상가·빌딩 상업시설 전문 · 24시간 출동",
-     "하수구막힘·배관공사·누수탐지·고압세척 24시간 출동 — 스피드 배관공사. 가정집(아파트·빌라·주택)부터 호텔·상가·오피스빌딩 상업시설까지, 선견적 후작업·추가금 없음으로 신속하게 해결합니다. 전국 네트워크.",
+     "스피드 배관공사 | 하수구막힘·배관공사 24시간 출동",
+     "하수구막힘·배관공사·누수탐지·고압세척 24시간 출동. 가정집·상업시설 전국 신속 해결, 선견적 후작업·추가금 없음.",
      S + "/",
      HOME_BODY,
      jsonld=HOME_JSONLD + faq_jsonld(FAQ_ITEMS),
