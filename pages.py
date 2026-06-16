@@ -2,8 +2,64 @@
 # -*- coding: utf-8 -*-
 """모든 페이지 콘텐츠 정의 후 빌드. 사용: python3 pages.py"""
 from build import (page, SITE, breadcrumb_jsonld, SIDEBAR, bottom_cta)
+import json as _json, os as _os
 
 S = SITE
+
+# ===========================================================================
+# 전국 행정구역(시도 > 시군구) 공식 데이터 + 로마자 슬러그
+# 출처: cosmosfarm/korea-administrative-district (행정안전부 기준)
+# ===========================================================================
+_KAD = _json.load(open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)),
+                  "assets/data/korea-administrative-district.json"), encoding="utf-8"))
+OFFICIAL = {}          # {시도ko: [시군구ko ...]}
+for _it in _KAD["data"]:
+    for _sd, _gus in _it.items():
+        OFFICIAL[_sd] = _gus
+
+def sido_slug_of(ko):
+    m = {"서울":"seoul","부산":"busan","대구":"daegu","인천":"incheon","광주":"gwangju",
+         "대전":"daejeon","울산":"ulsan","세종":"sejong","경기":"gyeonggi","강원":"gangwon",
+         "충청북도":"chungbuk","충청남도":"chungnam","전북":"jeonbuk","전라북도":"jeonbuk",
+         "전라남도":"jeonnam","경상북도":"gyeongbuk","경상남도":"gyeongnam","제주":"jeju"}
+    for k, v in m.items():
+        if ko.startswith(k):
+            return v
+    return "etc"
+
+# 한글 → 로마자(국어의 로마자 표기, 슬러그용 간이 변환)
+_CHO=["g","kk","n","d","tt","r","m","b","pp","s","ss","","j","jj","ch","k","t","p","h"]
+_JUNG=["a","ae","ya","yae","eo","e","yeo","ye","o","wa","wae","oe","yo","u","wo","we","wi","yu","eu","ui","i"]
+_JONG=["","k","k","k","n","n","n","t","l","k","m","l","l","l","p","l","m","p","p","t","t","ng","t","t","k","t","p","t"]
+def _rr(s):
+    out=[]
+    for ch in s:
+        o=ord(ch)
+        if 0xAC00<=o<=0xD7A3:
+            i=o-0xAC00; out.append(_CHO[i//588]+_JUNG[(i%588)//28]+_JONG[i%28])
+        else:
+            out.append(ch)
+    return "".join(out)
+def gungu_slug(name):
+    if name.endswith("구"):   return _rr(name[:-1])+"-gu"
+    if name.endswith("군"):   return _rr(name[:-1])+"-gun"
+    if name.endswith("시"):   return _rr(name[:-1])+"-si"
+    return _rr(name)
+
+# 이미 고유 콘텐츠로 제작된 시군구는 해당 URL을 그대로 사용(자동 생성에서 제외)
+CUSTOM_GUNGU_URL = {
+    ("seoul","강남구"):"/area/seoul/gangnam-gu/",
+    ("seoul","서초구"):"/area/seoul/seocho-gu/",
+    ("seoul","송파구"):"/area/seoul/songpa-gu/",
+    ("busan","해운대구"):"/area/busan/haeundae.html",
+    ("incheon","연수구"):"/area/incheon/yeonsu.html",
+    ("gyeonggi","성남시"):"/area/gyeonggi/seongnam.html",
+    ("gyeonggi","수원시"):"/area/gyeonggi/suwon.html",
+}
+def gungu_url(sido_slug, gu_ko):
+    c = CUSTOM_GUNGU_URL.get((sido_slug, gu_ko))
+    return c if c else f"/area/{sido_slug}/{gungu_slug(gu_ko)}/"
+
 
 # ===========================================================================
 # 홈 (index.html)
@@ -499,13 +555,17 @@ area_index()
 
 def sido_page(slug, name, short, intro, districts, district_links, cases_html, phone_note):
     crumbs = [("홈","/"),("지역별 서비스","/area/"),(name, None)]
+    # 공식 데이터의 전체 시군구를 링크 카드로 렌더링
+    full = OFFICIAL.get(name)
     dcards = ""
-    for d in districts:
-        u = district_links.get(d)
-        if u:
-            dcards += f'<a class="link-card" href="{u}"><h3>{d}</h3><p>{name} {d} 배관·하수구막힘 출동</p></a>'
-        else:
-            dcards += f'<div class="link-card" style="opacity:.85"><h3>{d}</h3><p>{name} {d} 출동 가능</p></div>'
+    if full:
+        for d in full:
+            u = gungu_url(slug, d)
+            dcards += f'<a class="link-card" href="{u}"><h3>{d}</h3><p>{name} {d} 배관·하수구막힘 상담</p></a>'
+    else:
+        # 세종 등 시군구가 없는 경우: 전달된 동 목록을 비링크 카드로 안내
+        for d in districts:
+            dcards += f'<div class="link-card" style="opacity:.9"><h3>{d}</h3><p>{name} {d} 상담 가능</p></div>'
     body = f"""{phero(f"{name} 서비스", f"{name} 배관·하수구막힘 24시간 출동", intro, crumbs)}
 <main>
 <section class="section">
@@ -1684,3 +1744,121 @@ build_gu_system("서울특별시","seoul","/area/seoul/","송파구","songpa",
     [("강남구","/area/seoul/gangnam-gu/"),("서초구","/area/seoul/seocho-gu/"),("강동구","/area/seoul/"),("성남시","/area/gyeonggi/seongnam.html")])
 
 print("\\nSEOCHO/SONGPA SYSTEMS BUILT.")
+
+
+# ===========================================================================
+# 전국 시·군·구 페이지 자동 생성 (공식 데이터 기반, 브리프 권장 granularity)
+#   - 이미 고유 콘텐츠가 있는 시군구(CUSTOM_GUNGU_URL)는 제외
+#   - 각 페이지: 지역유형별 안내 + 형제 시군구 내부링크 + 서비스 본문 + FAQ
+# ===========================================================================
+def _sigungu_intro(name, sido):
+    if name.endswith("구"):
+        p1 = f"{name}은 {sido}에 속한 자치구로, 아파트·오피스텔·빌라 같은 주거시설과 상가·사무실이 함께 밀집한 지역입니다. 가정용 배관과 상업용 배관 상담이 동시에 들어옵니다."
+        p2 = f"{name} 일대는 식당·카페 등 상가와 주거가 섞여 있어 싱크대 배수 불량, 욕실·바닥 배수구 역류, 화장실 악취, 주방 기름때 막힘 등 현장마다 원인이 다양하게 나타납니다."
+    elif name.endswith("군"):
+        p1 = f"{name}은 {sido}의 군 지역으로, 주거지와 소규모 상권, 농어촌 시설이 어우러져 있습니다. 단독·다세대 주택과 상가, 외부 오수관·정화조 관련 상담이 함께 들어옵니다."
+        p2 = f"{name}은 단독주택과 농어촌 시설이 많아 외부 배관이나 정화조 연결부에서 비롯된 문제가 나타나기도 하며, 상가는 업종에 따라 배수 부담이 달라집니다. 현장 구조를 먼저 확인하는 것이 중요합니다."
+    else:
+        p1 = f"{name}은 {sido}의 도시 지역으로, 아파트 단지와 상권, 사무·상업시설이 어우러진 곳입니다. 주거용 생활 배관과 상업용 배관 상담이 고루 들어옵니다."
+        p2 = f"{name}은 신축 아파트부터 노후 주택, 상가·사무실까지 건물 형태가 다양해 막힘의 원인도 제각각입니다. 가정집은 머리카락·음식물 찌꺼기가, 음식점은 기름 슬러지가 주요 원인이 되곤 합니다."
+    p3 = f"스피드 배관공사는 {name}의 건물 형태와 막힘 정도를 먼저 확인한 뒤 필요한 작업 방향을 안내합니다. 단순 막힘인지 반복 막힘인지에 따라 장비와 작업 시간이 달라지므로, 무리한 자가 조치보다 상담을 통해 원인을 정확히 파악하는 것이 안전합니다."
+    return p1, p2, p3
+
+def gen_sigungu_page(sido_ko, sido_slug, gu_ko, siblings):
+    sido_url = f"/area/{sido_slug}/"
+    crumbs = [("홈","/"),("지역별 서비스","/area/"),(sido_ko, sido_url),(gu_ko, None)]
+    p1, p2, p3 = _sigungu_intro(gu_ko, sido_ko)
+    sib_links = "".join(f'<a href="{gungu_url(sido_slug, g)}">{g}</a>' for g in siblings)
+    faq = [
+        (f"{gu_ko} 하수구막힘은 바로 출동 가능한가요?",
+         "지역과 시간대, 현장 상황에 따라 상담 후 안내됩니다. 증상과 사진을 먼저 보내주시면 필요한 장비를 더 정확히 판단할 수 있습니다."),
+        (f"{gu_ko}에서 싱크대가 자주 막히면 어떻게 하나요?",
+         "반복 막힘은 단순 이물질보다 배관 내부 기름때·퇴적물이 원인일 수 있습니다. 배관내시경으로 내부를 확인한 뒤 고압세척 여부를 판단하는 것이 좋습니다."),
+        FAQ_CHEMICAL,
+        (f"{gu_ko} 상가·음식점도 작업 가능한가요?",
+         "상가, 음식점, 카페, 사무실 등 현장 구조에 따라 상담 가능합니다. 영업장 배관은 가정집보다 원인이 복잡할 수 있어 작업 전 확인이 중요합니다."),
+    ]
+    body = f"""{phero(f"{gu_ko} 배관공사", f"{gu_ko} 배관공사·하수구막힘 상담 | 스피드 배관공사", f"{sido_ko} {gu_ko}의 배관공사, 하수구막힘, 싱크대·변기·욕실 배수구 막힘 상담을 안내합니다.", crumbs)}
+<main>
+<section class="section">
+  <div class="container layout-sidebar">
+    <div class="prose">
+      <nav class="anchor-nav" aria-label="{gu_ko} 배관공사 바로가기">
+        <h2>{gu_ko} 배관공사 바로가기</h2>
+        <ul>
+          <li><a href="#intro">{gu_ko} 배관공사 안내</a></li>
+          <li><a href="#symptom">하수구막힘 증상</a></li>
+          <li><a href="#fixtures">싱크대·변기·욕실</a></li>
+          <li><a href="#services">서비스 가능 항목</a></li>
+          <li><a href="#work">작업 방식</a></li>
+          <li><a href="#cost">비용 기준</a></li>
+          <li><a href="#area">인접 시·군·구</a></li>
+          <li><a href="#faq">자주 묻는 질문</a></li>
+          <li><a href="#call">전화 상담</a></li>
+        </ul>
+      </nav>
+
+      <h2 id="intro">{gu_ko} 배관공사 안내</h2>
+      <p>{p1}</p>
+      <p>{p2}</p>
+      <p>{p3}</p>
+
+      <h2 id="symptom">{gu_ko} 하수구막힘 증상</h2>
+      <ul class="ticks">{SYMPTOM_LI}</ul>
+
+      <h2 id="fixtures">{gu_ko} 싱크대·변기·욕실 배수구 문제</h2>
+      <p>{FIXTURE_P}</p>
+
+      <h2 id="services">{gu_ko} 서비스 가능 항목</h2>
+      <ul class="ticks">{SERVICE_LI}</ul>
+
+      <h2 id="work">{gu_ko} 작업 방식 안내</h2>
+      <p>{gu_ko} 현장도 증상 확인과 사진·영상 상담을 먼저 진행한 뒤, 막힘 위치와 원인을 추정해 필요한 장비를 선택합니다. 작업 전 비용 기준을 안내드리고, 동의 후 막힘 제거 또는 배관 세척을 진행합니다.</p>
+      <ol style="padding-left:20px;display:flex;flex-direction:column;gap:8px;">{WORK_LI}</ol>
+      <p>{INSPECT_P}</p>
+
+      <h2 id="prepare">{gu_ko} 자가 조치 시 주의사항</h2>
+      <p>{SELFCARE_P}</p>
+
+      <h2 id="cost">비용이 달라지는 기준</h2>
+      <p>{gu_ko} 배관공사 비용은 현장 조건에 따라 달라집니다. 아래 항목에 따라 필요한 장비와 작업 시간이 달라질 수 있습니다.</p>
+      <ul class="ticks">{COST_LI}</ul>
+      <p class="price-note">{COST_NOTE}</p>
+
+      <h2 id="area">{sido_ko} 인접 시·군·구</h2>
+      <p>{sido_ko}의 다른 시·군·구도 상담 가능합니다. 가까운 지역을 선택해 확인하세요.</p>
+      <div class="tag-list">{sib_links}</div>
+
+      <h2 id="faq">자주 묻는 질문</h2>
+      <div class="faq-list">
+{faq_html(faq)}      </div>
+
+      <h2 id="call">{gu_ko} 전화 상담</h2>
+      <p>{gu_ko}에서 하수구막힘이나 배관공사 상담이 필요하다면 증상, 위치, 건물 형태, 물이 내려가는 속도, 냄새 여부를 알려주세요. 현장 조건을 먼저 확인하고 필요한 작업 방향을 안내합니다.</p>
+      <div class="local-cta">
+        <a class="btn btn--primary btn--lg" href="tel:0000-0000">☎ 전화 상담하기</a>
+        <a class="btn btn--secondary btn--lg" href="https://t.me/googleseolab" target="_blank" rel="noopener">사진 보내기</a>
+        <a class="btn btn--secondary btn--lg" href="{sido_url}">{sido_ko} 전체 보기</a>
+      </div>
+    </div>
+    {local_sidebar(f"{gu_ko} 배관 상담", f"{gu_ko} 및 {sido_ko} 인근 지역 상담 가능. 증상·사진을 보내주시면 더 정확합니다.")}
+  </div>
+</section>
+</main>
+"""
+    page(f"area/{sido_slug}/{gungu_slug(gu_ko)}/index.html",
+         f"{gu_ko} 배관공사·하수구막힘 | 싱크대·변기·배수구 막힘 상담 - 스피드 배관공사",
+         f"{sido_ko} {gu_ko} 배관공사, 하수구막힘, 싱크대막힘, 변기막힘, 욕실 배수구 역류, 배관내시경, 고압세척 상담 안내. {gu_ko} 및 {sido_ko} 인근 지역 확인 가능합니다.",
+         f"{S}/area/{sido_slug}/{gungu_slug(gu_ko)}/", body,
+         jsonld=breadcrumb_jsonld(crumbs) + faq_jsonld(faq))
+
+_cnt = 0
+for _sido_ko, _gus in OFFICIAL.items():
+    _ss = sido_slug_of(_sido_ko)
+    for _gu in _gus:
+        if (_ss, _gu) in CUSTOM_GUNGU_URL:
+            continue  # 이미 고유 콘텐츠 페이지 존재
+        sibs = [g for g in _gus if g != _gu]
+        gen_sigungu_page(_sido_ko, _ss, _gu, sibs)
+        _cnt += 1
+print(f"\\n전국 시·군·구 자동 생성: {_cnt}개")
