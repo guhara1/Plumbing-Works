@@ -977,3 +977,16 @@ body{ background:#E7ECF5; }
   .page-hero--media .page-hero-inner{grid-template-columns:1fr;}
   .page-hero-media{display:none;}   /* 모바일에선 지역 페이지 이미지 숨겨 헤더 컴팩트하게 */
 }
+
+/* =========================================================================
+   ✦ 푸터 — 구글 친화(사업자정보 NAP·약관/사이트맵 신뢰 링크) 정리
+   ========================================================================= */
+.footer-biz{font-style:normal;}            /* address 기본 이탤릭 해제 */
+.footer-biz .biz-name{margin-bottom:2px;}
+.footer-biz a{color:#C7D6EC;}
+.footer-biz a:hover{color:#fff;}
+.footer-legal{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;}
+.footer-legal a{color:#9DB3D4;font-weight:600;}
+.footer-legal a:hover{color:#fff;}
+.footer-legal a + a{position:relative;}
+.footer-legal a + a::before{content:"·";position:absolute;left:-10px;color:#5C739A;}
