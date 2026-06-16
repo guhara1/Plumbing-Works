@@ -83,4 +83,40 @@
       io.observe(el);
     });
   }
+
+  /* ---------- 8. 광고주 모집 팝업 (SEO 안전: 지연·빈도제한·쉬운 닫기) ---------- */
+  var pop = document.getElementById("adPopup");
+  if (pop) {
+    var DKEY = "adpop_hide_until";          // '오늘 하루' 해제 만료시각
+    var SKEY = "adpop_seen_session";        // 이번 세션에서 이미 본 적 있음
+    var hideUntil = parseInt(localStorage.getItem(DKEY) || "0", 10);
+    var seen = sessionStorage.getItem(SKEY) === "1";
+    var openPop = function () {
+      pop.hidden = false;
+      requestAnimationFrame(function () { pop.classList.add("open"); });
+      document.addEventListener("keydown", onEsc);
+    };
+    var closePop = function () {
+      pop.classList.remove("open");
+      document.removeEventListener("keydown", onEsc);
+      setTimeout(function () { pop.hidden = true; }, 320);
+      sessionStorage.setItem(SKEY, "1");   // 세션 내 재노출 방지
+    };
+    var onEsc = function (e) { if (e.key === "Escape") closePop(); };
+
+    // 검색 유입 직후 본문을 가리지 않도록 6초 지연 + 세션/하루 빈도 제한
+    if (!seen && Date.now() > hideUntil) {
+      setTimeout(openPop, 6000);
+    }
+    pop.querySelector(".ad-popup-close").addEventListener("click", closePop);
+    pop.addEventListener("click", function (e) { if (e.target === pop) closePop(); });
+    pop.querySelector("[data-dismiss-day]").addEventListener("click", function () {
+      localStorage.setItem(DKEY, String(Date.now() + 24 * 60 * 60 * 1000)); // 24시간 동안 숨김
+      closePop();
+    });
+    // 텔레그램 버튼을 누르면 다시 띄우지 않음(하루)
+    pop.querySelector(".ad-popup-btn").addEventListener("click", function () {
+      localStorage.setItem(DKEY, String(Date.now() + 24 * 60 * 60 * 1000));
+    });
+  }
 })();

@@ -211,10 +211,23 @@ MOBILE_BAR = """<nav class="mobile-bar" aria-label="빠른 연락">
 
 SCRIPTS = '<script src="/assets/js/main.js" defer></script>\n</body>\n</html>\n'
 
+# 광고주 모집 팝업 (SEO 안전: 기본 hidden, JS가 지연 노출·빈도제한·쉬운 닫기)
+AD_POPUP = """<div class="ad-popup" id="adPopup" role="dialog" aria-modal="true" aria-labelledby="adPopTitle" hidden>
+  <div class="ad-popup-card">
+    <button class="ad-popup-close" type="button" aria-label="팝업 닫기">&times;</button>
+    <span class="ad-popup-badge">📣 광고주 모집</span>
+    <h3 id="adPopTitle">지역별 상위 노출,<br>이 자리에 귀사 광고를</h3>
+    <p>전국 시·군·구·동 단위로 노출되는 배관 전문 플랫폼입니다. 텔레그램으로 문의하시면 광고 단가와 노출 위치를 바로 안내해 드립니다.</p>
+    <a class="ad-popup-btn" href="https://t.me/googleseolab" target="_blank" rel="noopener">✈ 광고문의 (텔레그램)</a>
+    <button class="ad-popup-dismiss" type="button" data-dismiss-day>오늘 하루 보지 않기</button>
+  </div>
+</div>
+"""
+
 
 def page(path, title, desc, canonical, body, jsonld="", og_title=None, og_desc=None, noindex=False):
     robots = "noindex, follow" if noindex else "index, follow"
-    html = head(title, desc, canonical, jsonld, og_title, og_desc, robots) + HEADER + body + FOOTER + MOBILE_BAR + SCRIPTS
+    html = head(title, desc, canonical, jsonld, og_title, og_desc, robots) + HEADER + body + FOOTER + MOBILE_BAR + AD_POPUP + SCRIPTS
     full = os.path.join(ROOT, path)
     os.makedirs(os.path.dirname(full), exist_ok=True)
     with open(full, "w", encoding="utf-8") as f:

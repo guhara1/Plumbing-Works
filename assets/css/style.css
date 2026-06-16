@@ -850,3 +850,51 @@ body{ background:#E7ECF5; }
 }
 .scope-note p{margin:0;flex:1 1 280px;color:#41526B;font-size:15px;line-height:1.65;}
 .scope-note p strong{color:var(--navy);}
+
+/* =========================================================================
+   ✦ 광고주 모집 팝업 (SEO 안전: 지연 노출·쉬운 닫기·빈도 제한)
+   ========================================================================= */
+.ad-popup{
+  position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:20px;
+  background:rgba(6,12,24,.62);backdrop-filter:blur(5px);
+  opacity:0;transition:opacity .3s var(--ease);
+}
+.ad-popup.open{opacity:1;}
+.ad-popup[hidden]{display:none;}
+.ad-popup-card{
+  position:relative;max-width:430px;width:100%;text-align:center;color:#fff;
+  padding:36px 30px 26px;border-radius:22px;border:1px solid rgba(201,162,75,.42);
+  background:radial-gradient(700px 360px at 80% -20%, rgba(201,162,75,.20), transparent 60%),
+             linear-gradient(165deg,#0C2A52 0%,#0A1E3C 50%,#070F1F 100%);
+  box-shadow:0 36px 90px rgba(0,0,0,.55);
+  transform:translateY(18px) scale(.97);transition:transform .32s var(--ease);
+}
+.ad-popup.open .ad-popup-card{transform:none;}
+.ad-popup-close{
+  position:absolute;top:12px;right:14px;width:36px;height:36px;border:0;border-radius:50%;
+  background:rgba(255,255,255,.08);color:#C7D6EC;font-size:24px;line-height:1;cursor:pointer;
+  transition:background .2s ease,color .2s ease;
+}
+.ad-popup-close:hover{background:rgba(255,255,255,.18);color:#fff;}
+.ad-popup-badge{
+  display:inline-block;font-weight:800;font-size:13px;letter-spacing:.02em;
+  padding:7px 16px;border-radius:999px;margin-bottom:14px;
+  background:var(--gold-soft);color:var(--brass-light);border:1px solid rgba(201,162,75,.45);
+}
+.ad-popup-card h3{color:#fff;font-size:clamp(20px,4.6vw,25px);line-height:1.25;margin-bottom:12px;}
+.ad-popup-card p{color:#BFD0E8;font-size:14.5px;line-height:1.65;margin-bottom:20px;}
+.ad-popup-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+  padding:15px 22px;border-radius:12px;font-weight:800;font-size:16px;color:#1A1206;
+  background:var(--gold-grad);box-shadow:0 12px 28px rgba(201,162,75,.42), inset 0 1px 0 rgba(255,255,255,.45);
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease);
+}
+.ad-popup-btn:hover{transform:translateY(-2px);box-shadow:0 18px 38px rgba(201,162,75,.55);text-decoration:none;color:#1A1206;}
+.ad-popup-dismiss{display:block;margin:14px auto 0;background:none;border:0;color:#849ABF;font-size:13px;cursor:pointer;text-decoration:underline;}
+.ad-popup-dismiss:hover{color:#BFD0E8;}
+@media (max-width:560px){
+  .ad-popup{align-items:end;padding:0;}
+  .ad-popup-card{max-width:none;border-radius:22px 22px 0 0;padding-bottom:34px;}
+  .ad-popup.open .ad-popup-card{transform:none;}
+}
+@media (prefers-reduced-motion:reduce){.ad-popup,.ad-popup-card{transition:none;}}
