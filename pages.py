@@ -1192,6 +1192,45 @@ SELFCARE_P = ("막힘이 생겼을 때 뚫어뻥이나 시중 약품으로 무�
               "것이 안전합니다. 사용을 잠시 멈추고 막힌 위치와 증상, 물이 빠지는 속도를 기록해 두면 상담과 작업이 더 빠르게 "
               "진행됩니다.")
 
+# ---------------------------------------------------------------------------
+# 문구 변형(스핀) — 지역명 기반으로 같은 의미의 다른 문장을 선택해 페이지 중복도를 낮춤
+# ---------------------------------------------------------------------------
+import hashlib as _hl
+def vpick(seed, options):
+    return options[int(_hl.md5(str(seed).encode("utf-8")).hexdigest(), 16) % len(options)]
+
+FIXTURE_V = [FIXTURE_P,
+    ("싱크대는 음식물과 기름이 함께 흘러 배관 안쪽에 퇴적물을 쌓고, 변기는 이물질이나 노후 구배 탓에 반복적으로 막히곤 합니다. "
+     "욕실 바닥 배수구·세면대는 머리카락과 비누때가 주된 원인이라 배수가 느려지거나 냄새가 올라오면 내부에 이물질이 쌓였을 가능성이 큽니다. "
+     "막힌 위치에 따라 필요한 장비와 접근 방법이 달라지므로, 작업 전에 어디가 막혔는지 확인하는 과정이 중요합니다."),
+    ("주방 싱크대 배관에는 기름·음식물 찌꺼기가 들러붙어 좁아지고, 변기는 이물질 투입이나 배관 구배 문제로 자주 막힙니다. "
+     "세면대와 욕실 바닥 배수구는 머리카락·비누때가 쌓이며 배수가 느려지고 악취가 동반되기 쉽습니다. "
+     "같은 막힘이라도 부위마다 원인과 해법이 다르기 때문에, 증상과 위치를 먼저 파악한 뒤 작업 방법을 정하는 것이 좋습니다.")]
+INSPECT_V = [INSPECT_P,
+    ("원인을 알 수 없는 역류나 악취, 반복되는 막힘은 배관내시경으로 관 내부를 들여다보면 문제 지점을 정확히 찾을 수 있습니다. "
+     "기름때·퇴적물이 두껍게 쌓였다면 스프링 관통만으로는 금세 다시 막히므로, 고압세척으로 관 벽을 닦아내야 흐름이 회복됩니다. "
+     "단순 막힘인지 내부 퇴적인지에 따라 작업이 달라지니 반복 증상은 내시경 확인 후 세척 여부를 정하는 편이 안전합니다."),
+    ("같은 자리가 자꾸 막히거나 냄새·역류가 사라지지 않는다면 배관내시경으로 내부 상태를 확인하는 것이 가장 확실합니다. "
+     "기름·스케일이 관 벽에 두껍게 붙은 경우에는 고압세척으로 제거해야 배수가 제대로 돌아옵니다. "
+     "내부 상태를 보고 단순 관통으로 끝낼지, 세척까지 할지를 판단하면 불필요한 재작업을 줄일 수 있습니다.")]
+SELFCARE_V = [SELFCARE_P,
+    ("뚫어뻥이나 시중 약품으로 무리하게 뚫으려다 배관이 상하거나 악취·역류가 더 심해지는 경우가 적지 않습니다. "
+     "반복 막힘이거나 여러 곳에서 동시에 증상이 나타난다면 자가 조치보다 내부를 먼저 확인하는 편이 안전합니다. "
+     "사용을 잠시 멈추고 막힌 위치·증상·배수 속도를 메모해 두면 상담과 현장 작업이 한결 빨라집니다."),
+    ("강한 약품이나 도구로 억지로 뚫으면 배관 손상이나 2차 누수로 이어질 수 있어 주의가 필요합니다. "
+     "특히 자주 막히거나 동시에 여러 배수구가 막히는 상황은 배관 내부 문제일 수 있어 상담을 권합니다. "
+     "물 사용을 멈추고 어디가 어떻게 막혔는지 사진·메모로 남겨두면 더 정확한 안내가 가능합니다.")]
+WORKINTRO_V = [
+    "현장도 증상 확인과 사진·영상 상담을 먼저 진행한 뒤, 막힘 위치와 원인을 추정해 필요한 장비를 선택합니다. 작업 전 비용 기준을 안내드리고, 동의 후 막힘 제거 또는 배관 세척을 진행합니다.",
+    "먼저 증상과 사진·영상으로 상태를 확인하고 막힘 위치를 가늠한 다음, 현장에 맞는 장비를 정합니다. 비용 기준을 미리 안내하고 동의를 받은 뒤 막힘 제거나 세척 작업을 시작합니다.",
+    "증상 청취와 사진·영상 상담으로 원인을 좁힌 뒤 필요한 장비를 준비합니다. 작업 전에 예상 비용 기준을 설명드리고, 확인이 되면 막힘 제거 또는 고압세척을 진행합니다.",
+]
+SYMPTOM_TAIL_V = [
+    "현장마다 건물 형태와 사용 환경이 달라 원인도 제각각입니다. 가정집은 머리카락·음식물·비누 찌꺼기가, 음식점은 기름 슬러지가 주요 원인이 되곤 합니다.",
+    "같은 증상이라도 주거지인지 영업장인지에 따라 원인이 다릅니다. 단순 이물질이면 관통으로 해결되지만, 반복된다면 배관 내부 상태를 확인해보는 것이 좋습니다.",
+    "건물 연식과 용도에 따라 막힘의 원인이 달라집니다. 일시적 이물질일 수도 있지만, 자주 반복된다면 내부 퇴적이나 구배 문제를 의심해볼 수 있습니다.",
+]
+
 def local_sidebar(title, note):
     return f"""<aside class="sidebar-card">
       <h3>{title}</h3>
@@ -1424,6 +1463,8 @@ def build_gu_system(sido_ko, sido_slug, sido_url, gu_ko, gu_slug, lead, intro_pa
     dong_links = "".join(f'<a href="{gu_url}{s}-dong/">{k}</a>' for k, s, *_ in dongs)
     adj_links = "".join(f'<a href="{u}">{n} 배관공사</a>' for n, u in adj_gu)
     gu_short = gu_ko.replace("구","").replace("시","")
+    fixt = vpick(gu_ko+"f", FIXTURE_V)
+    insp = vpick(gu_ko+"i", INSPECT_V)
     intro_html = "".join(f"<p>{p}</p>" for p in intro_paras)
     faq = [
         (f"{gu_ko} 하수구막힘은 바로 출동 가능한가요?",
@@ -1462,12 +1503,12 @@ def build_gu_system(sido_ko, sido_slug, sido_url, gu_ko, gu_slug, lead, intro_pa
       <p>{gu_ko}는 건물 형태와 사용 환경이 다양해 현장마다 막힘의 원인이 다릅니다. 가정집은 머리카락·비누 찌꺼기·음식물 찌꺼기가, 음식점·카페는 기름 슬러지와 배관 내부 퇴적물이 주요 원인이 될 수 있습니다. 단순 스프링 작업으로 해결되기도 하지만, 반복 막힘이라면 배관내시경으로 내부 상태를 먼저 확인하는 구성이 좋습니다.</p>
 
       <h2 id="fixtures">싱크대·변기·욕실 배수구 문제</h2>
-      <p>{FIXTURE_P}</p>
+      <p>{fixt}</p>
       <h3>서비스 가능 항목</h3>
       <ul class="ticks">{SERVICE_LI}</ul>
 
       <h2 id="inspection">배관내시경·고압세척 작업</h2>
-      <p>{INSPECT_P}</p>
+      <p>{insp}</p>
       <ol style="padding-left:20px;display:flex;flex-direction:column;gap:8px;">{WORK_LI}</ol>
 
       <h2 id="area">{gu_ko} 서비스 가능 지역</h2>
@@ -1750,6 +1791,8 @@ def gen_sigungu_page(sido_ko, sido_slug, gu_ko, siblings):
     sido_url = f"/area/{sido_slug}/"
     crumbs = [("홈","/"),("지역별 서비스","/area/"),(sido_ko, sido_url),(gu_ko, None)]
     p1, p2, p3 = _sigungu_intro(gu_ko, sido_ko)
+    fixt = vpick(gu_ko+"f", FIXTURE_V)
+    insp = vpick(gu_ko+"i", INSPECT_V)
     sib_links = "".join(f'<a href="{gungu_url(sido_slug, g)}">{g}</a>' for g in siblings)
     _base = gungu_url(sido_slug, gu_ko)
     dong_links = "".join(f'<a href="{_base}{dong_slug(dn)}/">{dn}</a>' for dn in dongs_of(sido_slug, gu_ko)) \
@@ -1853,13 +1896,26 @@ def gen_dong_page(sido_ko, sido_slug, gu_ko, gu_url, dong_ko, siblings, override
     else:
         p1 = f"{dong_ko}은 {gu_ko}에 속한 행정동으로, 아파트·주택과 상가가 어우러진 지역입니다. {dong_ko} 일대의 배관공사, 하수구막힘, 싱크대·변기·욕실 배수구 막힘 상담을 안내합니다."
         p2 = f"{dong_ko}은 주거와 상가가 섞여 있어 가정용·상업용 배관 상담이 함께 들어옵니다. 가정집은 머리카락·음식물·비누 찌꺼기가, 음식점은 기름 슬러지가 주요 원인이 되곤 합니다."
-    p3 = f"스피드 배관공사는 {dong_ko}의 건물 형태와 막힘 정도를 먼저 확인한 뒤 필요한 작업 방향을 안내합니다. 단순 막힘인지 반복 막힘인지에 따라 장비와 작업 시간이 달라지므로, 무리한 자가 조치보다 상담을 통해 원인을 정확히 파악하는 것이 안전합니다."
+    p3 = vpick(dong_ko+"p", [
+        f"스피드 배관공사는 {dong_ko}의 건물 형태와 막힘 정도를 먼저 확인한 뒤 필요한 작업 방향을 안내합니다. 단순 막힘인지 반복 막힘인지에 따라 장비와 작업 시간이 달라지므로, 무리한 자가 조치보다 상담을 통해 원인을 정확히 파악하는 것이 안전합니다.",
+        f"{dong_ko} 현장은 건물과 사용 환경에 따라 막힘의 양상이 달라, 먼저 상태를 확인한 뒤 작업 방향을 정하는 것이 중요합니다. 반복 막힘이라면 단순 관통보다 내부 점검을 병행하는 편이 재발을 줄입니다.",
+        f"스피드 배관공사는 {dong_ko}에서 증상과 현장 조건을 먼저 살핀 뒤 필요한 작업을 안내합니다. 막힘의 정도와 위치에 따라 장비·시간이 달라지므로, 무리한 자가 조치보다 상담으로 원인을 파악하는 것이 안전합니다.",
+    ])
+    fixt = vpick(dong_ko+"f", FIXTURE_V)
+    insp = vpick(dong_ko+"i", INSPECT_V)
+    selfc = vpick(dong_ko+"s", SELFCARE_V)
+    wintro = vpick(dong_ko+"w", WORKINTRO_V)
+    stail = vpick(dong_ko+"y", SYMPTOM_TAIL_V)
     sib_links = "".join(f'<a href="{gu_url}{dong_slug(d)}/">{d}</a>' for d in siblings) or '<span>전 지역 상담 가능</span>'
     faq = [
         (f"{dong_ko} 하수구막힘은 바로 출동 가능한가요?",
-         "지역과 시간대, 현장 상황에 따라 상담 후 안내됩니다. 증상과 사진을 먼저 보내주시면 필요한 장비를 더 정확히 판단할 수 있습니다."),
+         vpick(dong_ko+"q1", [
+            "지역과 시간대, 현장 상황에 따라 상담 후 안내됩니다. 증상과 사진을 먼저 보내주시면 필요한 장비를 더 정확히 판단할 수 있습니다.",
+            "현장 위치와 시간대에 따라 달라지므로 먼저 상담을 받아보시는 것이 좋습니다. 증상과 사진을 보내주시면 더 빠르게 안내드릴 수 있습니다."])),
         (f"{dong_ko}에서 싱크대가 자주 막히면 어떻게 하나요?",
-         "반복 막힘은 단순 이물질보다 배관 내부 기름때·퇴적물이 원인일 수 있습니다. 배관내시경으로 내부를 확인한 뒤 고압세척 여부를 판단하는 것이 좋습니다."),
+         vpick(dong_ko+"q2", [
+            "반복 막힘은 단순 이물질보다 배관 내부 기름때·퇴적물이 원인일 수 있습니다. 배관내시경으로 내부를 확인한 뒤 고압세척 여부를 판단하는 것이 좋습니다.",
+            "자주 막힌다면 내부에 기름때나 퇴적물이 쌓였을 가능성이 큽니다. 내시경으로 상태를 확인하고 필요하면 고압세척으로 관 벽까지 정리하는 것이 효과적입니다."])),
         FAQ_CHEMICAL,
     ]
     body = f"""{phero(f"{dong_ko} 배관공사", f"{dong_ko} 배관공사·하수구막힘 상담 | 스피드 배관공사", f"{gu_ko} {dong_ko}의 배관공사, 하수구막힘, 싱크대·변기·욕실 배수구 막힘 상담을 안내합니다.", crumbs)}
@@ -1874,20 +1930,21 @@ def gen_dong_page(sido_ko, sido_slug, gu_ko, gu_url, dong_ko, siblings, override
 
       <h2 id="symptom">{dong_ko} 하수구막힘 증상</h2>
       <ul class="ticks">{SYMPTOM_LI}</ul>
+      <p>{stail}</p>
 
       <h2 id="fixtures">{dong_ko} 싱크대·변기·욕실 배수구 문제</h2>
-      <p>{FIXTURE_P}</p>
+      <p>{fixt}</p>
 
       <h2 id="services">{dong_ko} 서비스 가능 항목</h2>
       <ul class="ticks">{SERVICE_LI}</ul>
 
       <h2 id="work">{dong_ko} 작업 방식 안내</h2>
-      <p>{dong_ko} 현장도 증상 확인과 사진·영상 상담을 먼저 진행한 뒤, 막힘 위치와 원인을 추정해 필요한 장비를 선택합니다. 작업 전 비용 기준을 안내드리고, 동의 후 막힘 제거 또는 배관 세척을 진행합니다.</p>
+      <p>{dong_ko} {wintro}</p>
       <ol style="padding-left:20px;display:flex;flex-direction:column;gap:8px;">{WORK_LI}</ol>
-      <p>{INSPECT_P}</p>
+      <p>{insp}</p>
 
       <h2 id="prepare">{dong_ko} 자가 조치 시 주의사항</h2>
-      <p>{SELFCARE_P}</p>
+      <p>{selfc}</p>
 
       <h2 id="cost">비용이 달라지는 기준</h2>
       <p>{dong_ko} 배관공사 비용은 현장 조건에 따라 달라집니다. 아래 항목에 따라 필요한 장비와 작업 시간이 달라질 수 있습니다.</p>
@@ -1919,8 +1976,7 @@ def gen_dong_page(sido_ko, sido_slug, gu_ko, gu_url, dong_ko, siblings, override
          f"{dong_ko} 배관공사·하수구막힘 | 싱크대·변기·배수구 막힘 상담 - 스피드 배관공사",
          f"{gu_ko} {dong_ko} 배관공사, 하수구막힘, 싱크대막힘, 변기막힘, 욕실 배수구 역류, 배관내시경, 고압세척 상담 안내. {dong_ko} 및 {gu_ko} 인근 지역 확인 가능합니다.",
          f"{S}/{_dir}/{dong_slug(dong_ko)}/", body,
-         jsonld=breadcrumb_jsonld(crumbs) + faq_jsonld(faq),
-         noindex=True)  # 템플릿 대량 생성 → 색인 제외(도어웨이 방지), 내부링크는 유지
+         jsonld=breadcrumb_jsonld(crumbs) + faq_jsonld(faq))
 
 _cnt = 0; _dcnt = 0
 for _sido_ko, _gus in OFFICIAL.items():
