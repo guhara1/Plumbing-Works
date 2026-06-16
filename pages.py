@@ -54,14 +54,32 @@ CUSTOM_GUNGU_URL = {
     ("seoul","강동구"):"/area/seoul/gangdong-gu/",
     ("seoul","마포구"):"/area/seoul/mapo-gu/",
     ("seoul","영등포구"):"/area/seoul/yeongdeungpo-gu/",
-    ("busan","해운대구"):"/area/busan/haeundae.html",
-    ("incheon","연수구"):"/area/incheon/yeonsu.html",
-    ("gyeonggi","성남시"):"/area/gyeonggi/seongnam.html",
-    ("gyeonggi","수원시"):"/area/gyeonggi/suwon.html",
 }
 def gungu_url(sido_slug, gu_ko):
     c = CUSTOM_GUNGU_URL.get((sido_slug, gu_ko))
     return c if c else f"/area/{sido_slug}/{gungu_slug(gu_ko)}/"
+
+# ---------------------------------------------------------------------------
+# 전국 행정동(대표 동명 통합) 데이터 + 동 슬러그
+# ---------------------------------------------------------------------------
+DONG_DATA = _json.load(open(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)),
+                  "assets/data/hjd_consolidated.json"), encoding="utf-8"))
+# 2023년 행정구역 개편: 군위군은 경북 → 대구로 이관
+if "군위군" in DONG_DATA.get("gyeongbuk", {}):
+    DONG_DATA.setdefault("daegu", {})["군위군"] = DONG_DATA["gyeongbuk"].pop("군위군")
+
+def dong_slug(name):
+    if name.endswith("동"):  return _rr(name[:-1])+"-dong"
+    if name.endswith("읍"):  return _rr(name[:-1])+"-eup"
+    if name.endswith("면"):  return _rr(name[:-1])+"-myeon"
+    return _rr(name)
+
+# 이미 행정동 상세가 있는 시군구(자동 동 생성에서 제외)
+SKIP_DONG = {("seoul","강남구"),("seoul","서초구"),("seoul","송파구"),
+             ("seoul","강동구"),("seoul","마포구"),("seoul","영등포구")}
+
+def dongs_of(sido_slug, gu_ko):
+    return DONG_DATA.get(sido_slug, {}).get(gu_ko, [])
 
 
 # ===========================================================================
@@ -614,9 +632,9 @@ def sido_page(slug, name, short, intro, districts, district_links, cases_html, p
 # 시·군·구 상세 페이지 링크 레지스트리 (시도 페이지의 구 카드 → 상세 페이지 연결)
 GUNGU_LINKS = {
     "seoul":    {"강남구":"/area/seoul/gangnam-gu/", "서초구":"/area/seoul/seocho-gu/", "송파구":"/area/seoul/songpa-gu/"},
-    "gyeonggi": {"성남시":"/area/gyeonggi/seongnam.html", "수원시":"/area/gyeonggi/suwon.html"},
-    "busan":    {"해운대구":"/area/busan/haeundae.html"},
-    "incheon":  {"연수구":"/area/incheon/yeonsu.html"},
+    "gyeonggi": {"성남시":"/area/gyeonggi/seongnam-si/", "수원시":"/area/gyeonggi/suwon-si/"},
+    "busan":    {"해운대구":"/area/busan/haeundae-gu/"},
+    "incheon":  {"연수구":"/area/incheon/yeonsu-gu/"},
 }
 
 # --- 서울 ---
@@ -1047,46 +1065,7 @@ def gungu_page(sido_slug, sido_name, sido_url, slug, gu_name, lead, paras, jobs,
 
 
 # (서초구·송파구는 파일 하단에서 강남과 동일한 구+행정동 종합 체계로 생성)
-
-# --- 경기 성남시 ---
-gungu_page("gyeonggi","경기도","/area/gyeonggi/","seongnam","성남시",
-    "판교 테크노밸리와 분당 상권, 원도심 식당가까지 — 성남시 상업시설의 배관을 신속하게 관리합니다.",
-    ["성남시는 판교 IT·업무단지와 분당 신도시 상권, 수정·중원 원도심이 어우러진 지역입니다. 신축 오피스의 배관 점검과 원도심 노후 상가의 배관 교체 수요가 함께 있습니다.",
-     "스피드 배관공사는 판교·분당·원도심 권역에 작업팀을 배치해 빌딩 누수탐지, 식당 주방 고압세척, 상가 하수구막힘을 한 번에 대응합니다. 세금계산서 발행과 정기 관리 계약을 지원합니다."],
-    ["판교 오피스빌딩 배관 누수탐지·교체","분당 상권 식당 주방 배관 고압세척","수정·중원 원도심 노후관 교체","상가 리모델링 배관 재배치"],
-    ["분당구","수정구","중원구","판교동","정자동","서현동","야탑동","태평동","신흥동"],
-    _case("성남시 · 상가","분당 상가 천장 누수 비파괴 탐지","철거 없이 누수 지점을 특정해 복구비 최소화.","case2.svg","case2-after.svg","경기 성남 상가 누수 전","경기 성남 상가 누수 보수 후"),
-    "성남 판교·분당·원도심 24시간 출동.")
-
-# --- 경기 수원시 ---
-gungu_page("gyeonggi","경기도","/area/gyeonggi/","suwon","수원시",
-    "영통·광교 신도시 상권과 인계동 번화가, 수원역 상권까지 — 수원시 상업시설의 배관 문제를 해결합니다.",
-    ["수원시는 광교·영통 신도시 상권과 인계동 먹자골목, 수원역 대형 상권을 갖춘 경기 최대 도시입니다. 식당가가 발달해 <strong>기름때 하수구막힘</strong> 의뢰가 특히 많습니다.",
-     "스피드 배관공사는 수원 전역에 작업팀을 배치해 식당 주방 배관 고압세척, 상가 막힘 긴급 대응, 빌딩 누수탐지를 함께 진행합니다. 선견적 후작업으로 신뢰를 드립니다."],
-    ["인계동·수원역 식당가 주방 배관 고압세척","광교·영통 상가 하수구막힘 긴급 대응","번화가 빌딩 배관 누수탐지","상가 정기 관리 계약 운영"],
-    ["장안구","권선구","팔달구","영통구","인계동","매탄동","영통동","우만동","정자동"],
-    _case("수원시 · 식당가","인계동 식당 주방 배관 고압세척","반복되던 기름때 막힘을 근본 해소.","case1.svg","case1-after.svg","경기 수원 식당 배관 전","경기 수원 식당 배관 세척 후"),
-    "수원 전역 24시간 출동. 식당가 배관 전문.")
-
-# --- 부산 해운대구 ---
-gungu_page("busan","부산광역시","/area/busan/","haeundae","해운대구",
-    "해운대 해변 호텔·리조트와 센텀시티 업무단지, 마린시티 상권까지 — 해운대구 상업시설의 배관을 책임집니다.",
-    ["해운대구는 해변 특급호텔·리조트와 센텀시티 오피스, 마린시티 고층 상가가 밀집한 부산 최대 관광·업무 지역입니다. <strong>관광 성수기 객실 배수 긴급 대응</strong> 수요가 특히 높습니다.",
-     "스피드 배관공사는 해운대 일대에 작업팀을 배치해 호텔 객실 층 하수구막힘, 고층 빌딩 누수탐지, 식당가 주방 고압세척을 한 번에 대응합니다. 해안가 노후 배관의 부식·누수도 점검합니다."],
-    ["해변 호텔·리조트 객실 배수 긴급 대응","센텀시티 오피스 배관 누수탐지","마린시티 고층 상가 배관 관리","해안가 노후관 부식·누수 점검"],
-    ["우동","중동","좌동","송정동","재송동","반여동","반송동","센텀","마린시티"],
-    _case("해운대구 · 호텔","해운대 호텔 객실 배수 긴급 대응","성수기 야간 막힘을 신속 출동으로 해결.","case3.svg","case3-after.svg","부산 해운대 호텔 배수 전","부산 해운대 호텔 배수 복구 후"),
-    "해운대 전역 24시간 출동. 호텔·리조트 전문.")
-
-# --- 인천 연수구 ---
-gungu_page("incheon","인천광역시","/area/incheon/","yeonsu","연수구",
-    "송도국제도시 업무·상업단지와 컨벤시아 일대, 연수 원도심까지 — 연수구 상업시설의 배관을 신속 관리합니다.",
-    ["연수구는 송도국제도시의 글로벌 업무시설·호텔·컨벤션과 연수 원도심 상권이 공존하는 지역입니다. 신축 고층 빌딩의 배관 점검과 매립지 특성상 <strong>역구배·침하 진단</strong> 수요가 많습니다.",
-     "스피드 배관공사는 송도·연수 권역에 작업팀을 배치해 빌딩 누수탐지, 상가 주방 고압세척, 배관 CCTV 진단을 함께 진행합니다. 선견적 후작업으로 비용을 먼저 확인합니다."],
-    ["송도 오피스·호텔 배관 누수탐지","컨벤시아 일대 상가 주방 고압세척","매립지 배관 역구배·침하 CCTV 진단","연수 원도심 노후관 교체"],
-    ["송도동","연수동","청학동","동춘동","옥련동","선학동","개발동"],
-    _case("연수구 · 상가","송도 상가 배관 CCTV 진단","반복 막힘 원인을 영상으로 특정해 보수.","case2.svg","case2-after.svg","인천 연수구 상가 진단 전","인천 연수구 상가 보수 후"),
-    "송도·연수 권역 24시간 출동.")
+# (성남·수원·해운대·연수는 전국 자동 시군구+행정동 체계로 통합 생성)
 
 print("\\nGUNGU DETAIL PAGES BUILT.")
 
@@ -1744,7 +1723,7 @@ build_gu_system("서울특별시","seoul","/area/seoul/","송파구","songpa",
      "특히 잠실동, 신천동, 가락동, 문정동, 방이동 일대는 대형 상가와 시장, 먹자골목이 밀집해 바닥 배수구 역류, 주방 기름때 막힘, 오수관 막힘 상담이 자주 발생합니다.",
      "스피드 배관공사는 현장의 건물 형태와 사용 환경을 먼저 확인한 뒤 필요한 작업 방향을 안내합니다. 사용량이 많은 시설은 정기 점검과 고압세척으로 막힘을 예방하는 것이 운영에 유리합니다."],
     "", SONGPA_DONGS,
-    [("강남구","/area/seoul/gangnam-gu/"),("서초구","/area/seoul/seocho-gu/"),("강동구","/area/seoul/"),("성남시","/area/gyeonggi/seongnam.html")])
+    [("강남구","/area/seoul/gangnam-gu/"),("서초구","/area/seoul/seocho-gu/"),("강동구","/area/seoul/gangdong-gu/"),("성남시","/area/gyeonggi/seongnam-si/")])
 
 print("\\nSEOCHO/SONGPA SYSTEMS BUILT.")
 
@@ -1772,6 +1751,9 @@ def gen_sigungu_page(sido_ko, sido_slug, gu_ko, siblings):
     crumbs = [("홈","/"),("지역별 서비스","/area/"),(sido_ko, sido_url),(gu_ko, None)]
     p1, p2, p3 = _sigungu_intro(gu_ko, sido_ko)
     sib_links = "".join(f'<a href="{gungu_url(sido_slug, g)}">{g}</a>' for g in siblings)
+    _base = gungu_url(sido_slug, gu_ko)
+    dong_links = "".join(f'<a href="{_base}{dong_slug(dn)}/">{dn}</a>' for dn in dongs_of(sido_slug, gu_ko)) \
+                 or '<span>전 지역 상담 가능</span>'
     faq = [
         (f"{gu_ko} 하수구막힘은 바로 출동 가능한가요?",
          "지역과 시간대, 현장 상황에 따라 상담 후 안내됩니다. 증상과 사진을 먼저 보내주시면 필요한 장비를 더 정확히 판단할 수 있습니다."),
@@ -1828,6 +1810,10 @@ def gen_sigungu_page(sido_ko, sido_slug, gu_ko, siblings):
       <ul class="ticks">{COST_LI}</ul>
       <p class="price-note">{COST_NOTE}</p>
 
+      <h2 id="dong">{gu_ko} 서비스 가능 지역(행정동)</h2>
+      <p>{gu_ko} 전역으로 상담 가능합니다. 아래 동을 선택하면 해당 지역의 배관공사·하수구막힘 안내를 확인할 수 있습니다.</p>
+      <div class="tag-list">{dong_links}</div>
+
       <h2 id="area">{sido_ko} 인접 시·군·구</h2>
       <p>{sido_ko}의 다른 시·군·구도 상담 가능합니다. 가까운 지역을 선택해 확인하세요.</p>
       <div class="tag-list">{sib_links}</div>
@@ -1855,16 +1841,111 @@ def gen_sigungu_page(sido_ko, sido_slug, gu_ko, siblings):
          f"{S}/area/{sido_slug}/{gungu_slug(gu_ko)}/", body,
          jsonld=breadcrumb_jsonld(crumbs) + faq_jsonld(faq))
 
-_cnt = 0
+def gen_dong_page(sido_ko, sido_slug, gu_ko, gu_url, dong_ko, siblings, override_dir=None):
+    _dir = override_dir or f"area/{sido_slug}/{gungu_slug(gu_ko)}"
+    crumbs = [("홈","/"),("지역별 서비스","/area/"),(sido_ko, f"/area/{sido_slug}/")]
+    if gu_ko != sido_ko:
+        crumbs.append((gu_ko, gu_url))
+    crumbs.append((dong_ko, None))
+    if dong_ko.endswith(("읍","면")):
+        p1 = f"{dong_ko}은 {gu_ko}에 속한 지역으로, 주거지와 소규모 상권, 농어촌·단독주택이 어우러진 곳입니다. {dong_ko} 일대의 배관공사·하수구막힘 상담을 안내합니다."
+        p2 = f"{dong_ko}은 단독주택과 다세대가 많아 외부 오수관이나 정화조 연결부에서 비롯된 문제가 나타나기도 하며, 상가는 업종에 따라 배수 부담이 달라집니다. 현장 구조를 먼저 확인하는 것이 중요합니다."
+    else:
+        p1 = f"{dong_ko}은 {gu_ko}에 속한 행정동으로, 아파트·주택과 상가가 어우러진 지역입니다. {dong_ko} 일대의 배관공사, 하수구막힘, 싱크대·변기·욕실 배수구 막힘 상담을 안내합니다."
+        p2 = f"{dong_ko}은 주거와 상가가 섞여 있어 가정용·상업용 배관 상담이 함께 들어옵니다. 가정집은 머리카락·음식물·비누 찌꺼기가, 음식점은 기름 슬러지가 주요 원인이 되곤 합니다."
+    p3 = f"스피드 배관공사는 {dong_ko}의 건물 형태와 막힘 정도를 먼저 확인한 뒤 필요한 작업 방향을 안내합니다. 단순 막힘인지 반복 막힘인지에 따라 장비와 작업 시간이 달라지므로, 무리한 자가 조치보다 상담을 통해 원인을 정확히 파악하는 것이 안전합니다."
+    sib_links = "".join(f'<a href="{gu_url}{dong_slug(d)}/">{d}</a>' for d in siblings) or '<span>전 지역 상담 가능</span>'
+    faq = [
+        (f"{dong_ko} 하수구막힘은 바로 출동 가능한가요?",
+         "지역과 시간대, 현장 상황에 따라 상담 후 안내됩니다. 증상과 사진을 먼저 보내주시면 필요한 장비를 더 정확히 판단할 수 있습니다."),
+        (f"{dong_ko}에서 싱크대가 자주 막히면 어떻게 하나요?",
+         "반복 막힘은 단순 이물질보다 배관 내부 기름때·퇴적물이 원인일 수 있습니다. 배관내시경으로 내부를 확인한 뒤 고압세척 여부를 판단하는 것이 좋습니다."),
+        FAQ_CHEMICAL,
+    ]
+    body = f"""{phero(f"{dong_ko} 배관공사", f"{dong_ko} 배관공사·하수구막힘 상담 | 스피드 배관공사", f"{gu_ko} {dong_ko}의 배관공사, 하수구막힘, 싱크대·변기·욕실 배수구 막힘 상담을 안내합니다.", crumbs)}
+<main>
+<section class="section">
+  <div class="container layout-sidebar">
+    <div class="prose">
+      <h2 id="intro">{dong_ko} 배관공사 안내</h2>
+      <p>{p1}</p>
+      <p>{p2}</p>
+      <p>{p3}</p>
+
+      <h2 id="symptom">{dong_ko} 하수구막힘 증상</h2>
+      <ul class="ticks">{SYMPTOM_LI}</ul>
+
+      <h2 id="fixtures">{dong_ko} 싱크대·변기·욕실 배수구 문제</h2>
+      <p>{FIXTURE_P}</p>
+
+      <h2 id="services">{dong_ko} 서비스 가능 항목</h2>
+      <ul class="ticks">{SERVICE_LI}</ul>
+
+      <h2 id="work">{dong_ko} 작업 방식 안내</h2>
+      <p>{dong_ko} 현장도 증상 확인과 사진·영상 상담을 먼저 진행한 뒤, 막힘 위치와 원인을 추정해 필요한 장비를 선택합니다. 작업 전 비용 기준을 안내드리고, 동의 후 막힘 제거 또는 배관 세척을 진행합니다.</p>
+      <ol style="padding-left:20px;display:flex;flex-direction:column;gap:8px;">{WORK_LI}</ol>
+      <p>{INSPECT_P}</p>
+
+      <h2 id="prepare">{dong_ko} 자가 조치 시 주의사항</h2>
+      <p>{SELFCARE_P}</p>
+
+      <h2 id="cost">비용이 달라지는 기준</h2>
+      <p>{dong_ko} 배관공사 비용은 현장 조건에 따라 달라집니다. 아래 항목에 따라 필요한 장비와 작업 시간이 달라질 수 있습니다.</p>
+      <ul class="ticks">{COST_LI}</ul>
+      <p class="price-note">{COST_NOTE}</p>
+
+      <h2 id="area">{gu_ko} 인근 지역</h2>
+      <p>{gu_ko}의 다른 지역도 상담 가능합니다. 가까운 동을 선택해 확인하세요.</p>
+      <div class="tag-list">{sib_links}</div>
+
+      <h2 id="faq">자주 묻는 질문</h2>
+      <div class="faq-list">
+{faq_html(faq)}      </div>
+
+      <h2 id="call">{dong_ko} 전화 상담</h2>
+      <p>{dong_ko}에서 하수구막힘이나 배관공사 상담이 필요하다면 증상, 위치, 건물 형태, 물이 내려가는 속도, 냄새 여부를 알려주세요. 현장 조건을 먼저 확인하고 필요한 작업 방향을 안내합니다.</p>
+      <div class="local-cta">
+        <a class="btn btn--primary btn--lg" href="tel:0000-0000">☎ 전화 상담하기</a>
+        <a class="btn btn--secondary btn--lg" href="https://t.me/googleseolab" target="_blank" rel="noopener">사진 보내기</a>
+        <a class="btn btn--secondary btn--lg" href="{gu_url}">{gu_ko} 전체 보기</a>
+      </div>
+    </div>
+    {local_sidebar(f"{dong_ko} 배관 상담", f"{dong_ko} 및 {gu_ko} 인근 지역 상담 가능. 증상·사진을 보내주시면 더 정확합니다.")}
+  </div>
+</section>
+</main>
+"""
+    page(f"{_dir}/{dong_slug(dong_ko)}/index.html",
+         f"{dong_ko} 배관공사·하수구막힘 | 싱크대·변기·배수구 막힘 상담 - 스피드 배관공사",
+         f"{gu_ko} {dong_ko} 배관공사, 하수구막힘, 싱크대막힘, 변기막힘, 욕실 배수구 역류, 배관내시경, 고압세척 상담 안내. {dong_ko} 및 {gu_ko} 인근 지역 확인 가능합니다.",
+         f"{S}/{_dir}/{dong_slug(dong_ko)}/", body,
+         jsonld=breadcrumb_jsonld(crumbs) + faq_jsonld(faq))
+
+_cnt = 0; _dcnt = 0
 for _sido_ko, _gus in OFFICIAL.items():
     _ss = sido_slug_of(_sido_ko)
     for _gu in _gus:
-        if (_ss, _gu) in CUSTOM_GUNGU_URL:
-            continue  # 이미 고유 콘텐츠 페이지 존재
-        sibs = [g for g in _gus if g != _gu]
-        gen_sigungu_page(_sido_ko, _ss, _gu, sibs)
-        _cnt += 1
-print(f"\\n전국 시·군·구 자동 생성: {_cnt}개")
+        if (_ss, _gu) not in CUSTOM_GUNGU_URL:
+            sibs = [g for g in _gus if g != _gu]
+            gen_sigungu_page(_sido_ko, _ss, _gu, sibs)
+            _cnt += 1
+        # 행정동 자동 생성 (이미 상세가 있는 시군구는 제외)
+        if (_ss, _gu) in SKIP_DONG:
+            continue
+        _gu_url = gungu_url(_ss, _gu)
+        _dongs = dongs_of(_ss, _gu)
+        for _dn in _dongs:
+            _sib = [x for x in _dongs if x != _dn]
+            gen_dong_page(_sido_ko, _ss, _gu, _gu_url, _dn, _sib)
+            _dcnt += 1
+# 세종특별자치시: 시군구 없이 행정동을 시도 하위에 직접 생성
+_sejong = DONG_DATA.get("sejong", {}).get("__SEJONG__", [])
+for _dn in _sejong:
+    _sib = [x for x in _sejong if x != _dn]
+    gen_dong_page("세종특별자치시","sejong","세종특별자치시","/area/sejong/", _dn, _sib,
+                  override_dir="area/sejong")
+    _dcnt += 1
+print(f"\\n전국 시·군·구 자동 생성: {_cnt}개 / 행정동 자동 생성: {_dcnt}개")
 
 
 # ===========================================================================
