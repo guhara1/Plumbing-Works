@@ -548,13 +548,21 @@ def sido_page(slug, name, short, intro, districts, district_links, cases_html, p
          jsonld=breadcrumb_jsonld(crumbs))
 
 
+# 시·군·구 상세 페이지 링크 레지스트리 (시도 페이지의 구 카드 → 상세 페이지 연결)
+GUNGU_LINKS = {
+    "seoul":    {"강남구":"/area/seoul/gangnam.html", "서초구":"/area/seoul/seocho.html", "송파구":"/area/seoul/songpa.html"},
+    "gyeonggi": {"성남시":"/area/gyeonggi/seongnam.html", "수원시":"/area/gyeonggi/suwon.html"},
+    "busan":    {"해운대구":"/area/busan/haeundae.html"},
+    "incheon":  {"연수구":"/area/incheon/yeonsu.html"},
+}
+
 # --- 서울 ---
 sido_page(
     "seoul", "서울특별시",
     "강남·중구·영등포 등 업무·상업 밀집 지역이 많은 서울은 야간에도 영업하는 시설이 많아 즉시 대응이 중요합니다. 스피드 배관공사는 서울 전역에 작업팀을 배치해 평균 30분 내 출동을 목표로 운영합니다.",
     "호텔·백화점·대형 상가가 밀집한 서울 도심 특성상 주방 기름때로 인한 하수구막힘과 노후 빌딩의 배관 누수 의뢰가 많습니다. 고압세척과 CCTV 진단을 기본으로 재발까지 관리합니다.",
     ["강남구","서초구","송파구","중구","종로구","영등포구","마포구","용산구","강서구","구로구","성동구","광진구"],
-    {"강남구":"/area/seoul/gangnam.html"},
+    GUNGU_LINKS["seoul"],
     """<article class="case-card" style="max-width:520px;"><div class="ba"><figure class="before"><img src="/assets/img/case1.svg" alt="서울 강남 호텔 주방 하수구 막힘 전" loading="lazy" width="400" height="300"><figcaption>BEFORE</figcaption></figure><figure class="after"><img src="/assets/img/case1-after.svg" alt="서울 강남 호텔 주방 고압세척 후" loading="lazy" width="400" height="300"><figcaption>AFTER</figcaption></figure></div><div class="case-body"><span class="case-tag">강남구 · 호텔</span><h3>강남 호텔 주방 배관 고압세척</h3><p>반복되던 역류를 고압세척으로 근본 해결.</p></div></article>""",
     "서울 전역 24시간 출동. 야간·새벽 긴급 작업 가능.")
 
@@ -564,7 +572,7 @@ sido_page(
     "성남·수원·고양·용인 등 인구와 상권이 빠르게 성장하는 경기도는 대형 쇼핑몰과 신축 상가, 물류시설의 배관 수요가 많습니다. 권역별 작업팀으로 넓은 지역을 빠르게 커버합니다.",
     "신도시 상가의 주방 배관 막힘부터 노후 공장·물류센터의 대형 오수관 고압세척까지 폭넓게 대응합니다. 경기 남부·북부 권역에 작업팀을 분산 배치합니다.",
     ["성남시","수원시","용인시","고양시","부천시","안양시","화성시","남양주시","평택시","의정부시","파주시","김포시"],
-    {},
+    GUNGU_LINKS["gyeonggi"],
     """<article class="case-card" style="max-width:520px;"><div class="ba"><figure class="before"><img src="/assets/img/case2.svg" alt="경기 성남 상가 천장 누수 전" loading="lazy" width="400" height="300"><figcaption>BEFORE</figcaption></figure><figure class="after"><img src="/assets/img/case2-after.svg" alt="경기 성남 상가 누수 보수 후" loading="lazy" width="400" height="300"><figcaption>AFTER</figcaption></figure></div><div class="case-body"><span class="case-tag">성남시 · 상가</span><h3>성남 상가 천장 누수 비파괴 탐지</h3><p>철거 없이 누수 지점을 특정해 복구비 최소화.</p></div></article>""",
     "경기 남부·북부 권역 24시간 출동.")
 
@@ -574,7 +582,7 @@ sido_page(
     "해운대·서면·남포동 등 관광·상업 중심지가 많은 부산은 호텔과 식당가의 배관 관리 수요가 꾸준합니다. 해안가 특성상 노후 배관의 부식·누수 의뢰도 많습니다.",
     "관광 성수기 호텔의 객실 층 배수 긴급 대응과, 오래된 상가 건물의 노후관 교체를 함께 진행합니다. 해운대·중구·부산진구 권역에 작업팀을 배치합니다.",
     ["해운대구","부산진구","중구","동래구","남구","수영구","사하구","북구","금정구","연제구","사상구","기장군"],
-    {},
+    GUNGU_LINKS["busan"],
     """<article class="case-card" style="max-width:520px;"><div class="ba"><figure class="before"><img src="/assets/img/case3.svg" alt="부산 해운대 오피스빌딩 지하 배관 노후 전" loading="lazy" width="400" height="300"><figcaption>BEFORE</figcaption></figure><figure class="after"><img src="/assets/img/case3-after.svg" alt="부산 해운대 오피스빌딩 배관 교체 후" loading="lazy" width="400" height="300"><figcaption>AFTER</figcaption></figure></div><div class="case-body"><span class="case-tag">해운대구 · 빌딩</span><h3>해운대 오피스빌딩 지하 노후관 교체</h3><p>부식 메인 배관을 야간 무중단 교체.</p></div></article>""",
     "부산 전역 24시간 출동. 해안가 노후 배관 전문.")
 
@@ -970,6 +978,115 @@ SIDO_MORE = [
   "제주시·서귀포 권역 24시간 출동."),
 ]
 for slug, name, short, intro, districts, case, note in SIDO_MORE:
-    sido_page(slug, name, short, intro, districts, {}, case, note)
+    sido_page(slug, name, short, intro, districts, GUNGU_LINKS.get(slug, {}), case, note)
 
 print("\\nEXTRA SIDO PAGES BUILT.")
+
+
+# ===========================================================================
+# 시·군·구 상세 페이지 생성기 (각 구/시 고유 콘텐츠)
+# ===========================================================================
+def gungu_page(sido_slug, sido_name, sido_url, slug, gu_name, lead, paras, jobs, dong, case_html, note):
+    crumbs = [("홈","/"),("지역별 서비스","/area/"),(sido_name, sido_url),(gu_name, None)]
+    para_html = "".join(f"<p>{p}</p>" for p in paras)
+    jobs_html = "".join(f"<li>{j}</li>" for j in jobs)
+    tags = "".join(f"<span>{d}</span>" for d in dong)
+    body = f"""{phero(f"{gu_name} 서비스", f"{gu_name} 배관·하수구막힘 24시간 출동", lead, crumbs)}
+<main>
+<section class="section">
+  <div class="container layout-sidebar">
+    <div class="prose">
+      <h2>{gu_name} 상업시설 배관 전문</h2>
+      {para_html}
+
+      <h2>{gu_name}에서 자주 의뢰되는 작업</h2>
+      <ul class="ticks">{jobs_html}</ul>
+
+      <h2>{gu_name} 시공 사례</h2>
+      {case_html}
+
+      <h2>{gu_name} 서비스 가능 지역</h2>
+      <p>아래 동네를 포함한 {gu_name} 전역으로 출동합니다. (동 단위 별도 페이지는 운영하지 않습니다.)</p>
+      <div class="tag-list">{tags}</div>
+    </div>
+    <aside class="sidebar-card">
+      <h3>{gu_name} 상담</h3>
+      <p>{note}</p>
+      <a class="phone-big" href="tel:1577-0000">1577-0000</a>
+      <p style="margin-bottom:18px;">카카오톡 상담 @스피드배관</p>
+      <a class="btn btn--primary btn--block" href="tel:1577-0000">☎ 전화 상담</a>
+      <a class="btn btn--ghost-light btn--block" href="/contact.html" style="margin-top:10px;">무료 견적 신청</a>
+    </aside>
+  </div>
+</section>
+{bottom_cta(h2=f"{gu_name} 어디든, 지금 출동합니다")}
+</main>
+"""
+    title = f"{gu_name} 배관·하수구막힘·누수탐지 24시간 출동 - 스피드 배관공사"
+    desc = (f"{sido_name} {gu_name} 상업시설 배관 전문. {gu_name}의 하수구막힘, 배관공사, 누수탐지, "
+            f"고압세척을 24시간 신속 출동으로 해결합니다. 선견적 후작업, 추가금 없음.")
+    page(f"area/{sido_slug}/{slug}.html", title, desc, f"{S}/area/{sido_slug}/{slug}.html",
+         body, jsonld=breadcrumb_jsonld(crumbs))
+
+
+# --- 서울 서초구 ---
+gungu_page("seoul","서울특별시","/area/seoul/","seocho","서초구",
+    "강남대로·서초동 법조타운과 양재 업무지구, 반포 상권까지 — 서초구 상업시설의 배관 문제를 신속하게 해결합니다.",
+    ["서초구는 법원·검찰청이 위치한 서초동 법조타운과 강남대로 상권, 반포·잠원 주거형 상가가 어우러진 지역입니다. 업무시설과 식당가가 밀집해 <strong>주간 영업 중 무중단 작업</strong> 수요가 많습니다.",
+     "스피드 배관공사는 서초 일대에 작업팀을 배치해 사무빌딩 배관 누수, 식당가 주방 하수구막힘, 상가 고압세척을 한 번에 대응합니다. 선견적 후작업으로 비용을 먼저 확인하고 진행합니다."],
+    ["서초동 법조타운 오피스빌딩 배관 누수탐지","강남대로·교대 식당가 주방 배관 고압세척","반포·잠원 상가 하수구막힘 긴급 대응","양재 업무지구 노후관 교체"],
+    ["서초동","반포동","잠원동","방배동","양재동","우면동","내곡동","서초4동"],
+    _case("서초구 · 오피스","서초동 빌딩 배관 누수탐지","벽 철거 없이 누수 지점을 특정해 복구비 절감.","case2.svg","case2-after.svg","서울 서초구 빌딩 누수 전","서울 서초구 빌딩 누수 보수 후"),
+    "서초 전역 24시간 출동. 주간 무중단 작업 가능.")
+
+# --- 서울 송파구 ---
+gungu_page("seoul","서울특별시","/area/seoul/","songpa","송파구",
+    "잠실 롯데월드타워 상권과 가락시장, 문정 법조·업무단지까지 — 송파구 대형 상업시설의 배관을 책임집니다.",
+    ["송파구는 잠실 일대 대형 쇼핑몰·호텔과 가락농수산물시장, 문정 법조단지가 모여 있어 <strong>대형 배관과 대량 배수</strong> 관리가 중요한 지역입니다. 시장·식당가의 기름때 누적 막힘도 잦습니다.",
+     "스피드 배관공사는 송파 일대 대형 시설의 오수관 고압세척과 CCTV 진단, 상가 하수구막힘을 함께 대응합니다. 정기 관리 계약으로 막힘 빈도를 크게 줄입니다."],
+    ["잠실 쇼핑몰·호텔 주방 배관 고압세척","가락시장 상가 대량 배수관 관리","문정 업무단지 빌딩 배관 누수·교체","대형 오수관 CCTV 정기 진단"],
+    ["잠실동","신천동","가락동","문정동","장지동","방이동","오금동","거여동","마천동","풍납동"],
+    _case("송파구 · 시장상가","가락시장 상가 오수관 고압세척","대량 배수 슬러지를 제거해 배수 정상화.","case1.svg","case1-after.svg","서울 송파구 시장 오수관 전","서울 송파구 시장 오수관 세척 후"),
+    "송파 전역 24시간 출동. 대형 배관 전문.")
+
+# --- 경기 성남시 ---
+gungu_page("gyeonggi","경기도","/area/gyeonggi/","seongnam","성남시",
+    "판교 테크노밸리와 분당 상권, 원도심 식당가까지 — 성남시 상업시설의 배관을 신속하게 관리합니다.",
+    ["성남시는 판교 IT·업무단지와 분당 신도시 상권, 수정·중원 원도심이 어우러진 지역입니다. 신축 오피스의 배관 점검과 원도심 노후 상가의 배관 교체 수요가 함께 있습니다.",
+     "스피드 배관공사는 판교·분당·원도심 권역에 작업팀을 배치해 빌딩 누수탐지, 식당 주방 고압세척, 상가 하수구막힘을 한 번에 대응합니다. 세금계산서 발행과 정기 관리 계약을 지원합니다."],
+    ["판교 오피스빌딩 배관 누수탐지·교체","분당 상권 식당 주방 배관 고압세척","수정·중원 원도심 노후관 교체","상가 리모델링 배관 재배치"],
+    ["분당구","수정구","중원구","판교동","정자동","서현동","야탑동","태평동","신흥동"],
+    _case("성남시 · 상가","분당 상가 천장 누수 비파괴 탐지","철거 없이 누수 지점을 특정해 복구비 최소화.","case2.svg","case2-after.svg","경기 성남 상가 누수 전","경기 성남 상가 누수 보수 후"),
+    "성남 판교·분당·원도심 24시간 출동.")
+
+# --- 경기 수원시 ---
+gungu_page("gyeonggi","경기도","/area/gyeonggi/","suwon","수원시",
+    "영통·광교 신도시 상권과 인계동 번화가, 수원역 상권까지 — 수원시 상업시설의 배관 문제를 해결합니다.",
+    ["수원시는 광교·영통 신도시 상권과 인계동 먹자골목, 수원역 대형 상권을 갖춘 경기 최대 도시입니다. 식당가가 발달해 <strong>기름때 하수구막힘</strong> 의뢰가 특히 많습니다.",
+     "스피드 배관공사는 수원 전역에 작업팀을 배치해 식당 주방 배관 고압세척, 상가 막힘 긴급 대응, 빌딩 누수탐지를 함께 진행합니다. 선견적 후작업으로 신뢰를 드립니다."],
+    ["인계동·수원역 식당가 주방 배관 고압세척","광교·영통 상가 하수구막힘 긴급 대응","번화가 빌딩 배관 누수탐지","상가 정기 관리 계약 운영"],
+    ["장안구","권선구","팔달구","영통구","인계동","매탄동","영통동","우만동","정자동"],
+    _case("수원시 · 식당가","인계동 식당 주방 배관 고압세척","반복되던 기름때 막힘을 근본 해소.","case1.svg","case1-after.svg","경기 수원 식당 배관 전","경기 수원 식당 배관 세척 후"),
+    "수원 전역 24시간 출동. 식당가 배관 전문.")
+
+# --- 부산 해운대구 ---
+gungu_page("busan","부산광역시","/area/busan/","haeundae","해운대구",
+    "해운대 해변 호텔·리조트와 센텀시티 업무단지, 마린시티 상권까지 — 해운대구 상업시설의 배관을 책임집니다.",
+    ["해운대구는 해변 특급호텔·리조트와 센텀시티 오피스, 마린시티 고층 상가가 밀집한 부산 최대 관광·업무 지역입니다. <strong>관광 성수기 객실 배수 긴급 대응</strong> 수요가 특히 높습니다.",
+     "스피드 배관공사는 해운대 일대에 작업팀을 배치해 호텔 객실 층 하수구막힘, 고층 빌딩 누수탐지, 식당가 주방 고압세척을 한 번에 대응합니다. 해안가 노후 배관의 부식·누수도 점검합니다."],
+    ["해변 호텔·리조트 객실 배수 긴급 대응","센텀시티 오피스 배관 누수탐지","마린시티 고층 상가 배관 관리","해안가 노후관 부식·누수 점검"],
+    ["우동","중동","좌동","송정동","재송동","반여동","반송동","센텀","마린시티"],
+    _case("해운대구 · 호텔","해운대 호텔 객실 배수 긴급 대응","성수기 야간 막힘을 신속 출동으로 해결.","case3.svg","case3-after.svg","부산 해운대 호텔 배수 전","부산 해운대 호텔 배수 복구 후"),
+    "해운대 전역 24시간 출동. 호텔·리조트 전문.")
+
+# --- 인천 연수구 ---
+gungu_page("incheon","인천광역시","/area/incheon/","yeonsu","연수구",
+    "송도국제도시 업무·상업단지와 컨벤시아 일대, 연수 원도심까지 — 연수구 상업시설의 배관을 신속 관리합니다.",
+    ["연수구는 송도국제도시의 글로벌 업무시설·호텔·컨벤션과 연수 원도심 상권이 공존하는 지역입니다. 신축 고층 빌딩의 배관 점검과 매립지 특성상 <strong>역구배·침하 진단</strong> 수요가 많습니다.",
+     "스피드 배관공사는 송도·연수 권역에 작업팀을 배치해 빌딩 누수탐지, 상가 주방 고압세척, 배관 CCTV 진단을 함께 진행합니다. 선견적 후작업으로 비용을 먼저 확인합니다."],
+    ["송도 오피스·호텔 배관 누수탐지","컨벤시아 일대 상가 주방 고압세척","매립지 배관 역구배·침하 CCTV 진단","연수 원도심 노후관 교체"],
+    ["송도동","연수동","청학동","동춘동","옥련동","선학동","개발동"],
+    _case("연수구 · 상가","송도 상가 배관 CCTV 진단","반복 막힘 원인을 영상으로 특정해 보수.","case2.svg","case2-after.svg","인천 연수구 상가 진단 전","인천 연수구 상가 보수 후"),
+    "송도·연수 권역 24시간 출동.")
+
+print("\\nGUNGU DETAIL PAGES BUILT.")
