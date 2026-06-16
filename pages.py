@@ -143,8 +143,11 @@ def faq_html(items, intro=True):
 HERO = """<section class="hero hero--banner">
   <h1 class="visually-hidden">전국 누수탐지·배관·하수구막힘 빠르게 해결 — 스피드 배관공사 24시간 긴급출동</h1>
   <figure class="hero-banner">
-    <img src="/assets/img/hero.png" alt="전국 어디든 빠르고 정확하게 — 누수탐지·배관·하수구막힘 24시간 긴급출동. 전문 장비 보유, 신속한 현장 도착, 정확한 진단과 해결, 책임 시공·사후 관리."
-         width="1672" height="941" loading="eager" fetchpriority="high">
+    <picture>
+      <source srcset="/assets/img/hero.webp" type="image/webp">
+      <img src="/assets/img/hero.jpg" alt="전국 어디든 빠르고 정확하게 — 누수탐지·배관·하수구막힘 24시간 긴급출동. 전문 장비 보유, 신속한 현장 도착, 정확한 진단과 해결, 책임 시공·사후 관리."
+           width="1672" height="941" loading="eager" fetchpriority="high">
+    </picture>
   </figure>
   <div class="container hero-banner-bar">
     <div class="hero-banner-cta">
