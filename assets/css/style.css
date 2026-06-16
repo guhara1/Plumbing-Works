@@ -765,3 +765,48 @@ h1,h2,h3,h4{letter-spacing:-0.035em;}
 
 /* ---- 선택 색 ---- */
 ::selection{background:rgba(201,162,75,.28);color:var(--navy);}
+
+/* =========================================================================
+   ✦ v2.1 — 시인성/가독성 보정 (흰 카드가 배경에 묻히는 문제 해결)
+   ========================================================================= */
+:root{ --slate-2:#41526B; }
+
+/* 1) 베이스 배경을 옅은 블루그레이로 → 흰 카드가 또렷하게 분리 */
+body{ background:#E7ECF5; }
+.section--off{ background:linear-gradient(180deg,#D9E2F0 0%,#E2E9F4 100%); }
+
+/* 2) 카드 정의 강화: 또렷한 테두리 + 입체 그림자 */
+.trust-card,.service-card,.case-card,.review-card,.channel-card,.step,
+.link-card,.faq-item,.price-table-wrap,.sidebar-card,.anchor-nav{
+  border:1px solid #C6D2E6;
+  box-shadow:0 12px 28px rgba(11,37,69,.13), 0 2px 6px rgba(11,37,69,.08);
+}
+.trust-card,.service-card,.case-card,.review-card,.channel-card,.step,.link-card{background:#fff;position:relative;}
+
+/* 3) 카드 본문 텍스트 가독성 ↑ (옅은 회색 → 진한 슬레이트) */
+.trust-card p,.service-card p,.case-card .case-body p,.channel-card p,
+.step p,.link-card p,.review-meta .where{ color:var(--slate-2); }
+.lead{ color:#46566E; }
+.section--navy .lead,.hero-sub,.page-hero p,.sidebar-card p{ color:#BFD0E8; }
+
+/* 4) 카드 상단 골드 액센트 바(호버 시 점등) — 프리미엄 포인트 */
+.service-card::before,.trust-card::before,.channel-card::before{
+  content:"";position:absolute;left:0;right:0;top:0;height:3px;border-radius:18px 18px 0 0;
+  background:var(--gold-grad);opacity:0;transition:opacity .3s var(--ease);
+}
+.service-card:hover::before,.trust-card:hover::before,.channel-card:hover::before{opacity:1;}
+
+/* 5) 아이브로 가독성: 밝은 배경엔 더 깊은 골드 / 어두운 배경엔 밝은 골드 */
+.eyebrow{ color:#946C1F; }
+.hero .eyebrow,.page-hero .eyebrow,.section--navy .eyebrow,.cta-banner .eyebrow{ color:var(--brass-light); }
+
+/* 6) 신뢰 카드 아이콘 타일 대비 강화 */
+.trust-card .ico-wrap{ background:linear-gradient(160deg,#FBEFD2,#F2DFAE); }
+.trust-card .ico-wrap svg{ color:#8A6A22; }
+
+/* 7) 섹션 제목/소제목 또렷하게 */
+.section-head h2{ color:#0A1F3D; }
+.prose h2{ color:#0A1F3D; }
+
+/* 8) 지역/태그 pill 가독성(밝은 배경) */
+.region-grid a,.tag-list a,.tag-list span,.adjacent-links a,.chips span{ border-color:#C6D2E6; }
