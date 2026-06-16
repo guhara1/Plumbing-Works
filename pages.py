@@ -1919,7 +1919,8 @@ def gen_dong_page(sido_ko, sido_slug, gu_ko, gu_url, dong_ko, siblings, override
          f"{dong_ko} 배관공사·하수구막힘 | 싱크대·변기·배수구 막힘 상담 - 스피드 배관공사",
          f"{gu_ko} {dong_ko} 배관공사, 하수구막힘, 싱크대막힘, 변기막힘, 욕실 배수구 역류, 배관내시경, 고압세척 상담 안내. {dong_ko} 및 {gu_ko} 인근 지역 확인 가능합니다.",
          f"{S}/{_dir}/{dong_slug(dong_ko)}/", body,
-         jsonld=breadcrumb_jsonld(crumbs) + faq_jsonld(faq))
+         jsonld=breadcrumb_jsonld(crumbs) + faq_jsonld(faq),
+         noindex=True)  # 템플릿 대량 생성 → 색인 제외(도어웨이 방지), 내부링크는 유지
 
 _cnt = 0; _dcnt = 0
 for _sido_ko, _gus in OFFICIAL.items():

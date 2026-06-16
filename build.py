@@ -14,7 +14,7 @@ SITE = "https://speed-plumbing.co.kr"
 # ---------------------------------------------------------------------------
 # 공통 조각
 # ---------------------------------------------------------------------------
-def head(title, desc, canonical, jsonld="", og_title=None, og_desc=None):
+def head(title, desc, canonical, jsonld="", og_title=None, og_desc=None, robots="index, follow"):
     og_title = og_title or title
     og_desc = og_desc or desc
     blocks = ""
@@ -28,7 +28,8 @@ def head(title, desc, canonical, jsonld="", og_title=None, og_desc=None):
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <link rel="canonical" href="{canonical}">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="{robots}">
+<meta name="googlebot" content="{robots}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="스피드 배관공사">
 <meta property="og:title" content="{og_title}">
@@ -191,13 +192,13 @@ MOBILE_BAR = """<nav class="mobile-bar" aria-label="빠른 연락">
 SCRIPTS = '<script src="/assets/js/main.js" defer></script>\n</body>\n</html>\n'
 
 
-def page(path, title, desc, canonical, body, jsonld="", og_title=None, og_desc=None):
-    html = head(title, desc, canonical, jsonld, og_title, og_desc) + HEADER + body + FOOTER + MOBILE_BAR + SCRIPTS
+def page(path, title, desc, canonical, body, jsonld="", og_title=None, og_desc=None, noindex=False):
+    robots = "noindex, follow" if noindex else "index, follow"
+    html = head(title, desc, canonical, jsonld, og_title, og_desc, robots) + HEADER + body + FOOTER + MOBILE_BAR + SCRIPTS
     full = os.path.join(ROOT, path)
     os.makedirs(os.path.dirname(full), exist_ok=True)
     with open(full, "w", encoding="utf-8") as f:
         f.write(html)
-    print("wrote", path)
 
 
 def page_hero(eyebrow, h1, sub, crumbs):
