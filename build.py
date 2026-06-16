@@ -47,8 +47,9 @@ def head(title, desc, canonical, jsonld="", og_title=None, og_desc=None, robots=
 <meta name="twitter:title" content="{og_title}">
 <meta name="twitter:description" content="{og_desc}">
 <meta name="twitter:image" content="{SITE}/assets/logo/symbol.png">
-<!-- 네이버 서치어드바이저 소유확인: 확정 후 메타태그 삽입 -->
-<!-- <meta name="naver-site-verification" content="여기에_인증코드"> -->
+<!-- 네이버 서치어드바이저 소유확인 -->
+<meta name="naver-site-verification" content="09f062b8a8c3fe223821c04d584c87380a962d64" />
+<!-- 구글 서치콘솔 소유확인: 코드 확정 시 삽입 -->
 <!-- <meta name="google-site-verification" content="여기에_인증코드"> -->
 <link rel="icon" type="image/png" href="/assets/logo/symbol.png">
 <link rel="apple-touch-icon" href="/assets/logo/symbol.png">
