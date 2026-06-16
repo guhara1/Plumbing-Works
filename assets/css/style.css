@@ -810,3 +810,25 @@ body{ background:#E7ECF5; }
 
 /* 8) 지역/태그 pill 가독성(밝은 배경) */
 .region-grid a,.tag-list a,.tag-list span,.adjacent-links a,.chips span{ border-color:#C6D2E6; }
+
+/* =========================================================================
+   ✦ 푸터 광고문의 CTA (골드 컬러 + 텔레그램)
+   ========================================================================= */
+.footer-adbar{
+  margin:8px 0 4px;padding:18px 22px;border-radius:16px;
+  background:linear-gradient(135deg, rgba(201,162,75,.16), rgba(42,125,225,.10));
+  border:1px solid rgba(201,162,75,.38);
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;
+}
+.footer-adbar-txt{color:#E8EEF7;font-size:14.5px;font-weight:600;}
+.footer-adbar-txt strong{color:var(--brass-light);font-weight:800;}
+.footer-ad-btn{
+  display:inline-flex;align-items:center;gap:8px;white-space:nowrap;
+  padding:12px 22px;border-radius:999px;font-weight:800;font-size:15px;
+  color:#1A1206;background:var(--gold-grad);
+  box-shadow:0 8px 22px rgba(201,162,75,.4), inset 0 1px 0 rgba(255,255,255,.45);
+  transition:transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.footer-ad-btn::before{content:"✈";font-size:15px;}
+.footer-ad-btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(201,162,75,.52);text-decoration:none;color:#1A1206;}
+@media (max-width:560px){ .footer-adbar{flex-direction:column;align-items:flex-start;} .footer-ad-btn{width:100%;justify-content:center;} }
