@@ -491,6 +491,48 @@ table.price-table{width:100%;border-collapse:collapse;min-width:520px;}
 /* 지역 CTA 버튼 묶음 */
 .local-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px;}
 
+/* =========================================================
+   신뢰 리본 + 네이버 채널 연동
+   ========================================================= */
+.trust-ribbon{background:var(--navy);color:#fff;}
+.trust-ribbon .container{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 30px;padding-block:16px;}
+.trust-ribbon .item{display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:700;color:#E6EEF9;}
+.trust-ribbon .item svg{width:20px;height:20px;color:var(--brass-light);flex:0 0 auto;}
+
+.naver-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.channel-card{
+  display:flex;flex-direction:column;gap:10px;
+  background:#fff;border:1px solid var(--line);border-radius:var(--r-card);
+  padding:24px 22px;box-shadow:var(--shadow);
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;color:var(--navy);
+}
+.channel-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:#03C75A;text-decoration:none;}
+.channel-card .ch-ico{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:20px;}
+.channel-card .ch-ico.naver{background:#03C75A;}
+.channel-card .ch-ico.blog{background:#03C75A;}
+.channel-card .ch-ico.talk{background:#03C75A;}
+.channel-card .ch-ico.kakao{background:#FAE100;color:#3C1E1E;}
+.channel-card h3{margin:6px 0 0;font-size:17px;}
+.channel-card p{margin:0;font-size:14px;color:var(--slate);}
+.channel-card .more{margin-top:auto;font-weight:700;font-size:14px;color:#03C75A;}
+.channel-card.is-kakao .more{color:#7a5a00;}
+
+/* 푸터 공식 채널 */
+.footer-channels{padding:22px 0;border-top:1px solid rgba(255,255,255,.1);display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;}
+.footer-channels h4{color:#C7D6EC;font-size:13px;margin:0 12px 0 0;font-weight:800;}
+.footer-channels a{
+  display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:#C7D6EC;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:var(--r-pill);padding:8px 14px;
+}
+.footer-channels a:hover{background:#03C75A;border-color:#03C75A;color:#fff;}
+.footer-channels a.kakao:hover{background:#FAE100;border-color:#FAE100;color:#3C1E1E;}
+.footer-channels .nv{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:4px;background:#03C75A;color:#fff;font-weight:900;font-size:11px;}
+.footer-channels a.kakao .nv{background:#FAE100;color:#3C1E1E;}
+
+@media (max-width:640px){
+  .naver-grid{grid-template-columns:1fr;}
+}
+
 /* contact form */
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
 .field{display:flex;flex-direction:column;gap:7px;}

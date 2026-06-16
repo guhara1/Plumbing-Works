@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """모든 페이지 콘텐츠 정의 후 빌드. 사용: python3 pages.py"""
-from build import (page, SITE, breadcrumb_jsonld, SIDEBAR, bottom_cta)
+from build import (page, SITE, breadcrumb_jsonld, SIDEBAR, bottom_cta,
+                   NAVER_PLACE, NAVER_BLOG, NAVER_TALK, KAKAO_CH)
 import json as _json, os as _os
 
 S = SITE
@@ -100,10 +101,11 @@ HOME_JSONLD = """<script type="application/ld+json">
   "openingHoursSpecification": {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"00:00","closes":"23:59"},
   "areaServed": {"@type":"Country","name":"대한민국"},
   "address": {"@type":"PostalAddress","addressCountry":"KR","addressRegion":"서울특별시"},
-  "aggregateRating": {"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"327"}
+  "aggregateRating": {"@type":"AggregateRating","ratingValue":"4.9","reviewCount":"327"},
+  "sameAs": ["%(place)s","%(blog)s","%(talk)s","%(kakao)s"]
 }
 </script>
-""" % {"s": S}
+""" % {"s": S, "place": NAVER_PLACE, "blog": NAVER_BLOG, "talk": NAVER_TALK, "kakao": KAKAO_CH}
 
 FAQ_ITEMS = [
     ("상업시설 출동은 정말 24시간 가능한가요?",
@@ -289,8 +291,48 @@ HOME_FAQ = f"""<section class="section" aria-labelledby="faq-h">
 </section>
 """
 
-HOME_BODY = ("<main>\n" + HERO + TRUST + SERVICE_GRID + AREA_BLOCK + STEPS +
-             PRICE_PREVIEW + case_grid() + REVIEWS + HOME_FAQ + bottom_cta() + "</main>\n")
+_CHK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'
+TRUST_RIBBON = f"""<section class="trust-ribbon" aria-label="신뢰 요소">
+  <div class="container">
+    <span class="item">{_CHK}24시간 연중무휴 출동</span>
+    <span class="item">{_CHK}선견적 후작업 · 추가금 없음</span>
+    <span class="item">{_CHK}세금계산서·현금영수증 발행</span>
+    <span class="item">{_CHK}작업 후 A/S 보증</span>
+    <span class="item">{_CHK}누적 4.9★ · 327건 후기</span>
+  </div>
+</section>
+"""
+
+NAVER_SECTION = f"""<section class="section" aria-labelledby="naver-h">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">Naver Channel</span>
+      <h2 id="naver-h">네이버에서 스피드 배관공사 만나기</h2>
+      <p class="lead">실시간 방문자 후기와 시공 사례, 빠른 상담을 네이버에서 확인하세요. 검색으로도 ‘스피드 배관공사’를 찾을 수 있습니다.</p>
+    </div>
+    <div class="naver-grid">
+      <a class="channel-card" href="{NAVER_PLACE}" target="_blank" rel="noopener">
+        <div class="ch-ico naver">N</div><h3>네이버 플레이스</h3>
+        <p>방문자 리뷰·별점과 찾아오는 길, 영업정보를 확인하세요.</p>
+        <span class="more">플레이스 보기 →</span>
+      </a>
+      <a class="channel-card" href="{NAVER_BLOG}" target="_blank" rel="noopener">
+        <div class="ch-ico blog">B</div><h3>네이버 블로그</h3>
+        <p>실제 시공 과정과 Before/After 사진을 블로그에서 확인하세요.</p>
+        <span class="more">블로그 보기 →</span>
+      </a>
+      <a class="channel-card" href="{NAVER_TALK}" target="_blank" rel="noopener">
+        <div class="ch-ico talk">T</div><h3>네이버 톡톡</h3>
+        <p>네이버에서 바로 사진 상담과 예약 문의를 남기세요.</p>
+        <span class="more">톡톡 상담 →</span>
+      </a>
+    </div>
+  </div>
+</section>
+"""
+
+HOME_BODY = ("<main>\n" + HERO + TRUST_RIBBON + TRUST + SERVICE_GRID + AREA_BLOCK + STEPS +
+             PRICE_PREVIEW + case_grid() + REVIEWS + NAVER_SECTION + HOME_FAQ + bottom_cta() + "</main>\n")
 
 page("index.html",
      "스피드 배관공사 | 호텔·상가·빌딩 상업시설 전문 배관 · 24시간 출동",

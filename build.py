@@ -11,6 +11,12 @@ import os
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = "https://speed-plumbing.co.kr"
 
+# 공식 채널 URL (확정 후 실제 주소로 교체) — 자리표시값
+NAVER_PLACE = "https://map.naver.com/"      # TODO: 네이버 플레이스(스마트플레이스) 실제 URL
+NAVER_BLOG  = "https://blog.naver.com/"      # TODO: 네이버 블로그 실제 URL
+NAVER_TALK  = "https://talk.naver.com/"      # TODO: 네이버 톡톡 상담 실제 URL
+KAKAO_CH    = "https://pf.kakao.com/"        # TODO: 카카오톡 채널 실제 URL
+
 # ---------------------------------------------------------------------------
 # 공통 조각
 # ---------------------------------------------------------------------------
@@ -169,6 +175,14 @@ FOOTER = """<footer class="site-footer">
         <a href="/area/jeju/">제주특별자치도</a>
       </nav>
     </div>
+    <nav class="footer-channels" aria-label="공식 채널">
+      <h4>공식 채널</h4>
+      <a href="%(place)s" target="_blank" rel="noopener"><span class="nv">N</span>네이버 플레이스</a>
+      <a href="%(blog)s" target="_blank" rel="noopener"><span class="nv">N</span>네이버 블로그</a>
+      <a href="%(talk)s" target="_blank" rel="noopener"><span class="nv">N</span>네이버 톡톡</a>
+      <a class="kakao" href="%(kakao)s" target="_blank" rel="noopener"><span class="nv">K</span>카카오톡 채널</a>
+    </nav>
+
     <div class="footer-biz">
       <div><strong>스피드 배관공사</strong> (SPEED PLUMBING)</div>
       <div>대표: (미정) · 사업자등록번호: 000-00-00000</div>
@@ -181,6 +195,7 @@ FOOTER = """<footer class="site-footer">
   </div>
 </footer>
 """
+FOOTER = FOOTER % {"place": NAVER_PLACE, "blog": NAVER_BLOG, "talk": NAVER_TALK, "kakao": KAKAO_CH}
 
 MOBILE_BAR = """<nav class="mobile-bar" aria-label="빠른 연락">
   <a href="tel:0000-0000"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.68 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.32 1.85.55 2.81.68A2 2 0 0 1 22 16.92z"/></svg>전화</a>
