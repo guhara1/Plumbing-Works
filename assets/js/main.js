@@ -64,4 +64,23 @@
       form.reset();
     });
   }
+
+  /* ---------- 7. 스크롤 등장 애니메이션 (프리미엄 스킨) ---------- */
+  // JS·IntersectionObserver 지원 시에만 숨겼다가 등장. 미지원 시 항상 보임(SEO/접근성 안전).
+  if ("IntersectionObserver" in window &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var sel = ".section-head, .trust-card, .service-card, .case-card, .review-card," +
+              ".channel-card, .step, .faq-item, .link-card, .price-table-wrap, .cta-banner, .sidebar-card";
+    var items = [].slice.call(document.querySelectorAll(sel));
+    var io = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("in"); obs.unobserve(en.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    items.forEach(function (el, i) {
+      el.classList.add("reveal");
+      el.style.transitionDelay = (Math.min(i % 4, 3) * 60) + "ms";
+      io.observe(el);
+    });
+  }
 })();
