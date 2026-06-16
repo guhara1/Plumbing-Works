@@ -937,3 +937,21 @@ body{ background:#E7ECF5; }
 /* 히어로 이미지 stacking 보정: 업로드된 이미지가 라벨/플레이스홀더를 덮도록 */
 .hero-photo-frame::after{z-index:0;}
 .hero-photo{z-index:2;}
+
+/* =========================================================================
+   ✦ 히어로 — 전체 폭 배너(완성형 이미지) 버전
+   ========================================================================= */
+.hero--banner{padding:0;overflow:hidden;background:linear-gradient(180deg,#0A1E3C,#070F1F);}
+.hero--banner::before,.hero--banner::after{display:none !important;}
+.hero-banner{margin:0;display:block;background:#0A1E3C;}
+.hero-banner img{display:block;width:100%;height:auto;max-height:88vh;object-fit:cover;}
+.hero-banner-bar{
+  display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;
+  padding-block:18px 22px;
+}
+.hero-banner-cta{display:flex;flex-wrap:wrap;gap:14px;}
+.hero-banner-trust{margin:0;color:#BFD0E8;font-weight:700;font-size:14px;margin-left:auto;}
+@media (max-width:720px){
+  .hero-banner-trust{width:100%;margin:2px 0 0;font-size:13px;}
+  .hero-banner-cta .btn{flex:1 1 auto;justify-content:center;}
+}
