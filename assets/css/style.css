@@ -472,7 +472,24 @@ table.price-table{width:100%;border-collapse:collapse;min-width:520px;}
 
 /* tag list (서비스 가능 동네) */
 .tag-list{display:flex;flex-wrap:wrap;gap:8px;}
-.tag-list span{background:#fff;border:1px solid var(--line);border-radius:var(--r-pill);padding:7px 14px;font-size:14px;color:var(--navy);}
+.tag-list span,.tag-list a{background:#fff;border:1px solid var(--line);border-radius:var(--r-pill);padding:7px 14px;font-size:14px;color:var(--navy);display:inline-block;}
+.tag-list a:hover{background:var(--navy);color:#fff;border-color:var(--navy);text-decoration:none;}
+
+/* 페이지 내부 앵커 메뉴 */
+.anchor-nav{background:var(--off);border:1px solid var(--line);border-radius:var(--r-card);padding:18px 20px;margin-bottom:30px;}
+.anchor-nav h2{font-size:14px;color:var(--slate);margin:0 0 12px;letter-spacing:-0.01em;font-weight:800;}
+.anchor-nav ul{display:flex;flex-wrap:wrap;gap:8px 10px;}
+.anchor-nav a{display:inline-flex;align-items:center;font-size:14px;font-weight:600;color:var(--steel-dark);background:#fff;border:1px solid var(--line);border-radius:var(--r-pill);padding:7px 14px;}
+.anchor-nav a:hover{background:var(--navy);color:#fff;border-color:var(--navy);text-decoration:none;}
+.prose h2[id]{scroll-margin-top:90px;}
+
+/* 인접 지역 링크 */
+.adjacent-links{display:flex;flex-wrap:wrap;gap:10px;}
+.adjacent-links a{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 16px;font-size:14px;font-weight:700;color:var(--navy);}
+.adjacent-links a:hover{background:var(--navy);color:#fff;border-color:var(--navy);text-decoration:none;}
+
+/* 지역 CTA 버튼 묶음 */
+.local-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px;}
 
 /* contact form */
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}

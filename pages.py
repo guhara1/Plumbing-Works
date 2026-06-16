@@ -18,7 +18,7 @@ HOME_JSONLD = """<script type="application/ld+json">
   "image": "%(s)s/assets/logo/symbol.png",
   "logo": "%(s)s/assets/logo/logo-horizontal-dark.png",
   "url": "%(s)s/",
-  "telephone": "+82-1577-0000",
+  "telephone": "+82-0000-0000",
   "priceRange": "\\u20a9\\u20a9",
   "openingHoursSpecification": {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"00:00","closes":"23:59"},
   "areaServed": {"@type":"Country","name":"대한민국"},
@@ -67,10 +67,10 @@ HERO = """<section class="hero">
     <h1>호텔·상가·빌딩 배관,<br><span class="accent">멈추지 않는 신속함.</span></h1>
     <p class="hero-sub">하수구막힘·배관공사·누수탐지·고압세척 — 영업 손실을 만들지 않는 24시간 상업시설 전문 출동. 선견적 후작업으로 추가금 걱정 없이 신뢰할 수 있습니다.</p>
     <div class="hero-cta">
-      <a class="btn btn--primary btn--lg" href="tel:1577-0000">
+      <a class="btn btn--primary btn--lg" href="tel:0000-0000">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.68 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.32 1.85.55 2.81.68A2 2 0 0 1 22 16.92z"/></svg>
-        지금 전화 1577-0000</a>
-      <a class="btn btn--ghost-light btn--lg" href="/contact.html">무료 견적 받기</a>
+        지금 전화 0000-0000</a>
+      <a class="btn btn--ghost-light btn--lg" href="https://t.me/googleseolab" target="_blank" rel="noopener">무료 견적 받기</a>
     </div>
     <div class="hero-trust">
       <span class="badge badge--light">⏱ 평균 30분 내 출동</span>
@@ -532,10 +532,10 @@ def sido_page(slug, name, short, intro, districts, district_links, cases_html, p
     <aside class="sidebar-card">
       <h3>{name} 상담</h3>
       <p>{phone_note}</p>
-      <a class="phone-big" href="tel:1577-0000">1577-0000</a>
+      <a class="phone-big" href="tel:0000-0000">0000-0000</a>
       <p style="margin-bottom:18px;">카카오톡 상담 @스피드배관</p>
-      <a class="btn btn--primary btn--block" href="tel:1577-0000">☎ 전화 상담</a>
-      <a class="btn btn--ghost-light btn--block" href="/contact.html" style="margin-top:10px;">무료 견적 신청</a>
+      <a class="btn btn--primary btn--block" href="tel:0000-0000">☎ 전화 상담</a>
+      <a class="btn btn--ghost-light btn--block" href="https://t.me/googleseolab" target="_blank" rel="noopener" style="margin-top:10px;">무료 견적 신청</a>
     </aside>
   </div>
 </section>
@@ -550,7 +550,7 @@ def sido_page(slug, name, short, intro, districts, district_links, cases_html, p
 
 # 시·군·구 상세 페이지 링크 레지스트리 (시도 페이지의 구 카드 → 상세 페이지 연결)
 GUNGU_LINKS = {
-    "seoul":    {"강남구":"/area/seoul/gangnam.html", "서초구":"/area/seoul/seocho.html", "송파구":"/area/seoul/songpa.html"},
+    "seoul":    {"강남구":"/area/seoul/gangnam-gu/", "서초구":"/area/seoul/seocho.html", "송파구":"/area/seoul/songpa.html"},
     "gyeonggi": {"성남시":"/area/gyeonggi/seongnam.html", "수원시":"/area/gyeonggi/suwon.html"},
     "busan":    {"해운대구":"/area/busan/haeundae.html"},
     "incheon":  {"연수구":"/area/incheon/yeonsu.html"},
@@ -587,53 +587,7 @@ sido_page(
     "부산 전역 24시간 출동. 해안가 노후 배관 전문.")
 
 
-# --- 시군구 샘플: 서울 강남구 ---
-def gangnam():
-    crumbs = [("홈","/"),("지역별 서비스","/area/"),("서울특별시","/area/seoul/"),("강남구", None)]
-    dong = ["역삼동","삼성동","대치동","논현동","청담동","압구정동","신사동","도곡동","개포동","일원동","수서동","세곡동"]
-    tags = "".join(f"<span>{d}</span>" for d in dong)
-    body = f"""{phero("강남구 서비스", "강남구 배관·하수구막힘 24시간 출동", "테헤란로 오피스빌딩과 청담·압구정 상권, 강남 일대 호텔까지 — 강남구 상업시설의 배관 문제를 즉시 해결합니다.", crumbs)}
-<main>
-<section class="section">
-  <div class="container layout-sidebar">
-    <div class="prose">
-      <h2>강남구 상업시설 배관 전문</h2>
-      <p>강남구는 테헤란로를 중심으로 오피스빌딩이 밀집하고, 청담·압구정·역삼 일대에 고급 상가와 식당, 호텔이 모여 있습니다. 영업 시간이 길고 야간 운영 시설이 많아 <strong>즉시 출동과 무중단 작업</strong>이 특히 중요한 지역입니다.</p>
-      <p>스피드 배관공사는 강남 일대에 작업팀을 상시 배치해 주방 기름때 하수구막힘, 빌딩 노후관 누수, 정기 고압세척까지 한 번에 대응합니다. 선견적 후작업으로 비용을 먼저 확인하고 진행합니다.</p>
-
-      <h2>강남구에서 자주 의뢰되는 작업</h2>
-      <ul class="ticks">
-        <li>테헤란로 오피스빌딩 지하 배관 누수탐지·교체</li>
-        <li>청담·압구정 레스토랑 주방 배관 고압세척</li>
-        <li>역삼·삼성동 호텔 객실 층 하수구막힘 긴급 대응</li>
-        <li>상가 리모델링에 따른 배관 재배치</li>
-      </ul>
-
-      <h2>강남구 시공 사례</h2>
-      <article class="case-card" style="max-width:520px;"><div class="ba"><figure class="before"><img src="/assets/img/case1.svg" alt="강남구 호텔 주방 하수구 막힘 전" loading="lazy" width="400" height="300"><figcaption>BEFORE</figcaption></figure><figure class="after"><img src="/assets/img/case1-after.svg" alt="강남구 호텔 주방 고압세척 후" loading="lazy" width="400" height="300"><figcaption>AFTER</figcaption></figure></div><div class="case-body"><span class="case-tag">강남구 · 호텔</span><h3>강남 호텔 주방 배관 고압세척</h3><p>기름때 누적 역류를 근본 해결, 정기 관리 계약으로 전환.</p></div></article>
-
-      <h2>강남구 서비스 가능 지역</h2>
-      <p>아래 동네를 포함한 강남구 전역으로 출동합니다. (동 단위 별도 페이지는 운영하지 않습니다.)</p>
-      <div class="tag-list">{tags}</div>
-    </div>
-    <aside class="sidebar-card">
-      <h3>강남구 상담</h3>
-      <p>강남 전역 24시간 출동. 야간·새벽 긴급 작업 가능.</p>
-      <a class="phone-big" href="tel:1577-0000">1577-0000</a>
-      <p style="margin-bottom:18px;">카카오톡 상담 @스피드배관</p>
-      <a class="btn btn--primary btn--block" href="tel:1577-0000">☎ 전화 상담</a>
-      <a class="btn btn--ghost-light btn--block" href="/contact.html" style="margin-top:10px;">무료 견적 신청</a>
-    </aside>
-  </div>
-</section>
-{bottom_cta(h2="강남구 어디든, 지금 출동합니다")}
-</main>
-"""
-    page("area/seoul/gangnam.html",
-         "강남구 배관·하수구막힘·누수탐지 24시간 출동 - 스피드 배관공사",
-         "서울 강남구 상업시설 배관 전문. 테헤란로 오피스빌딩, 청담·압구정 상가, 강남 호텔의 하수구막힘·배관공사·누수탐지·고압세척을 24시간 출동으로 해결합니다.",
-         S + "/area/seoul/gangnam.html", body, jsonld=breadcrumb_jsonld(crumbs))
-gangnam()
+# --- 서울 강남구 종합 페이지 + 행정동 하위 페이지는 파일 하단 별도 블록에서 생성 ---
 
 
 # ===========================================================================
@@ -787,7 +741,7 @@ about_body = f"""{phero("About","회사소개","상업시설 배관, 멈추지 �
         <tr><td>대표자</td><td colspan="2">(미정)</td></tr>
         <tr><td>사업자등록번호</td><td colspan="2">000-00-00000</td></tr>
         <tr><td>주소</td><td colspan="2">(미정)</td></tr>
-        <tr><td>대표전화</td><td colspan="2">1577-0000</td></tr>
+        <tr><td>대표전화</td><td colspan="2">0000-0000</td></tr>
         <tr><td>카카오톡</td><td colspan="2">@스피드배관</td></tr>
         <tr><td>영업시간</td><td colspan="2">연중무휴 24시간</td></tr>
       </tbody>
@@ -840,12 +794,12 @@ contact_body = f"""{phero("Contact","상담문의","전화 한 통이면 가장 
     <aside class="sidebar-card">
       <h3>바로 연락하기</h3>
       <p>24시간 상업시설 전문 출동. 급하실 땐 전화가 가장 빠릅니다.</p>
-      <a class="phone-big" href="tel:1577-0000">1577-0000</a>
+      <a class="phone-big" href="tel:0000-0000">0000-0000</a>
       <ul class="info-list" style="margin-top:18px;color:#BFD0E8;list-style:none;">
         <li style="display:block;color:#BFD0E8;">카카오톡 상담: <strong style="color:#fff;">@스피드배관</strong></li>
         <li style="display:block;color:#BFD0E8;">영업시간: <strong style="color:#fff;">연중무휴 24시간</strong></li>
       </ul>
-      <a class="btn btn--primary btn--block" href="tel:1577-0000" style="margin-top:16px;">☎ 전화 상담</a>
+      <a class="btn btn--primary btn--block" href="tel:0000-0000" style="margin-top:16px;">☎ 전화 상담</a>
       <a class="btn btn--ghost-light btn--block" href="https://pf.kakao.com/" target="_blank" rel="noopener" style="margin-top:10px;">카카오톡 상담</a>
     </aside>
   </div>
@@ -853,7 +807,7 @@ contact_body = f"""{phero("Contact","상담문의","전화 한 통이면 가장 
 </main>
 """
 page("contact.html","상담문의 | 무료 견적·24시간 출동 - 스피드 배관공사",
-     "스피드 배관공사 상담문의. 전화 1577-0000 또는 무료 견적 폼으로 신청하세요. 호텔·상가·빌딩 배관 24시간 상업시설 전문 출동, 선견적 후작업.",
+     "스피드 배관공사 상담문의. 전화 0000-0000 또는 무료 견적 폼으로 신청하세요. 호텔·상가·빌딩 배관 24시간 상업시설 전문 출동, 선견적 후작업.",
      S + "/contact.html", contact_body, jsonld=breadcrumb_jsonld([("홈","/"),("상담문의","/contact.html")]))
 
 # ===========================================================================
@@ -1012,10 +966,10 @@ def gungu_page(sido_slug, sido_name, sido_url, slug, gu_name, lead, paras, jobs,
     <aside class="sidebar-card">
       <h3>{gu_name} 상담</h3>
       <p>{note}</p>
-      <a class="phone-big" href="tel:1577-0000">1577-0000</a>
+      <a class="phone-big" href="tel:0000-0000">0000-0000</a>
       <p style="margin-bottom:18px;">카카오톡 상담 @스피드배관</p>
-      <a class="btn btn--primary btn--block" href="tel:1577-0000">☎ 전화 상담</a>
-      <a class="btn btn--ghost-light btn--block" href="/contact.html" style="margin-top:10px;">무료 견적 신청</a>
+      <a class="btn btn--primary btn--block" href="tel:0000-0000">☎ 전화 상담</a>
+      <a class="btn btn--ghost-light btn--block" href="https://t.me/googleseolab" target="_blank" rel="noopener" style="margin-top:10px;">무료 견적 신청</a>
     </aside>
   </div>
 </section>
@@ -1090,3 +1044,339 @@ gungu_page("incheon","인천광역시","/area/incheon/","yeonsu","연수구",
     "송도·연수 권역 24시간 출동.")
 
 print("\\nGUNGU DETAIL PAGES BUILT.")
+
+
+# ===========================================================================
+# 서울 강남구 종합 페이지 (/area/seoul/gangnam-gu/) + 14개 행정동 하위 페이지
+# ===========================================================================
+import re as _re
+def _chars(html):
+    """본문 시각 텍스트 글자 수(공백 제외) 근사 — 분량 확인용"""
+    t = _re.sub(r"<[^>]+>", "", html)
+    t = _re.sub(r"\s+", "", t)
+    return len(t)
+
+GN_DONG = [
+    ("역삼동","yeoksam",
+     "역삼동은 테헤란로와 강남대로가 교차하는 강남의 대표 업무지구로, 대형 오피스빌딩과 오피스텔, 그리고 직장인을 상대하는 식당·카페가 빼곡하게 들어선 지역입니다. 주거용 오피스텔과 다세대가 함께 섞여 있어 가정용 배관과 상업용 배관 상담이 동시에 들어옵니다.",
+     "역삼역·강남역 주변은 점심·저녁 시간대 유동 인구가 많아 식당 주방 배관에 기름때가 빠르게 쌓이고, 오피스텔은 세대가 밀집된 만큼 공용 배수관에 부담이 큰 편입니다. 영업장은 무중단 작업이, 오피스텔은 공용관 영향 확인이 중요합니다.",
+     "역삼동에서는 싱크대 배수 불량과 오피스텔 화장실 배수 지연, 식당 주방 바닥 배수구 역류 상담이 특히 잦습니다. 반복 막힘이라면 단순 스프링 작업보다 배관내시경으로 내부 상태를 먼저 확인하는 구성이 안전합니다.",
+     [("논현동","nonhyeon"),("삼성동","samseong"),("대치동","daechi")]),
+    ("논현동","nonhyeon",
+     "논현동은 가구거리와 먹자골목, 그리고 영동시장 인근 상권이 어우러진 지역으로, 음식점과 술집, 카페가 밀집해 있습니다. 주거지로는 단독·다세대 주택과 빌라가 많아 노후 배관 상담도 함께 들어오는 편입니다.",
+     "음식점이 많은 만큼 주방에서 흘러나오는 기름 슬러지가 배관 내부에 퇴적되어 막힘을 일으키는 경우가 자주 있습니다. 가정집은 머리카락·음식물 찌꺼기가, 영업장은 기름때가 주요 원인이 되는 식으로 현장마다 원인이 다릅니다.",
+     "논현동에서는 음식점 주방 하수구막힘과 빌라 화장실 악취, 싱크대 역류 상담이 많습니다. 영업장의 반복 막힘은 고압세척으로 배관 내부를 세척해야 재발을 줄일 수 있어, 배관내시경 확인 후 작업 방향을 정하는 것이 좋습니다.",
+     [("신사동","sinsa"),("역삼동","yeoksam"),("반포(서초)","seocho")]),
+    ("신사동","sinsa",
+     "신사동은 가로수길을 중심으로 한 패션·뷰티 상권과 카페·디저트 매장이 밀집한 지역입니다. 1층 상가와 지하 매장이 많아 배수 구조가 복잡한 편이며, 주거지로는 다세대와 빌라가 함께 자리합니다.",
+     "지하 매장이 많은 가로수길 특성상 바닥 배수구 역류와 배수 지연 상담이 잦고, 카페·음료 매장은 우유·시럽·커피 찌꺼기가 배관에 엉겨 막힘을 만드는 경우가 있습니다. 매장 영업 시간을 고려한 작업 일정 조율이 중요합니다.",
+     "신사동에서는 카페·음식점 싱크대막힘과 지하 상가 바닥 배수구 역류, 화장실 배수 불량 상담이 많습니다. 매장 배관은 가정집보다 원인이 복잡할 수 있어 작업 전 사진·영상 상담으로 상태를 먼저 확인하는 것을 권합니다.",
+     [("논현동","nonhyeon"),("압구정동","apgujeong"),("청담동","cheongdam")]),
+    ("압구정동","apgujeong",
+     "압구정동은 로데오거리 상권과 고급 아파트 단지, 그리고 미용·성형·병의원이 밀집한 지역입니다. 준공 연차가 오래된 아파트가 많아 노후 배관에서 비롯된 상담이 꾸준히 들어옵니다.",
+     "오래된 아파트는 배관 구배가 좋지 않거나 내부에 스케일이 쌓여 배수가 느려지는 경우가 많고, 병의원·미용실은 사용량이 많아 배수구 막힘이 반복되기도 합니다. 단지 공용관과 세대 전용관을 구분해 원인을 판단하는 것이 중요합니다.",
+     "압구정동에서는 노후 아파트 욕실 배수 지연과 세면대·싱크대막힘, 상가 화장실 역류 상담이 많습니다. 반복 막힘이나 여러 세대 동시 증상은 공용관 문제일 수 있어 배관내시경 확인 후 대응 범위를 정하는 것이 안전합니다.",
+     [("신사동","sinsa"),("청담동","cheongdam"),("삼성동","samseong")]),
+    ("청담동","cheongdam",
+     "청담동은 명품거리와 갤러리, 고급 레스토랑·바가 모여 있는 지역으로, 저층 상가 건물과 고급 주거가 혼재합니다. 인테리어가 까다로운 매장이 많아 작업 시 현장 보양과 마감 정리가 특히 중요합니다.",
+     "고급 레스토랑·바가 많아 주방 기름때와 음식물 슬러지로 인한 배관 막힘이 잦고, 저층 상가 건물은 지하 배수와 오수관에서 악취가 올라오는 상담이 자주 발생합니다. 영업장 이미지가 중요한 만큼 무중단·저소음 작업이 요구됩니다.",
+     "청담동에서는 건물 지하 배수 악취와 레스토랑 주방 하수구막힘, 상가 화장실 배수구 역류 상담이 많습니다. 악취·역류가 반복된다면 배관내시경으로 원인 위치를 확인하고 고압세척으로 내부를 세척하는 구성이 효과적입니다.",
+     [("압구정동","apgujeong"),("삼성동","samseong"),("신사동","sinsa")]),
+    ("삼성동","samseong",
+     "삼성동은 코엑스와 무역센터, 대형 오피스빌딩과 호텔이 밀집한 강남 최대의 업무·전시 지역입니다. 대형 시설이 많아 배관 규모가 크고 대량 배수가 발생하는 현장이 많습니다.",
+     "대형 상가·전시시설은 화장실과 식당가의 사용량이 많아 바닥 배수구 역류와 오수관 막힘 상담이 잦고, 오피스빌딩은 지하 메인 배관의 누적 퇴적물이 문제가 되곤 합니다. 시설 운영에 지장이 없도록 시간대 조율이 필요합니다.",
+     "삼성동에서는 상가 화장실 배수구 역류와 대형 오수관 막힘, 오피스빌딩 지하 배관 상담이 많습니다. 사용량이 많은 시설은 정기적인 배관내시경 점검과 고압세척으로 막힘을 예방하는 것이 운영에 유리합니다.",
+     [("대치동","daechi"),("역삼동","yeoksam"),("청담동","cheongdam")]),
+    ("대치동","daechi",
+     "대치동은 학원가와 대단지 아파트가 공존하는 지역으로, 학원 건물과 주거 시설의 배관 상담이 함께 들어옵니다. 학원가 상가는 화장실 사용 빈도가 높아 배수 부담이 큰 편입니다.",
+     "대단지 아파트는 준공 연차에 따라 배관 노후도가 달라 욕실 배수가 느려지거나 악취가 올라오는 상담이 잦고, 학원·상가 건물은 화장실 배수구 막힘이 반복되는 경우가 있습니다. 세대 전용관과 공용관을 구분한 진단이 중요합니다.",
+     "대치동에서는 아파트 욕실 배수 느림과 세면대·싱크대막힘, 학원 상가 화장실 배수구 막힘 상담이 많습니다. 반복 증상은 내부 퇴적물이 원인일 수 있어 배관내시경 확인 후 고압세척 여부를 판단하는 것이 좋습니다.",
+     [("도곡동","dogok"),("삼성동","samseong"),("역삼동","yeoksam")]),
+    ("도곡동","dogok",
+     "도곡동은 타워팰리스로 대표되는 고층 주상복합과 대단지 아파트가 밀집한 주거 중심 지역입니다. 고층 건물이 많아 배관 계통이 길고 층간 배수 구조가 복잡한 편입니다.",
+     "고층 주상복합은 공용 입상관과 세대 배관이 길게 연결되어 있어, 한 세대의 막힘이 다른 세대에 영향을 주거나 저층에서 역류가 나타나는 경우가 있습니다. 증상이 여러 층에 걸쳐 나타나면 공용관 점검이 우선입니다.",
+     "도곡동에서는 고층 아파트 욕실·주방 배수 지연과 저층 세대 역류, 세면대막힘 상담이 많습니다. 고층 건물의 반복 막힘은 배관내시경으로 입상관 상태를 확인한 뒤 작업 범위를 정하는 것이 안전합니다.",
+     [("대치동","daechi"),("개포동","gaepo"),("역삼동","yeoksam")]),
+    ("개포동","gaepo",
+     "개포동은 재건축으로 신축 아파트 단지가 빠르게 들어선 지역으로, 신축과 기존 주거가 혼재합니다. 신축 단지는 입주 초기 배관 점검 수요가, 기존 주거는 노후 배관 상담이 함께 들어옵니다.",
+     "신축 아파트는 시공 마감 상태나 초기 이물질로 인한 배수 지연이 나타날 수 있고, 기존 빌라·단독은 배관 구배 불량이나 노후로 인한 막힘이 잦습니다. 신축은 점검 위주, 노후는 원인 제거 위주로 접근이 달라집니다.",
+     "개포동에서는 신축 아파트 배수 점검과 기존 주택 욕실·싱크대막힘, 바닥 배수구 역류 상담이 많습니다. 입주 초기 반복 막힘은 배관내시경으로 시공 상태를 확인해 두면 이후 관리가 수월합니다.",
+     [("도곡동","dogok"),("일원동","ilwon"),("대치동","daechi")]),
+    ("일원동","ilwon",
+     "일원동은 삼성서울병원과 대단지 아파트가 인접한 주거 중심 지역으로, 조용한 주거 환경 속에 생활 배관 상담이 주로 들어옵니다. 병원·상가 인근은 사용량이 많아 배수 부담이 있는 편입니다.",
+     "대단지 아파트는 준공 연차에 따라 욕실·주방 배수 지연이 나타나며, 병원·상가 인근 건물은 화장실 사용 빈도가 높아 배수구 막힘이 반복되기도 합니다. 생활 배관은 머리카락·음식물·비누 찌꺼기가 주요 원인입니다.",
+     "일원동에서는 아파트 욕실 배수 느림과 싱크대·세면대막힘, 상가 화장실 배수구 막힘 상담이 많습니다. 단순 막힘은 빠르게 해결되지만, 반복된다면 배관 내부 상태 확인 후 세척 여부를 판단하는 것이 좋습니다.",
+     [("개포동","gaepo"),("수서동","suseo"),("대치동","daechi")]),
+    ("수서동","suseo",
+     "수서동은 SRT 수서역과 업무·물류 시설, 그리고 아파트 단지가 어우러진 지역입니다. 역세권 상가와 오피스, 주거가 함께 있어 상업용·가정용 배관 상담이 고루 들어옵니다.",
+     "역세권 상가와 식당은 유동 인구가 많아 주방·화장실 배수 부담이 크고, 업무 시설은 지하 배관의 퇴적물이 문제가 되곤 합니다. 주거 단지는 생활 배관 막힘이 주를 이루어 현장별로 접근이 달라집니다.",
+     "수서동에서는 상가·오피스 배수구 막힘과 식당 주방 하수구막힘, 아파트 욕실 배수 지연 상담이 많습니다. 사용량이 많은 영업장은 정기 고압세척으로 막힘을 예방하면 운영에 도움이 됩니다.",
+     [("일원동","ilwon"),("세곡동","segok"),("대치동","daechi")]),
+    ("세곡동","segok",
+     "세곡동은 보금자리지구 개발로 신축 아파트와 상가가 들어선 지역으로, 비교적 새 건물이 많은 주거 중심 지역입니다. 신축 단지의 초기 배관 점검 수요가 꾸준히 들어옵니다.",
+     "신축 아파트·상가는 시공 마감이나 입주 초기 이물질로 인한 배수 지연이 나타날 수 있고, 상가는 업종에 따라 주방·화장실 배수 부담이 다릅니다. 새 건물이라도 구배 불량이나 시공 문제로 막힘이 생길 수 있어 점검이 유효합니다.",
+     "세곡동에서는 신축 아파트 배수 점검과 상가 싱크대·화장실 배수구 막힘, 바닥 배수 지연 상담이 많습니다. 입주 초기 반복 증상은 배관내시경으로 내부 상태를 확인해 원인을 명확히 하는 것이 좋습니다.",
+     [("수서동","suseo"),("자곡동","jagok"),("율현동","yulhyeon")]),
+    ("자곡동","jagok",
+     "자곡동은 강남보금자리지구에 속한 신축 아파트 중심의 주거 지역으로, 단지와 근린 상가가 함께 조성되어 있습니다. 생활 배관과 근린 상가 배관 상담이 주로 들어옵니다.",
+     "신축 단지는 입주 초기 배수 지연이나 이물질 막힘이 나타날 수 있고, 근린 상가는 식당·카페 업종에서 주방 배관 막힘이 발생하기도 합니다. 주거 배관은 생활 이물질이, 상가는 업종별 특성이 원인이 됩니다.",
+     "자곡동에서는 아파트 욕실·싱크대막힘과 근린 상가 주방 하수구막힘, 배수구 역류 상담이 많습니다. 반복 막힘은 단순 이물질 외에 배관 내부 문제일 수 있어 내시경 확인 후 작업 방향을 정하는 것을 권합니다.",
+     [("세곡동","segok"),("율현동","yulhyeon"),("수서동","suseo")]),
+    ("율현동","yulhyeon",
+     "율현동은 세곡지구 일대의 신축 아파트와 단독·다세대가 혼재한 주거 지역으로, 비교적 한적한 환경 속에 생활 배관 상담이 주를 이룹니다. 근린 상가의 배관 상담도 함께 들어옵니다.",
+     "신축 아파트는 초기 점검 위주, 단독·다세대는 노후나 구배 문제로 인한 막힘 위주로 상담이 나뉩니다. 단독주택은 외부 오수관과 정화조 연결부에서 문제가 생기는 경우도 있어 현장 확인이 중요합니다.",
+     "율현동에서는 아파트·주택 욕실 배수 지연과 싱크대막힘, 단독주택 오수관 막힘 상담이 많습니다. 외부 배관이나 정화조 관련 증상은 현장 구조를 먼저 확인한 뒤 작업 방식을 안내드립니다.",
+     [("자곡동","jagok"),("세곡동","segok"),("수서동","suseo")]),
+]
+GN_DONG_BY_SLUG = {slug: ko for ko, slug, *_ in GN_DONG}
+
+# 공통 리스트 조각
+SYMPTOM_LI = ("<li>물이 평소보다 천천히 빠지는 경우</li>"
+              "<li>배수구에서 냄새가 올라오는 경우</li>"
+              "<li>싱크대 물이 역류하는 경우</li>"
+              "<li>욕실 바닥 배수가 늦어지는 경우</li>"
+              "<li>변기가 반복적으로 막히는 경우</li>"
+              "<li>음식점 주방 배관에 기름때가 쌓인 경우</li>"
+              "<li>오래된 건물의 배관 구배가 좋지 않은 경우</li>")
+SERVICE_LI = ("<li>하수구막힘</li><li>배관공사</li><li>싱크대막힘</li><li>변기막힘</li>"
+              "<li>욕실 배수구막힘</li><li>세면대막힘</li><li>오수관막힘</li><li>배관내시경</li>"
+              "<li>고압세척</li><li>음식점 하수구막힘</li><li>상가 배관공사</li><li>아파트·빌라 배관보수</li>")
+WORK_LI = ("<li>증상 확인 및 사진·영상 상담</li><li>막힘 위치 추정 및 현장 접근 여부 확인</li>"
+           "<li>작업 전 비용 기준 안내</li><li>장비 선택(스프링·관통·고압세척 등)</li>"
+           "<li>막힘 제거 또는 배관 세척</li><li>배수 테스트 및 재발 방지 안내</li>")
+COST_LI = ("<li>막힘 위치와 배관 길이</li><li>배관 노후도와 구배 상태</li>"
+           "<li>사용 장비(스프링·관통기·고압세척기)</li><li>배관내시경 필요 여부</li>"
+           "<li>야간·주말 출동 여부</li><li>상가·음식점 등 영업장 여부</li><li>배관 교체 필요 여부</li>")
+COST_NOTE = ("정확한 비용은 현장 구조와 막힘 정도를 확인한 뒤 안내됩니다. 단순 막힘인지, 반복 막힘인지, "
+             "배관 내부 문제인지에 따라 필요한 장비와 작업 시간이 달라질 수 있습니다.")
+FIXTURE_P = ("주방 싱크대는 음식물과 기름이 함께 흘러가며 배관 안쪽에 퇴적물을 만들고, 변기는 이물질이나 노후 구배 문제로 "
+             "반복 막힘이 나타납니다. 욕실 바닥 배수구와 세면대는 머리카락·비누때가 주요 원인으로, 배수가 늦어지거나 냄새가 "
+             "올라오면 내부에 이물질이 쌓였을 가능성이 큽니다. 같은 막힘이라도 어느 곳이 막혔는지에 따라 필요한 장비와 접근 "
+             "방법이 다르기 때문에, 작업 전에 막힌 위치와 증상을 확인하는 과정이 중요합니다.")
+INSPECT_P = ("반복 막힘이나 원인을 알 수 없는 역류·악취는 배관내시경으로 내부를 직접 확인하면 원인 위치를 특정할 수 있습니다. "
+             "기름때나 퇴적물이 두껍게 쌓였다면 단순 관통만으로는 다시 막히기 쉬워, 고압세척으로 관 벽을 세척해야 배수 흐름이 "
+             "제대로 회복됩니다. 단순 막힘인지 내부 퇴적 문제인지에 따라 작업 방향이 달라지므로, 반복되는 증상은 내시경 확인 후 "
+             "세척 여부를 판단하는 구성이 안전합니다.")
+PREPARE_P = ("상담을 빠르게 진행하려면 막힌 위치(싱크대·변기·욕실·바닥 등), 건물 형태(아파트·빌라·상가·음식점), 물이 내려가는 속도, "
+             "냄새나 역류 여부를 함께 알려주시면 좋습니다. 가능하다면 증상 부위를 찍은 사진이나 영상을 보내주시면 필요한 장비를 "
+             "더 정확히 판단할 수 있어 현장에서의 작업 시간을 줄일 수 있습니다.")
+FAQ_CHEMICAL = ("변기나 배수구가 막혔을 때 약품을 사용해도 되나요?",
+                "약품은 일시적으로 도움이 될 수 있지만 배관 손상이나 악취 문제가 생길 수 있습니다. 특히 반복 막힘이나 역류가 "
+                "있으면 무리한 자가 조치보다 상담이 안전합니다.")
+
+def local_sidebar(title, note):
+    return f"""<aside class="sidebar-card">
+      <h3>{title}</h3>
+      <p>{note}</p>
+      <a class="phone-big" href="tel:0000-0000">0000-0000</a>
+      <p style="margin-bottom:18px;">증상·위치·건물 형태를 알려주시면 더 정확히 안내드립니다.</p>
+      <a class="btn btn--primary btn--block" href="tel:0000-0000">☎ 전화 상담하기</a>
+      <a class="btn btn--ghost-light btn--block" href="https://t.me/googleseolab" target="_blank" rel="noopener" style="margin-top:10px;">사진 보내기 · 상담</a>
+    </aside>"""
+
+def gangnam_faq_jsonld(items):
+    return faq_jsonld(items)
+
+# ---- 강남구 종합 페이지 ----
+def build_gangnam_gu():
+    crumbs = [("홈","/"),("지역별 서비스","/area/"),("서울특별시","/area/seoul/"),("강남구", None)]
+    dong_links = "".join(f'<a href="/area/seoul/gangnam-gu/{slug}-dong/">{ko}</a>' for ko, slug, *_ in GN_DONG)
+    adj = [("서초구","/area/seoul/seocho.html"),("송파구","/area/seoul/songpa.html"),
+           ("강동구","/area/seoul/"),("성동구","/area/seoul/"),("광진구","/area/seoul/")]
+    adj_links = "".join(f'<a href="{u}">{n} 배관공사</a>' for n, u in adj)
+    faq = [
+        ("강남 하수구막힘은 바로 출동 가능한가요?",
+         "지역과 시간대, 현장 상황에 따라 상담 후 안내됩니다. 사진이나 증상을 먼저 보내주시면 필요한 장비를 더 정확히 판단할 수 있습니다."),
+        ("싱크대가 자주 막히면 고압세척이 필요한가요?",
+         "반복 막힘이라면 단순 이물질보다 배관 내부 기름때나 퇴적물이 원인일 수 있습니다. 이 경우 배관내시경 확인 후 고압세척 여부를 판단하는 것이 좋습니다."),
+        ("변기가 막혔을 때 약품을 사용해도 되나요?",
+         "약품은 일시적으로 도움이 될 수 있지만 배관 손상이나 악취 문제가 생길 수 있습니다. 특히 반복 막힘이나 역류가 있으면 무리한 자가 조치보다 상담이 안전합니다."),
+        ("강남 상가나 음식점도 작업 가능한가요?",
+         "상가, 음식점, 카페, 사무실, 병원, 학원 등 현장 구조에 따라 상담 가능합니다. 영업장 배관은 가정집보다 원인이 복잡할 수 있어 작업 전 확인이 중요합니다."),
+    ]
+    body = f"""{phero("강남 배관공사", "강남 배관공사·하수구막힘 긴급 상담 | 스피드 배관공사", "역삼·논현·삼성·청담·대치 등 강남 전역의 배관공사, 하수구막힘, 싱크대·변기·욕실 배수구 막힘 상담을 안내합니다.", crumbs)}
+<main>
+<section class="section">
+  <div class="container layout-sidebar">
+    <div class="prose">
+      <nav class="anchor-nav" aria-label="강남 배관공사 바로가기">
+        <h2>강남 배관공사 바로가기</h2>
+        <ul>
+          <li><a href="#intro">강남 배관공사 안내</a></li>
+          <li><a href="#symptom">강남 하수구막힘 증상</a></li>
+          <li><a href="#fixtures">싱크대·변기·욕실 배수구 문제</a></li>
+          <li><a href="#inspection">배관내시경·고압세척 작업</a></li>
+          <li><a href="#area">강남구 서비스 가능 지역</a></li>
+          <li><a href="#cost">비용이 달라지는 기준</a></li>
+          <li><a href="#prepare">현장 확인 전 준비사항</a></li>
+          <li><a href="#faq">자주 묻는 질문</a></li>
+          <li><a href="#call">전화 상담</a></li>
+        </ul>
+      </nav>
+
+      <h2 id="intro">강남 배관공사 안내</h2>
+      <p>강남구는 아파트, 오피스텔, 상가, 음식점, 병원, 사무실이 함께 밀집된 지역이기 때문에 배관 문제가 단순한 가정용 막힘에서 끝나지 않는 경우가 많습니다. 특히 역삼동, 삼성동, 논현동, 청담동, 대치동 일대는 상가와 주거 시설이 섞여 있어 싱크대 배수 불량, 바닥 배수구 역류, 화장실 악취, 오수관 막힘 상담이 자주 발생합니다.</p>
+      <p>스피드 배관공사는 현장의 건물 형태와 막힘 정도를 먼저 확인한 뒤 필요한 작업 방향을 안내합니다. 증상이 단순 막힘인지 반복 막힘인지, 또는 배관 내부 문제인지에 따라 장비와 작업 시간이 달라지기 때문에, 무리한 자가 조치보다 상담을 통해 원인을 정확히 파악하는 것이 안전합니다.</p>
+
+      <h2 id="symptom">강남 하수구막힘 주요 증상</h2>
+      <ul class="ticks">{SYMPTOM_LI}</ul>
+      <p>강남구는 오래된 빌라와 신축 오피스텔, 대형 상가가 함께 있기 때문에 현장마다 원인이 다릅니다. 가정집은 머리카락·비누 찌꺼기·음식물 찌꺼기가 원인이 되는 경우가 많고, 음식점이나 카페는 기름 슬러지와 배관 내부 퇴적물이 막힘의 주요 원인이 될 수 있습니다. 단순 스프링 작업으로 해결되는 경우도 있지만, 반복 막힘이 있으면 배관내시경으로 내부 상태를 확인하는 구성이 좋습니다.</p>
+
+      <h2 id="fixtures">싱크대·변기·욕실 배수구 문제</h2>
+      <p>주방 싱크대는 음식물과 기름이 함께 흘러가며 배관 안쪽에 퇴적물을 만들고, 변기는 이물질이나 노후 배관 구배 문제로 반복 막힘이 나타납니다. 욕실 바닥 배수구와 세면대는 머리카락·비누때가 주요 원인이며, 배수가 늦어지거나 냄새가 올라오면 내부에 이물질이 쌓였을 가능성이 큽니다. 증상별로 필요한 장비가 다르므로 작업 전 상태 확인이 중요합니다.</p>
+      <h3>서비스 가능 항목</h3>
+      <ul class="ticks">{SERVICE_LI}</ul>
+
+      <h2 id="inspection">배관내시경·고압세척 작업</h2>
+      <p>반복 막힘이나 원인을 알 수 없는 역류·악취는 배관내시경으로 내부를 직접 확인하면 원인 위치를 특정할 수 있습니다. 기름때나 퇴적물이 두껍게 쌓인 경우에는 고압세척으로 관 벽을 세척해야 배수 흐름이 제대로 회복됩니다. 작업은 아래 순서로 진행됩니다.</p>
+      <ol style="padding-left:20px;display:flex;flex-direction:column;gap:8px;">{WORK_LI}</ol>
+
+      <h2 id="area">강남구 서비스 가능 지역</h2>
+      <p>강남구 페이지에서는 1동·2동을 무리하게 나누지 않고 대표 동명으로 통합해 안내합니다. 아래 지역을 선택하면 해당 동의 배관공사·하수구막힘 안내를 확인할 수 있습니다.</p>
+      <div class="tag-list">{dong_links}</div>
+      <h3>인접 지역</h3>
+      <div class="adjacent-links">{adj_links}</div>
+
+      <h2 id="cost">비용이 달라지는 기준</h2>
+      <p>강남 배관공사 비용은 현장 조건에 따라 달라집니다. 아래 항목에 따라 필요한 장비와 작업 시간이 달라질 수 있습니다.</p>
+      <ul class="ticks">{COST_LI}</ul>
+      <p class="price-note">{COST_NOTE}</p>
+
+      <h2 id="prepare">현장 확인 전 준비사항</h2>
+      <p>상담을 빠르게 진행하려면 막힘 증상, 막힌 위치(싱크대·변기·욕실·바닥 등), 건물 형태(아파트·빌라·상가·음식점), 물이 내려가는 속도, 냄새나 역류 여부를 함께 알려주시면 좋습니다. 가능하다면 증상 부위를 찍은 사진이나 영상을 보내주시면 필요한 장비를 더 정확히 판단할 수 있습니다.</p>
+
+      <h2 id="cases">강남 현장 상담 유형</h2>
+      <p>아래는 강남구에서 자주 들어오는 상담 유형입니다. (실제 시공 사진과 작업 기록은 현장 진행 후 사례로 추가됩니다.)</p>
+      <ul class="ticks">
+        <li>역삼동 오피스텔 싱크대 배수 불량 상담</li>
+        <li>논현동 음식점 주방 하수구막힘 상담</li>
+        <li>삼성동 상가 화장실 배수구 역류 상담</li>
+        <li>대치동 아파트 욕실 배수 느림 상담</li>
+        <li>청담동 건물 지하 배수 악취 상담</li>
+      </ul>
+
+      <h2 id="faq">자주 묻는 질문</h2>
+      <div class="faq-list">
+{faq_html(faq)}      </div>
+
+      <h2 id="call">강남 전화 상담</h2>
+      <p>강남구 하수구막힘이나 배관공사 상담이 필요하다면 증상, 위치, 건물 형태, 물이 내려가는 속도, 냄새 여부를 알려주세요. 스피드 배관공사는 현장 조건을 먼저 확인하고 필요한 작업 방향을 안내합니다.</p>
+      <div class="local-cta">
+        <a class="btn btn--primary btn--lg" href="tel:0000-0000">☎ 전화 상담하기</a>
+        <a class="btn btn--secondary btn--lg" href="https://t.me/googleseolab" target="_blank" rel="noopener">사진 보내기</a>
+        <a class="btn btn--secondary btn--lg" href="#cost">비용 기준 보기</a>
+        <a class="btn btn--secondary btn--lg" href="/cases.html">강남 현장사례 보기</a>
+      </div>
+    </div>
+    {local_sidebar("강남 배관 상담", "강남 전역 상담 가능. 증상·사진을 보내주시면 더 정확합니다.")}
+  </div>
+</section>
+</main>
+"""
+    print("  [강남구] 본문 글자수 ~", _chars(body.split('</aside>')[0]))
+    page("area/seoul/gangnam-gu/index.html",
+         "강남 배관공사·하수구막힘 | 싱크대·변기·배수구 막힘 상담 - 스피드 배관공사",
+         "강남구 배관공사, 하수구막힘, 싱크대막힘, 변기막힘, 욕실 배수구 역류, 배관내시경, 고압세척 상담 안내. 역삼동, 논현동, 삼성동, 청담동, 대치동 등 강남 주요 지역 확인 가능합니다.",
+         S + "/area/seoul/gangnam-gu/", body,
+         jsonld=breadcrumb_jsonld(crumbs) + gangnam_faq_jsonld(faq))
+build_gangnam_gu()
+
+# ---- 강남구 행정동 하위 페이지 ----
+def build_gangnam_dong(ko, slug, intro1, intro2, problem, adjacency):
+    crumbs = [("홈","/"),("지역별 서비스","/area/"),("서울특별시","/area/seoul/"),
+              ("강남구","/area/seoul/gangnam-gu/"),(ko, None)]
+    adj_links = '<a href="/area/seoul/gangnam-gu/">강남구 배관공사</a>' + "".join(
+        f'<a href="/area/seoul/gangnam-gu/{s}-dong/">{n}</a>' if s in GN_DONG_BY_SLUG
+        else f'<a href="/area/seoul/seocho.html">{n} 배관공사</a>'
+        for n, s in adjacency)
+    faq = [
+        (f"{ko} 하수구막힘은 바로 출동 가능한가요?",
+         "지역과 시간대, 현장 상황에 따라 상담 후 안내됩니다. 증상과 사진을 먼저 보내주시면 필요한 장비를 더 정확히 판단할 수 있습니다."),
+        (f"{ko}에서 싱크대가 자주 막히면 어떻게 하나요?",
+         "반복 막힘은 단순 이물질보다 배관 내부 기름때·퇴적물이 원인일 수 있습니다. 배관내시경으로 내부를 확인한 뒤 고압세척 여부를 판단하는 것이 좋습니다."),
+        (f"{ko} 상가·음식점도 작업 가능한가요?",
+         "상가, 음식점, 카페, 사무실 등 현장 구조에 따라 상담 가능합니다. 영업장 배관은 가정집보다 원인이 복잡할 수 있어 작업 전 확인이 중요합니다."),
+        FAQ_CHEMICAL,
+    ]
+    body = f"""{phero(f"{ko} 배관공사", f"{ko} 배관공사·하수구막힘 상담 | 스피드 배관공사", f"강남구 {ko}의 배관공사, 하수구막힘, 싱크대·변기·욕실 배수구 막힘 상담을 안내합니다.", crumbs)}
+<main>
+<section class="section">
+  <div class="container layout-sidebar">
+    <div class="prose">
+      <nav class="anchor-nav" aria-label="{ko} 배관공사 바로가기">
+        <h2>{ko} 배관공사 바로가기</h2>
+        <ul>
+          <li><a href="#intro">{ko} 배관공사 안내</a></li>
+          <li><a href="#symptom">하수구막힘 증상</a></li>
+          <li><a href="#fixtures">싱크대·변기·욕실</a></li>
+          <li><a href="#services">서비스 가능 항목</a></li>
+          <li><a href="#work">작업 방식</a></li>
+          <li><a href="#inspection">배관내시경·고압세척</a></li>
+          <li><a href="#cost">비용 기준</a></li>
+          <li><a href="#area">인접 지역</a></li>
+          <li><a href="#faq">자주 묻는 질문</a></li>
+          <li><a href="#call">전화 상담</a></li>
+        </ul>
+      </nav>
+
+      <h2 id="intro">{ko} 배관공사 안내</h2>
+      <p>{intro1}</p>
+      <p>{intro2}</p>
+
+      <h2 id="symptom">{ko} 하수구막힘 증상</h2>
+      <ul class="ticks">{SYMPTOM_LI}</ul>
+      <p>{problem}</p>
+
+      <h2 id="fixtures">{ko} 싱크대·변기·욕실 배수구 문제</h2>
+      <p>{FIXTURE_P}</p>
+
+      <h2 id="services">{ko} 서비스 가능 항목</h2>
+      <ul class="ticks">{SERVICE_LI}</ul>
+
+      <h2 id="work">{ko} 작업 방식 안내</h2>
+      <p>{ko} 현장도 증상 확인과 사진·영상 상담을 먼저 진행한 뒤, 막힘 위치와 원인을 추정해 필요한 장비를 선택합니다. 작업 전 비용 기준을 안내드리고, 동의 후 막힘 제거 또는 배관 세척을 진행합니다.</p>
+      <ol style="padding-left:20px;display:flex;flex-direction:column;gap:8px;">{WORK_LI}</ol>
+
+      <h2 id="inspection">{ko} 배관내시경·고압세척</h2>
+      <p>{INSPECT_P}</p>
+
+      <h2 id="prepare">현장 확인 전 준비사항</h2>
+      <p>{PREPARE_P}</p>
+
+      <h2 id="cost">비용이 달라지는 기준</h2>
+      <p>{ko} 배관공사 비용은 현장 조건에 따라 달라집니다. 아래 항목에 따라 필요한 장비와 작업 시간이 달라질 수 있습니다.</p>
+      <ul class="ticks">{COST_LI}</ul>
+      <p class="price-note">{COST_NOTE}</p>
+
+      <h2 id="area">인접 지역</h2>
+      <p>{ko}과 함께 인근 지역도 상담 가능합니다.</p>
+      <div class="adjacent-links">{adj_links}</div>
+
+      <h2 id="faq">자주 묻는 질문</h2>
+      <div class="faq-list">
+{faq_html(faq)}      </div>
+
+      <h2 id="call">{ko} 전화 상담</h2>
+      <p>{ko}에서 하수구막힘이나 배관공사 상담이 필요하다면 증상, 위치, 건물 형태, 물이 내려가는 속도, 냄새 여부를 알려주세요. 현장 조건을 먼저 확인하고 필요한 작업 방향을 안내합니다.</p>
+      <div class="local-cta">
+        <a class="btn btn--primary btn--lg" href="tel:0000-0000">☎ 전화 상담하기</a>
+        <a class="btn btn--secondary btn--lg" href="https://t.me/googleseolab" target="_blank" rel="noopener">사진 보내기</a>
+        <a class="btn btn--secondary btn--lg" href="/area/seoul/gangnam-gu/">강남구 전체 보기</a>
+      </div>
+    </div>
+    {local_sidebar(f"{ko} 배관 상담", f"{ko} 및 인근 지역 상담 가능. 증상·사진을 보내주시면 더 정확합니다.")}
+  </div>
+</section>
+</main>
+"""
+    print(f"  [{ko}] 본문 글자수 ~", _chars(body.split('</aside>')[0]))
+    page(f"area/seoul/gangnam-gu/{slug}-dong/index.html",
+         f"{ko} 배관공사·하수구막힘 | 싱크대·변기·배수구 막힘 상담 - 스피드 배관공사",
+         f"강남구 {ko} 배관공사, 하수구막힘, 싱크대막힘, 변기막힘, 욕실 배수구 역류, 배관내시경, 고압세척 상담 안내. {ko} 및 강남 인근 지역 확인 가능합니다.",
+         f"{S}/area/seoul/gangnam-gu/{slug}-dong/", body,
+         jsonld=breadcrumb_jsonld(crumbs) + faq_jsonld(faq))
+
+print("\\n강남구 + 행정동 글자수 확인:")
+for ko, slug, i1, i2, prob, adj in GN_DONG:
+    build_gangnam_dong(ko, slug, i1, i2, prob, adj)
+print("\\nGANGNAM-GU SYSTEM BUILT.")
