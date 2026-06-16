@@ -137,7 +137,7 @@ p{margin:0 0 1em;}
   border-bottom-color:var(--line);
 }
 .header-inner{
-  display:flex;align-items:center;gap:18px;
+  display:flex;align-items:center;gap:14px;
   min-height:var(--header-h);
 }
 .brand{display:inline-flex;align-items:center;flex:0 0 auto;}
@@ -149,12 +149,12 @@ p{margin:0 0 1em;}
 
 /* primary nav */
 .gnb{margin-left:auto;}
-.gnb-list{display:flex;align-items:center;gap:4px;}
+.gnb-list{display:flex;align-items:center;gap:2px;}
 .gnb-list > li{position:relative;}
 .gnb-link{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:10px 13px;border-radius:8px;
-  font-size:15px;font-weight:700;color:#E6EEF9;
+  display:inline-flex;align-items:center;gap:4px;white-space:nowrap;
+  padding:10px 11px;border-radius:8px;
+  font-size:14px;font-weight:700;color:#E6EEF9;
   transition:background .15s ease,color .15s ease;
 }
 .gnb-link:hover{background:rgba(255,255,255,.1);text-decoration:none;}
@@ -181,6 +181,11 @@ p{margin:0 0 1em;}
 
 /* header actions */
 .header-actions{display:flex;align-items:center;gap:10px;flex:0 0 auto;}
+/* 좁은 데스크탑(노트북)에서 메뉴가 한 줄에 들어가도록 보조 전화 블록 숨김 (CTA·히어로·모바일바엔 유지) */
+@media (max-width:1200px) and (min-width:1025px){
+  .header-phone{display:none;}
+  .gnb-link{padding:10px 9px;font-size:13.5px;}
+}
 .header-phone{
   display:inline-flex;flex-direction:column;line-height:1.1;text-align:right;
   font-weight:800;color:#fff;
