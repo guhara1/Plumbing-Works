@@ -11,6 +11,10 @@ import os
 ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE = "https://plumbing-works.pages.dev"
 
+# 대표 OG/구조화데이터 이미지(실제 시공 사진) 및 검색엔진 소유확인
+OG_IMAGE   = f"{SITE}/assets/img/hero.jpg"   # 1672x941 실사진
+GOOGLE_VERIFY = ""   # 구글 서치콘솔 소유확인 코드(예: "abc123..."). 입력 시 자동 메타 삽입
+
 # 공식 채널 URL (확정 후 실제 주소로 교체) — 자리표시값
 NAVER_PLACE = "https://map.naver.com/"      # TODO: 네이버 플레이스(스마트플레이스) 실제 URL
 NAVER_BLOG  = "https://blog.naver.com/"      # TODO: 네이버 블로그 실제 URL
@@ -26,6 +30,8 @@ def head(title, desc, canonical, jsonld="", og_title=None, og_desc=None, robots=
     blocks = ""
     if jsonld:
         blocks = jsonld
+    google_verify = (f'\n<meta name="google-site-verification" content="{GOOGLE_VERIFY}">'
+                     if GOOGLE_VERIFY else "")
     return f"""<!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -36,25 +42,31 @@ def head(title, desc, canonical, jsonld="", og_title=None, og_desc=None, robots=
 <link rel="canonical" href="{canonical}">
 <meta name="robots" content="{robots}">
 <meta name="googlebot" content="{robots}">
+<meta name="theme-color" content="#0B2545">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="스피드 배관공사">
 <meta property="og:title" content="{og_title}">
 <meta property="og:description" content="{og_desc}">
-<meta property="og:image" content="{SITE}/assets/logo/symbol.png">
+<meta property="og:image" content="{OG_IMAGE}">
+<meta property="og:image:secure_url" content="{OG_IMAGE}">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1672">
+<meta property="og:image:height" content="941">
+<meta property="og:image:alt" content="스피드 배관공사 — 하수구막힘·누수탐지·수전교체 24시 긴급출동">
 <meta property="og:url" content="{canonical}">
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{og_title}">
 <meta name="twitter:description" content="{og_desc}">
-<meta name="twitter:image" content="{SITE}/assets/logo/symbol.png">
+<meta name="twitter:image" content="{OG_IMAGE}">
+<meta name="twitter:image:alt" content="스피드 배관공사 — 하수구막힘·누수탐지·수전교체 24시 긴급출동">
 <!-- 네이버 서치어드바이저 소유확인 -->
-<meta name="naver-site-verification" content="09f062b8a8c3fe223821c04d584c87380a962d64" />
-<!-- 구글 서치콘솔 소유확인: 코드 확정 시 삽입 -->
-<!-- <meta name="google-site-verification" content="여기에_인증코드"> -->
+<meta name="naver-site-verification" content="09f062b8a8c3fe223821c04d584c87380a962d64" />{google_verify}
 <link rel="icon" type="image/png" href="/assets/logo/symbol.png">
 <link rel="apple-touch-icon" href="/assets/logo/symbol.png">
 <link rel="alternate" type="application/rss+xml" title="스피드 배관공사 소식" href="/rss.xml">
 <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
@@ -247,7 +259,7 @@ def clip_desc(s, n=80):
 
 
 def page(path, title, desc, canonical, body, jsonld="", og_title=None, og_desc=None, noindex=False):
-    robots = "noindex, follow" if noindex else "index, follow"
+    robots = "noindex, follow" if noindex else "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
     desc = clip_desc(desc)          # 네이버 권장: 설명 80자 이내 보장
     html = head(title, desc, canonical, jsonld, og_title, og_desc, robots) + HEADER + body + FOOTER + MOBILE_BAR + AD_POPUP + SCRIPTS
     full = os.path.join(ROOT, path)

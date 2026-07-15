@@ -130,7 +130,7 @@ HOME_JSONLD = """<script type="application/ld+json">
   "alternateName": "SPEED PLUMBING",
   "description": "가정집·상가·오피스빌딩 배관 전문 업체. 하수구막힘·배관막힘·누수탐지·누수공사·수전교체·변기교체·세면대교체·배수구뚫음·수도누수·고압세척 24시 긴급출동.",
   "knowsAbout": ["누수탐지","누수공사","하수구막힘","배관막힘","배관설비","수전교체","싱크대수전교체","화장실수전교체","변기막힘","화장실변기교체","변기부속품수리","싱크대하수구막힘","세면대막힘","세면대교체","배수구막힘","배수구뚫음","욕실배관누수","수도누수","수도수리","주방배관누수","주방배수구막힘","배관내시경","역류 제거","고압세척"],
-  "image": "%(s)s/assets/logo/symbol.png",
+  "image": ["%(s)s/assets/img/hero.jpg","%(s)s/assets/img/gallery/01.webp","%(s)s/assets/img/gallery/10.webp","%(s)s/assets/img/gallery/20.webp"],
   "logo": "%(s)s/assets/logo/logo-horizontal-dark.png",
   "url": "%(s)s/",
   "telephone": "+82-10-5183-4300",
@@ -1062,7 +1062,7 @@ notfound_body = """<main>
 """
 page("404.html","페이지를 찾을 수 없습니다 (404) - 스피드 배관공사",
      "요청하신 페이지를 찾을 수 없습니다. 스피드 배관공사 홈으로 이동하거나 서비스안내·상담문의를 이용해 주세요.",
-     S + "/404.html", notfound_body)
+     S + "/404.html", notfound_body, noindex=True)
 
 # ===========================================================================
 # 개인정보처리방침 / 이용약관 (신뢰 페이지 — 실제 확정 시 내용 보강)
