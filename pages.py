@@ -9,8 +9,8 @@ import hashlib as _hash
 S = SITE
 
 # ===========================================================================
-# 현장 이미지 갤러리 (교체용 21장) — assets/img/gallery/01.jpg ~ 21.jpg
-#   · 같은 번호(01.jpg~21.jpg)로 실제 사진을 덮어쓰면 즉시 교체됨(권장 16:9)
+# 현장 이미지 갤러리 (실제 시공 사진 21장) — assets/img/gallery/01.webp ~ 21.webp
+#   · 16:9, 장당 약 50KB webp. 같은 번호로 덮어쓰면 즉시 교체됨
 #   · 지역/페이지별로 결정적으로 1장을 골라 페이지 히어로에 노출(중복 최소화)
 # ===========================================================================
 GALLERY_N = 21
@@ -20,7 +20,7 @@ def _gnum(seed):
 
 def gallery_pic(seed, alt, cls="hero-photo"):
     n = f"{_gnum(seed):02d}"
-    return (f'<img class="{cls}" src="/assets/img/gallery/{n}.jpg" alt="{alt}" '
+    return (f'<img class="{cls}" src="/assets/img/gallery/{n}.webp" alt="{alt}" '
             f'width="1280" height="720" loading="lazy">')
 
 def home_gallery():
@@ -28,7 +28,7 @@ def home_gallery():
     for i in range(1, GALLERY_N + 1):
         n = f"{i:02d}"
         cards += (f'<figure class="shot">'
-                  f'<img src="/assets/img/gallery/{n}.jpg" '
+                  f'<img src="/assets/img/gallery/{n}.webp" '
                   f'alt="스피드 배관공사 현장 {n} — 하수구막힘·누수탐지·수전교체·변기교체 시공" '
                   f'loading="lazy" width="1280" height="720"></figure>')
     return f"""<section class="section" aria-labelledby="gallery-h">
