@@ -4,8 +4,44 @@
 from build import (page, SITE, breadcrumb_jsonld, SIDEBAR, bottom_cta,
                    NAVER_PLACE, NAVER_BLOG, NAVER_TALK, KAKAO_CH)
 import json as _json, os as _os
+import hashlib as _hash
 
 S = SITE
+
+# ===========================================================================
+# 현장 이미지 갤러리 (실제 시공 사진 21장) — assets/img/gallery/01.webp ~ 21.webp
+#   · 16:9, 장당 약 50KB webp. 같은 번호로 덮어쓰면 즉시 교체됨
+#   · 지역/페이지별로 결정적으로 1장을 골라 페이지 히어로에 노출(중복 최소화)
+# ===========================================================================
+GALLERY_N = 21
+
+def _gnum(seed):
+    return int(_hash.md5(str(seed).encode("utf-8")).hexdigest(), 16) % GALLERY_N + 1
+
+def gallery_pic(seed, alt, cls="hero-photo"):
+    n = f"{_gnum(seed):02d}"
+    return (f'<img class="{cls}" src="/assets/img/gallery/{n}.webp" alt="{alt}" '
+            f'width="1280" height="720" loading="lazy">')
+
+def home_gallery():
+    cards = ""
+    for i in range(1, GALLERY_N + 1):
+        n = f"{i:02d}"
+        cards += (f'<figure class="shot">'
+                  f'<img src="/assets/img/gallery/{n}.webp" '
+                  f'alt="스피드 배관공사 현장 {n} — 하수구막힘·누수탐지·수전교체·변기교체 시공" '
+                  f'loading="lazy" width="1280" height="720"></figure>')
+    return f"""<section class="section" aria-labelledby="gallery-h">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">Gallery</span>
+      <h2 id="gallery-h">현장 시공 갤러리</h2>
+      <p class="lead">하수구막힘·배관막힘·누수탐지·수전교체·변기교체·고압세척 등 실제 현장 시공 사진입니다. 24시 긴급출동으로 진행한 작업 기록을 확인하세요.</p>
+    </div>
+    <div class="gallery-grid">{cards}</div>
+  </div>
+</section>
+"""
 
 # ===========================================================================
 # 전국 행정구역(시도 > 시군구) 공식 데이터 + 로마자 슬러그
@@ -92,11 +128,12 @@ HOME_JSONLD = """<script type="application/ld+json">
   "@type": "Plumber",
   "name": "스피드 배관공사",
   "alternateName": "SPEED PLUMBING",
-  "description": "호텔·상가·오피스빌딩 등 상업시설 전문 B2B 배관 파트너. 하수구막힘·배관공사·누수탐지·고압세척 24시간 출동.",
-  "image": "%(s)s/assets/logo/symbol.png",
+  "description": "가정집·상가·오피스빌딩 배관 전문 업체. 하수구막힘·배관막힘·누수탐지·누수공사·수전교체·변기교체·세면대교체·배수구뚫음·수도누수·고압세척 24시 긴급출동.",
+  "knowsAbout": ["누수탐지","누수공사","하수구막힘","배관막힘","배관설비","수전교체","싱크대수전교체","화장실수전교체","변기막힘","화장실변기교체","변기부속품수리","싱크대하수구막힘","세면대막힘","세면대교체","배수구막힘","배수구뚫음","욕실배관누수","수도누수","수도수리","주방배관누수","주방배수구막힘","배관내시경","역류 제거","고압세척"],
+  "image": ["%(s)s/assets/img/hero.jpg","%(s)s/assets/img/gallery/01.webp","%(s)s/assets/img/gallery/10.webp","%(s)s/assets/img/gallery/20.webp"],
   "logo": "%(s)s/assets/logo/logo-horizontal-dark.png",
   "url": "%(s)s/",
-  "telephone": "+82-0000-0000",
+  "telephone": "+82-10-5183-4300",
   "priceRange": "\\u20a9\\u20a9",
   "openingHoursSpecification": {"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],"opens":"00:00","closes":"23:59"},
   "areaServed": {"@type":"Country","name":"대한민국"},
@@ -145,14 +182,15 @@ HERO = """<section class="hero hero--media">
     <div class="hero-text">
     <span class="badge badge--light"><span class="dot"></span>호텔 · 상가 · 오피스빌딩 전문 B2B 배관</span>
     <h1>호텔·상가·빌딩 <span class="accent">하수구막힘·배관</span>,<br>멈추지 않는 신속함.</h1>
-    <p class="hero-sub">하수구막힘·배관공사·누수탐지·고압세척 — 영업 손실을 만들지 않는 24시간 상업시설 전문 출동. 선견적 후작업으로 추가금 걱정 없이 신뢰할 수 있습니다.</p>
+    <p class="hero-sub">하수구막힘·배관막힘·누수탐지·누수공사·수전교체·변기교체·세면대교체·배수구뚫음·고압세척 — 영업 손실을 만들지 않는 24시 긴급출동 배관 업체. 선견적 후작업으로 추가금 걱정 없이 신뢰할 수 있습니다.</p>
     <div class="hero-cta">
-      <a class="btn btn--primary btn--lg" href="tel:0000-0000">
+      <a class="btn btn--primary btn--lg" href="tel:010-5183-4300">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.68 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.32 1.85.55 2.81.68A2 2 0 0 1 22 16.92z"/></svg>
-        지금 전화 0000-0000</a>
+        지금 전화 010-5183-4300</a>
       <a class="btn btn--ghost-light btn--lg" href="https://t.me/googleseolab" target="_blank" rel="noopener">광고문의 상담</a>
     </div>
     <div class="hero-trust">
+      <span class="badge badge--light">🚨 24시 긴급출동 · 365일 연중무휴</span>
       <span class="badge badge--light">⏱ 평균 30분 내 출동</span>
       <span class="badge badge--light">✓ 선견적 후작업 · 추가금 없음</span>
       <span class="badge badge--light">★ 누적 4.9 / 327건 후기</span>
@@ -208,6 +246,50 @@ SERVICE_GRID = """<section class="section" aria-labelledby="svc-h">
       <a class="service-card" href="/service/plumbing.html"><div class="ico-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6"/><path d="M5 8h14l-1 12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2z"/></svg></div><h3>정화조·동파</h3><p>정화조 관리·청소 및 겨울철 동파 복구.</p><span class="more">자세히 →</span></a>
       <a class="service-card" href="/service/plumbing.html"><div class="ico-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 7l3 3"/><path d="M3 21l3-1 11-11-2-2L4 18z"/><path d="M17 4l3 3"/></svg></div><h3>배관 리모델링</h3><p>상가·사무실 인테리어 배관 재배치·정비.</p><span class="more">자세히 →</span></a>
     </div>
+  </div>
+</section>
+"""
+
+FULL_SERVICES = """<section class="section section--off" aria-labelledby="allsvc-h">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow">All Services</span>
+      <h2 id="allsvc-h">스피드 배관공사 전체 취급 항목</h2>
+      <p class="lead">하수구막힘부터 누수탐지·수전교체·변기교체까지 — 물과 관련된 모든 문제를 24시 긴급출동으로 해결하는 배관 전문 업체입니다. 아래 모든 항목을 한 곳에서 상담·시공할 수 있습니다.</p>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <h3>막힘 · 뚫음</h3>
+        <ul class="ticks">
+          <li>하수구막힘 · 배관막힘</li>
+          <li>싱크대하수구막힘 · 주방배수구막힘</li>
+          <li>세면대막힘 · 배수구막힘</li>
+          <li>변기막힘 · 배수구뚫음</li>
+          <li>이물질 제거 · 역류·악취 해결</li>
+        </ul>
+      </div>
+      <div class="trust-card">
+        <h3>누수 · 수도</h3>
+        <ul class="ticks">
+          <li>누수탐지 · 누수공사</li>
+          <li>욕실배관누수 · 주방배관누수</li>
+          <li>수도누수 · 물샘 · 수도수리</li>
+          <li>배관내시경 정밀 진단</li>
+          <li>고압세척</li>
+        </ul>
+      </div>
+      <div class="trust-card">
+        <h3>교체 · 설비</h3>
+        <ul class="ticks">
+          <li>수전교체 (싱크대수전·화장실수전)</li>
+          <li>세면대교체</li>
+          <li>화장실변기교체 · 변기부속품수리</li>
+          <li>배관설비 · 배관공사</li>
+          <li>노후 부품 교체·수리</li>
+        </ul>
+      </div>
+    </div>
+    <p class="lead center" style="margin-top:24px;">시공 전 예상 <strong>비용·가격</strong>을 먼저 안내하는 선견적 후작업 — 24시 긴급출동 배관 업체 <a href="tel:010-5183-4300"><strong>010-5183-4300</strong></a></p>
   </div>
 </section>
 """
@@ -342,17 +424,17 @@ NAVER_SECTION = f"""<section class="section" aria-labelledby="naver-h">
 </section>
 """
 
-HOME_BODY = ("<main>\n" + HERO + TRUST_RIBBON + TRUST + SERVICE_GRID + AREA_BLOCK + STEPS +
-             PRICE_PREVIEW + case_grid() + REVIEWS + NAVER_SECTION + HOME_FAQ + bottom_cta() + "</main>\n")
+HOME_BODY = ("<main>\n" + HERO + TRUST_RIBBON + TRUST + SERVICE_GRID + FULL_SERVICES + AREA_BLOCK + STEPS +
+             PRICE_PREVIEW + case_grid() + home_gallery() + REVIEWS + NAVER_SECTION + HOME_FAQ + bottom_cta() + "</main>\n")
 
 page("index.html",
-     "스피드 배관공사 | 하수구막힘·배관공사 24시간 출동",
-     "하수구막힘·배관공사·누수탐지·고압세척 24시간 출동. 가정집·상업시설 전국 신속 해결, 선견적 후작업·추가금 없음.",
+     "스피드 배관공사 | 하수구막힘·누수탐지·수전교체 24시 긴급출동",
+     "하수구막힘·배관막힘·누수탐지·누수공사·수전교체·변기교체·세면대교체·배수구뚫음·고압세척 24시 긴급출동. 수도누수·변기부속품 수리, 가정집·상업시설 전국 신속 해결 업체 — 선견적 후작업·추가금 없음.",
      S + "/",
      HOME_BODY,
      jsonld=HOME_JSONLD + faq_jsonld(FAQ_ITEMS),
-     og_title="스피드 배관공사 | 상업시설 전문 24시간 배관 파트너",
-     og_desc="하수구막힘·배관공사·누수탐지·고압세척 24시간 출동 — 가정집·상업시설 전문 스피드 배관공사.")
+     og_title="스피드 배관공사 | 24시 긴급출동 배관 업체 — 하수구막힘·누수탐지·수전교체",
+     og_desc="하수구막힘·배관막힘·누수탐지·수전교체·변기교체·수도누수·고압세척 24시 긴급출동 — 가정집·상업시설 전문 스피드 배관공사.")
 
 
 # ===========================================================================
@@ -375,11 +457,7 @@ def phero(eyebrow, h1, sub, crumbs):
     </div>
     <div class="page-hero-media">
       <figure class="hero-photo-frame">
-        <picture>
-          <source srcset="/assets/img/hero.webp" type="image/webp">
-          <img class="hero-photo" src="/assets/img/hero.jpg" alt="스피드 배관공사 — 전국 누수탐지·배관·하수구막힘 24시간 긴급출동"
-               width="1672" height="941" loading="lazy">
-        </picture>
+        {gallery_pic(h1, f"{eyebrow} 현장 이미지 — 하수구막힘·누수탐지·수전교체 24시 긴급출동 스피드 배관공사")}
       </figure>
     </div>
   </div>
@@ -686,9 +764,9 @@ def sido_page(slug, name, short, intro, districts, district_links, cases_html, p
     <aside class="sidebar-card">
       <h3>{name} 상담</h3>
       <p>{phone_note}</p>
-      <a class="phone-big" href="tel:0000-0000">0000-0000</a>
+      <a class="phone-big" href="tel:010-5183-4300">010-5183-4300</a>
       <p style="margin-bottom:18px;">카카오톡 상담 @스피드배관</p>
-      <a class="btn btn--primary btn--block" href="tel:0000-0000">☎ 전화 상담</a>
+      <a class="btn btn--primary btn--block" href="tel:010-5183-4300">☎ 전화 상담</a>
       <a class="btn btn--ghost-light btn--block" href="https://t.me/googleseolab" target="_blank" rel="noopener" style="margin-top:10px;">광고문의 상담</a>
     </aside>
   </div>
@@ -697,7 +775,7 @@ def sido_page(slug, name, short, intro, districts, district_links, cases_html, p
 </main>
 """
     title = f"{name} 배관·하수구막힘·누수탐지 24시간 출동 - 스피드 배관공사"
-    desc = f"{name} 하수구막힘·배관공사·누수탐지·고압세척 24시간 출동. 가정집·상업시설 전 지역 신속 상담."
+    desc = f"{name} 하수구막힘·배관막힘·누수탐지·누수공사·수전교체·변기교체·배수구뚫음·고압세척 24시 긴급출동. 가정집·상업시설 수도누수·부속품 수리 전 지역 신속 상담 업체."
     page(f"area/{slug}/index.html", title, desc, f"{S}/area/{slug}/", body,
          jsonld=breadcrumb_jsonld(crumbs))
 
@@ -895,7 +973,7 @@ about_body = f"""{phero("About","회사소개","상업시설 배관, 멈추지 �
         <tr><td>대표자</td><td colspan="2">(미정)</td></tr>
         <tr><td>사업자등록번호</td><td colspan="2">000-00-00000</td></tr>
         <tr><td>주소</td><td colspan="2">(미정)</td></tr>
-        <tr><td>대표전화</td><td colspan="2">0000-0000</td></tr>
+        <tr><td>대표전화</td><td colspan="2">010-5183-4300</td></tr>
         <tr><td>카카오톡</td><td colspan="2">@스피드배관</td></tr>
         <tr><td>영업시간</td><td colspan="2">연중무휴 24시간</td></tr>
       </tbody>
@@ -948,12 +1026,12 @@ contact_body = f"""{phero("Contact","상담문의","전화 한 통이면 가장 
     <aside class="sidebar-card">
       <h3>바로 연락하기</h3>
       <p>24시간 상업시설 전문 출동. 급하실 땐 전화가 가장 빠릅니다.</p>
-      <a class="phone-big" href="tel:0000-0000">0000-0000</a>
+      <a class="phone-big" href="tel:010-5183-4300">010-5183-4300</a>
       <ul class="info-list" style="margin-top:18px;color:#BFD0E8;list-style:none;">
         <li style="display:block;color:#BFD0E8;">카카오톡 상담: <strong style="color:#fff;">@스피드배관</strong></li>
         <li style="display:block;color:#BFD0E8;">영업시간: <strong style="color:#fff;">연중무휴 24시간</strong></li>
       </ul>
-      <a class="btn btn--primary btn--block" href="tel:0000-0000" style="margin-top:16px;">☎ 전화 상담</a>
+      <a class="btn btn--primary btn--block" href="tel:010-5183-4300" style="margin-top:16px;">☎ 전화 상담</a>
       <a class="btn btn--ghost-light btn--block" href="https://pf.kakao.com/" target="_blank" rel="noopener" style="margin-top:10px;">카카오톡 상담</a>
     </aside>
   </div>
@@ -984,7 +1062,7 @@ notfound_body = """<main>
 """
 page("404.html","페이지를 찾을 수 없습니다 (404) - 스피드 배관공사",
      "요청하신 페이지를 찾을 수 없습니다. 스피드 배관공사 홈으로 이동하거나 서비스안내·상담문의를 이용해 주세요.",
-     S + "/404.html", notfound_body)
+     S + "/404.html", notfound_body, noindex=True)
 
 # ===========================================================================
 # 개인정보처리방침 / 이용약관 (신뢰 페이지 — 실제 확정 시 내용 보강)
@@ -1002,7 +1080,7 @@ def legal_page(slug, title_h1, eyebrow, intro, sections, seo_title, seo_desc):
     <p class="price-note">※ 본 문서는 표준 양식 기반의 예시이며, 사업자 정보 확정 후 실제 내용으로 교체됩니다.</p>
     {secs}
     <h2>문의처</h2>
-    <p>개인정보 및 약관 관련 문의는 대표전화(0000-0000) 또는 카카오톡 상담(@스피드배관)으로 연락 주시기 바랍니다.</p>
+    <p>개인정보 및 약관 관련 문의는 대표전화(010-5183-4300) 또는 카카오톡 상담(@스피드배관)으로 연락 주시기 바랍니다.</p>
   </div>
 </section>
 </main>
@@ -1174,9 +1252,9 @@ def gungu_page(sido_slug, sido_name, sido_url, slug, gu_name, lead, paras, jobs,
     <aside class="sidebar-card">
       <h3>{gu_name} 상담</h3>
       <p>{note}</p>
-      <a class="phone-big" href="tel:0000-0000">0000-0000</a>
+      <a class="phone-big" href="tel:010-5183-4300">010-5183-4300</a>
       <p style="margin-bottom:18px;">카카오톡 상담 @스피드배관</p>
-      <a class="btn btn--primary btn--block" href="tel:0000-0000">☎ 전화 상담</a>
+      <a class="btn btn--primary btn--block" href="tel:010-5183-4300">☎ 전화 상담</a>
       <a class="btn btn--ghost-light btn--block" href="https://t.me/googleseolab" target="_blank" rel="noopener" style="margin-top:10px;">광고문의 상담</a>
     </aside>
   </div>
@@ -1282,16 +1360,23 @@ GN_DONG = [
 GN_DONG_BY_SLUG = {slug: ko for ko, slug, *_ in GN_DONG}
 
 # 공통 리스트 조각
-SYMPTOM_LI = ("<li>물이 평소보다 천천히 빠지는 경우</li>"
-              "<li>배수구에서 냄새가 올라오는 경우</li>"
-              "<li>싱크대 물이 역류하는 경우</li>"
+SYMPTOM_LI = ("<li>물이 평소보다 천천히 빠지는 경우(배수구막힘)</li>"
+              "<li>배수구·하수구에서 냄새가 올라오는 경우</li>"
+              "<li>싱크대·세면대 물이 역류하는 경우</li>"
               "<li>욕실 바닥 배수가 늦어지는 경우</li>"
-              "<li>변기가 반복적으로 막히는 경우</li>"
+              "<li>변기가 반복적으로 막히는 경우(변기막힘)</li>"
+              "<li>수도·수전에서 물이 새거나(물샘) 계량기가 계속 도는 경우</li>"
+              "<li>벽·바닥·천장에 원인 모를 수도누수가 의심되는 경우</li>"
+              "<li>수전·변기 부속품이 노후되어 물이 멈추지 않는 경우</li>"
               "<li>음식점 주방 배관에 기름때가 쌓인 경우</li>"
               "<li>오래된 건물의 배관 구배가 좋지 않은 경우</li>")
-SERVICE_LI = ("<li>하수구막힘</li><li>배관공사</li><li>싱크대막힘</li><li>변기막힘</li>"
-              "<li>욕실 배수구막힘</li><li>세면대막힘</li><li>오수관막힘</li><li>배관내시경</li>"
-              "<li>고압세척</li><li>음식점 하수구막힘</li><li>상가 배관공사</li><li>아파트·빌라 배관보수</li>")
+SERVICE_LI = ("<li>하수구막힘 · 배관막힘</li><li>싱크대하수구막힘 · 주방배수구막힘</li>"
+              "<li>세면대막힘 · 배수구막힘</li><li>변기막힘 · 배수구뚫음</li>"
+              "<li>이물질 제거 · 역류·악취 해결</li><li>누수탐지 · 누수공사</li>"
+              "<li>욕실배관누수 · 주방배관누수</li><li>수도누수 · 물샘 · 수도수리</li>"
+              "<li>수전교체(싱크대수전·화장실수전)</li><li>세면대교체</li>"
+              "<li>화장실변기교체 · 변기부속품수리</li><li>배관설비 · 배관공사</li>"
+              "<li>고압세척 · 배관내시경</li><li>음식점·상가 배관 · 아파트·빌라 배관보수</li>")
 WORK_LI = ("<li>증상 확인 및 사진·영상 상담</li><li>막힘 위치 추정 및 현장 접근 여부 확인</li>"
            "<li>작업 전 비용 기준 안내</li><li>장비 선택(스프링·관통·고압세척 등)</li>"
            "<li>막힘 제거 또는 배관 세척</li><li>배수 테스트 및 재발 방지 안내</li>")
@@ -1362,9 +1447,9 @@ def local_sidebar(title, note):
     return f"""<aside class="sidebar-card">
       <h3>{title}</h3>
       <p>{note}</p>
-      <a class="phone-big" href="tel:0000-0000">0000-0000</a>
+      <a class="phone-big" href="tel:010-5183-4300">010-5183-4300</a>
       <p style="margin-bottom:18px;">증상·위치·건물 형태를 알려주시면 더 정확히 안내드립니다.</p>
-      <a class="btn btn--primary btn--block" href="tel:0000-0000">☎ 전화 상담하기</a>
+      <a class="btn btn--primary btn--block" href="tel:010-5183-4300">☎ 전화 상담하기</a>
       <a class="btn btn--ghost-light btn--block" href="https://t.me/googleseolab" target="_blank" rel="noopener" style="margin-top:10px;">사진 보내기 · 상담</a>
     </aside>"""
 
@@ -1388,7 +1473,7 @@ def build_gangnam_gu():
         ("강남 상가나 음식점도 작업 가능한가요?",
          "상가, 음식점, 카페, 사무실, 병원, 학원 등 현장 구조에 따라 상담 가능합니다. 영업장 배관은 가정집보다 원인이 복잡할 수 있어 작업 전 확인이 중요합니다."),
     ]
-    body = f"""{phero("강남 배관공사", "강남 배관공사·하수구막힘 긴급 상담 | 스피드 배관공사", "역삼·논현·삼성·청담·대치 등 강남 전역의 배관공사, 하수구막힘, 싱크대·변기·욕실 배수구 막힘 상담을 안내합니다.", crumbs)}
+    body = f"""{phero("강남 배관공사", "강남 배관공사·하수구막힘 긴급 상담 | 스피드 배관공사", "역삼·논현·삼성·청담·대치 등 강남 전역의 배관공사, 하수구막힘·배관막힘, 누수탐지·수도누수, 수전교체·변기교체, 싱크대·화장실·욕실 배수구막힘까지 24시 긴급출동으로 상담·시공을 안내합니다.", crumbs)}
 <main>
 <section class="section">
   <div class="container layout-sidebar">
@@ -1456,7 +1541,7 @@ def build_gangnam_gu():
       <h2 id="call">강남 전화 상담</h2>
       <p>강남구 하수구막힘이나 배관공사 상담이 필요하다면 증상, 위치, 건물 형태, 물이 내려가는 속도, 냄새 여부를 알려주세요. 스피드 배관공사는 현장 조건을 먼저 확인하고 필요한 작업 방향을 안내합니다.</p>
       <div class="local-cta">
-        <a class="btn btn--primary btn--lg" href="tel:0000-0000">☎ 전화 상담하기</a>
+        <a class="btn btn--primary btn--lg" href="tel:010-5183-4300">☎ 전화 상담하기</a>
         <a class="btn btn--secondary btn--lg" href="https://t.me/googleseolab" target="_blank" rel="noopener">사진 보내기</a>
         <a class="btn btn--secondary btn--lg" href="#cost">비용 기준 보기</a>
         <a class="btn btn--secondary btn--lg" href="/cases.html">강남 현장사례 보기</a>
@@ -1470,7 +1555,7 @@ def build_gangnam_gu():
     print("  [강남구] 본문 글자수 ~", _chars(body.split('</aside>')[0]))
     page("area/seoul/gangnam-gu/index.html",
          "강남 배관공사·하수구막힘 | 싱크대·변기·배수구 막힘 상담 - 스피드 배관공사",
-         "강남구 하수구막힘·배관공사·누수탐지·고압세척 24시간 출동. 싱크대·변기·욕실 막힘 상담.",
+         "강남구 하수구막힘·배관막힘·누수탐지·누수공사·수전교체·변기교체·세면대교체·배수구뚫음·고압세척 24시 긴급출동. 싱크대·화장실·욕실 막힘, 수도누수·변기부속품 수리 전문 업체.",
          S + "/area/seoul/gangnam-gu/", body,
          jsonld=breadcrumb_jsonld(crumbs) + gangnam_faq_jsonld(faq))
 build_gangnam_gu()
@@ -1492,7 +1577,7 @@ def build_gangnam_dong(ko, slug, intro1, intro2, problem, adjacency):
          "상가, 음식점, 카페, 사무실 등 현장 구조에 따라 상담 가능합니다. 영업장 배관은 가정집보다 원인이 복잡할 수 있어 작업 전 확인이 중요합니다."),
         FAQ_CHEMICAL,
     ]
-    body = f"""{phero(f"{ko} 배관공사", f"{ko} 배관공사·하수구막힘 상담 | 스피드 배관공사", f"강남구 {ko}의 배관공사, 하수구막힘, 싱크대·변기·욕실 배수구 막힘 상담을 안내합니다.", crumbs)}
+    body = f"""{phero(f"{ko} 배관공사", f"{ko} 배관공사·하수구막힘 상담 | 스피드 배관공사", f"강남구 {ko}의 배관공사, 하수구막힘·배관막힘, 누수탐지·수도누수, 수전교체·변기교체, 싱크대·화장실·욕실 배수구막힘까지 24시 긴급출동으로 상담·시공을 안내합니다.", crumbs)}
 <main>
 <section class="section">
   <div class="container layout-sidebar">
@@ -1553,7 +1638,7 @@ def build_gangnam_dong(ko, slug, intro1, intro2, problem, adjacency):
       <h2 id="call">{ko} 전화 상담</h2>
       <p>{ko}에서 하수구막힘이나 배관공사 상담이 필요하다면 증상, 위치, 건물 형태, 물이 내려가는 속도, 냄새 여부를 알려주세요. 현장 조건을 먼저 확인하고 필요한 작업 방향을 안내합니다.</p>
       <div class="local-cta">
-        <a class="btn btn--primary btn--lg" href="tel:0000-0000">☎ 전화 상담하기</a>
+        <a class="btn btn--primary btn--lg" href="tel:010-5183-4300">☎ 전화 상담하기</a>
         <a class="btn btn--secondary btn--lg" href="https://t.me/googleseolab" target="_blank" rel="noopener">사진 보내기</a>
         <a class="btn btn--secondary btn--lg" href="/area/seoul/gangnam-gu/">강남구 전체 보기</a>
       </div>
@@ -1566,7 +1651,7 @@ def build_gangnam_dong(ko, slug, intro1, intro2, problem, adjacency):
     print(f"  [{ko}] 본문 글자수 ~", _chars(body.split('</aside>')[0]))
     page(f"area/seoul/gangnam-gu/{slug}-dong/index.html",
          f"{ko} 배관공사·하수구막힘 | 싱크대·변기·배수구 막힘 상담 - 스피드 배관공사",
-         f"강남구 {ko} 하수구막힘·배관공사·누수탐지·고압세척 24시간 출동. 싱크대·변기·욕실 막힘 상담.",
+         f"강남구 {ko} 하수구막힘·배관막힘·누수탐지·누수공사·수전교체·변기교체·세면대교체·배수구뚫음·고압세척 24시 긴급출동. 싱크대·화장실·욕실 막힘, 수도누수·변기부속품 수리 전문 업체.",
          f"{S}/area/seoul/gangnam-gu/{slug}-dong/", body,
          jsonld=breadcrumb_jsonld(crumbs) + faq_jsonld(faq))
 
@@ -1659,7 +1744,7 @@ def build_gu_system(sido_ko, sido_slug, sido_url, gu_ko, gu_slug, lead, intro_pa
       <h2 id="call">{gu_ko} 전화 상담</h2>
       <p>{gu_ko}에서 하수구막힘이나 배관공사 상담이 필요하다면 증상, 위치, 건물 형태, 물이 내려가는 속도, 냄새 여부를 알려주세요. 스피드 배관공사는 현장 조건을 먼저 확인하고 필요한 작업 방향을 안내합니다.</p>
       <div class="local-cta">
-        <a class="btn btn--primary btn--lg" href="tel:0000-0000">☎ 전화 상담하기</a>
+        <a class="btn btn--primary btn--lg" href="tel:010-5183-4300">☎ 전화 상담하기</a>
         <a class="btn btn--secondary btn--lg" href="https://t.me/googleseolab" target="_blank" rel="noopener">사진 보내기</a>
         <a class="btn btn--secondary btn--lg" href="#cost">비용 기준 보기</a>
         <a class="btn btn--secondary btn--lg" href="/cases.html">현장사례 보기</a>
@@ -1672,7 +1757,7 @@ def build_gu_system(sido_ko, sido_slug, sido_url, gu_ko, gu_slug, lead, intro_pa
 """
     page(f"area/{sido_slug}/{gu_slug}-gu/index.html",
          f"{gu_ko} 배관공사·하수구막힘 | 싱크대·변기·배수구 막힘 상담 - 스피드 배관공사",
-         f"{gu_ko} 하수구막힘·배관공사·누수탐지·고압세척 24시간 출동. 싱크대·변기·욕실 막힘 상담.",
+         f"{gu_ko} 하수구막힘·배관막힘·누수탐지·누수공사·수전교체·변기교체·세면대교체·배수구뚫음·고압세척 24시 긴급출동. 싱크대·화장실·욕실 막힘, 수도누수·변기부속품 수리 전문 업체.",
          S + gu_url, body, jsonld=breadcrumb_jsonld(gu_crumbs) + faq_jsonld(faq))
     print(f"  [{gu_ko}] ~{_chars(body.split('</aside>')[0])}자")
 
@@ -1693,7 +1778,7 @@ def build_gu_system(sido_ko, sido_slug, sido_url, gu_ko, gu_slug, lead, intro_pa
             (f"{ko} 상가·음식점도 작업 가능한가요?",
              "상가, 음식점, 카페, 사무실 등 현장 구조에 따라 상담 가능합니다. 영업장 배관은 가정집보다 원인이 복잡할 수 있어 작업 전 확인이 중요합니다."),
         ]
-        dbody = f"""{phero(f"{ko} 배관공사", f"{ko} 배관공사·하수구막힘 상담 | 스피드 배관공사", f"{gu_ko} {ko}의 배관공사, 하수구막힘, 싱크대·변기·욕실 배수구 막힘 상담을 안내합니다.", d_crumbs)}
+        dbody = f"""{phero(f"{ko} 배관공사", f"{ko} 배관공사·하수구막힘 상담 | 스피드 배관공사", f"{gu_ko} {ko}의 배관공사, 하수구막힘·배관막힘, 누수탐지·수도누수, 수전교체·변기교체, 싱크대·화장실·욕실 배수구막힘까지 24시 긴급출동으로 상담·시공을 안내합니다.", d_crumbs)}
 <main>
 <section class="section">
   <div class="container layout-sidebar">
@@ -1754,7 +1839,7 @@ def build_gu_system(sido_ko, sido_slug, sido_url, gu_ko, gu_slug, lead, intro_pa
       <h2 id="call">{ko} 전화 상담</h2>
       <p>{ko}에서 하수구막힘이나 배관공사 상담이 필요하다면 증상, 위치, 건물 형태, 물이 내려가는 속도, 냄새 여부를 알려주세요. 현장 조건을 먼저 확인하고 필요한 작업 방향을 안내합니다.</p>
       <div class="local-cta">
-        <a class="btn btn--primary btn--lg" href="tel:0000-0000">☎ 전화 상담하기</a>
+        <a class="btn btn--primary btn--lg" href="tel:010-5183-4300">☎ 전화 상담하기</a>
         <a class="btn btn--secondary btn--lg" href="https://t.me/googleseolab" target="_blank" rel="noopener">사진 보내기</a>
         <a class="btn btn--secondary btn--lg" href="{gu_url}">{gu_ko} 전체 보기</a>
       </div>
@@ -1766,7 +1851,7 @@ def build_gu_system(sido_ko, sido_slug, sido_url, gu_ko, gu_slug, lead, intro_pa
 """
         page(f"area/{sido_slug}/{gu_slug}-gu/{slug}-dong/index.html",
              f"{ko} 배관공사·하수구막힘 | 싱크대·변기·배수구 막힘 상담 - 스피드 배관공사",
-             f"{gu_ko} {ko} 하수구막힘·배관공사·누수탐지·고압세척 24시간 출동. 싱크대·변기·욕실 막힘 상담.",
+             f"{gu_ko} {ko} 하수구막힘·배관막힘·누수탐지·누수공사·수전교체·변기교체·세면대교체·배수구뚫음·고압세척 24시 긴급출동. 싱크대·화장실·욕실 막힘, 수도누수·변기부속품 수리 전문 업체.",
              f"{S}{gu_url}{slug}-dong/", dbody, jsonld=breadcrumb_jsonld(d_crumbs) + faq_jsonld(dfaq))
         print(f"    [{ko}] ~{_chars(dbody.split('</aside>')[0])}자")
 
@@ -1810,7 +1895,7 @@ SEOCHO_DONGS = [
   [("우면동","umyeon"),("양재동","yangjae"),("방배동","bangbae")]),
 ]
 build_gu_system("서울특별시","seoul","/area/seoul/","서초구","seocho",
-    "서초동 법조타운과 반포·잠원 아파트, 방배 주택가까지 — 서초구 전역의 배관공사, 하수구막힘, 싱크대·변기·욕실 배수구 막힘 상담을 안내합니다.",
+    "서초동 법조타운과 반포·잠원 아파트, 방배 주택가까지 — 서초구 전역의 배관공사, 하수구막힘·배관막힘, 누수탐지·수도누수, 수전교체·변기교체, 싱크대·화장실·욕실 배수구막힘까지 24시 긴급출동으로 상담·시공을 안내합니다.",
     ["서초구는 서초동 법조타운과 강남대로 업무지구, 반포·잠원 대단지 아파트, 방배동 주택가가 어우러진 지역입니다. 업무시설과 주거, 상권이 섞여 있어 배관 문제가 단순한 가정용 막힘에서 끝나지 않는 경우가 많습니다.",
      "특히 서초동, 반포동, 잠원동, 방배동, 양재동 일대는 오피스빌딩과 식당가, 대단지 아파트가 함께 있어 싱크대 배수 불량, 바닥 배수구 역류, 화장실 악취, 오수관 막힘 상담이 자주 발생합니다.",
      "스피드 배관공사는 현장의 건물 형태와 막힘 정도를 먼저 확인한 뒤 필요한 작업 방향을 안내합니다. 단순 막힘인지 반복 막힘인지에 따라 장비와 작업 시간이 달라지므로, 무리한 자가 조치보다 상담을 통해 원인을 정확히 파악하는 것이 안전합니다."],
@@ -1886,7 +1971,7 @@ SONGPA_DONGS = [
   [("거여동","geoyeo"),("오금동","ogeum"),("방이동","bangi")]),
 ]
 build_gu_system("서울특별시","seoul","/area/seoul/","송파구","songpa",
-    "잠실 상권과 가락시장, 문정 업무단지까지 — 송파구 전역의 배관공사, 하수구막힘, 싱크대·변기·욕실 배수구 막힘 상담을 안내합니다.",
+    "잠실 상권과 가락시장, 문정 업무단지까지 — 송파구 전역의 배관공사, 하수구막힘·배관막힘, 누수탐지·수도누수, 수전교체·변기교체, 싱크대·화장실·욕실 배수구막힘까지 24시 긴급출동으로 상담·시공을 안내합니다.",
     ["송파구는 잠실 롯데월드타워 상권과 대단지 아파트, 가락시장, 문정 법조·업무단지, 위례 인근 신축 주거가 어우러진 지역입니다. 대형 시설과 주거, 시장이 함께 있어 배관 문제의 원인이 현장마다 다양합니다.",
      "특히 잠실동, 신천동, 가락동, 문정동, 방이동 일대는 대형 상가와 시장, 먹자골목이 밀집해 바닥 배수구 역류, 주방 기름때 막힘, 오수관 막힘 상담이 자주 발생합니다.",
      "스피드 배관공사는 현장의 건물 형태와 사용 환경을 먼저 확인한 뒤 필요한 작업 방향을 안내합니다. 사용량이 많은 시설은 정기 점검과 고압세척으로 막힘을 예방하는 것이 운영에 유리합니다."],
@@ -1933,7 +2018,7 @@ def gen_sigungu_page(sido_ko, sido_slug, gu_ko, siblings):
         (f"{gu_ko} 상가·음식점도 작업 가능한가요?",
          "상가, 음식점, 카페, 사무실 등 현장 구조에 따라 상담 가능합니다. 영업장 배관은 가정집보다 원인이 복잡할 수 있어 작업 전 확인이 중요합니다."),
     ]
-    body = f"""{phero(f"{gu_ko} 배관공사", f"{gu_ko} 배관공사·하수구막힘 상담 | 스피드 배관공사", f"{sido_ko} {gu_ko}의 배관공사, 하수구막힘, 싱크대·변기·욕실 배수구 막힘 상담을 안내합니다.", crumbs)}
+    body = f"""{phero(f"{gu_ko} 배관공사", f"{gu_ko} 배관공사·하수구막힘 상담 | 스피드 배관공사", f"{sido_ko} {gu_ko}의 배관공사, 하수구막힘·배관막힘, 누수탐지·수도누수, 수전교체·변기교체, 싱크대·화장실·욕실 배수구막힘까지 24시 긴급출동으로 상담·시공을 안내합니다.", crumbs)}
 <main>
 <section class="section">
   <div class="container layout-sidebar">
@@ -1995,7 +2080,7 @@ def gen_sigungu_page(sido_ko, sido_slug, gu_ko, siblings):
       <h2 id="call">{gu_ko} 전화 상담</h2>
       <p>{gu_ko}에서 하수구막힘이나 배관공사 상담이 필요하다면 증상, 위치, 건물 형태, 물이 내려가는 속도, 냄새 여부를 알려주세요. 현장 조건을 먼저 확인하고 필요한 작업 방향을 안내합니다.</p>
       <div class="local-cta">
-        <a class="btn btn--primary btn--lg" href="tel:0000-0000">☎ 전화 상담하기</a>
+        <a class="btn btn--primary btn--lg" href="tel:010-5183-4300">☎ 전화 상담하기</a>
         <a class="btn btn--secondary btn--lg" href="https://t.me/googleseolab" target="_blank" rel="noopener">사진 보내기</a>
         <a class="btn btn--secondary btn--lg" href="{sido_url}">{sido_ko} 전체 보기</a>
       </div>
@@ -2007,7 +2092,7 @@ def gen_sigungu_page(sido_ko, sido_slug, gu_ko, siblings):
 """
     page(f"area/{sido_slug}/{gungu_slug(gu_ko)}/index.html",
          f"{gu_ko} 배관공사·하수구막힘 | 싱크대·변기·배수구 막힘 상담 - 스피드 배관공사",
-         f"{gu_ko} 하수구막힘·배관공사·누수탐지·고압세척 24시간 출동. 싱크대·변기·욕실 막힘 상담.",
+         f"{gu_ko} 하수구막힘·배관막힘·누수탐지·누수공사·수전교체·변기교체·세면대교체·배수구뚫음·고압세척 24시 긴급출동. 싱크대·화장실·욕실 막힘, 수도누수·변기부속품 수리 전문 업체.",
          f"{S}/area/{sido_slug}/{gungu_slug(gu_ko)}/", body,
          jsonld=breadcrumb_jsonld(crumbs) + faq_jsonld(faq))
 
@@ -2021,7 +2106,7 @@ def gen_dong_page(sido_ko, sido_slug, gu_ko, gu_url, dong_ko, siblings, override
         p1 = f"{dong_ko}은 {gu_ko}에 속한 지역으로, 주거지와 소규모 상권, 농어촌·단독주택이 어우러진 곳입니다. {dong_ko} 일대의 배관공사·하수구막힘 상담을 안내합니다."
         p2 = f"{dong_ko}은 단독주택과 다세대가 많아 외부 오수관이나 정화조 연결부에서 비롯된 문제가 나타나기도 하며, 상가는 업종에 따라 배수 부담이 달라집니다. 현장 구조를 먼저 확인하는 것이 중요합니다."
     else:
-        p1 = f"{dong_ko}은 {gu_ko}에 속한 행정동으로, 아파트·주택과 상가가 어우러진 지역입니다. {dong_ko} 일대의 배관공사, 하수구막힘, 싱크대·변기·욕실 배수구 막힘 상담을 안내합니다."
+        p1 = f"{dong_ko}은 {gu_ko}에 속한 행정동으로, 아파트·주택과 상가가 어우러진 지역입니다. {dong_ko} 일대의 배관공사, 하수구막힘·배관막힘, 누수탐지·수도누수, 수전교체·변기교체, 싱크대·화장실·욕실 배수구막힘까지 24시 긴급출동으로 상담·시공을 안내합니다."
         p2 = f"{dong_ko}은 주거와 상가가 섞여 있어 가정용·상업용 배관 상담이 함께 들어옵니다. 가정집은 머리카락·음식물·비누 찌꺼기가, 음식점은 기름 슬러지가 주요 원인이 되곤 합니다."
     p3 = vpick(dong_ko+"p", [
         f"스피드 배관공사는 {dong_ko}의 건물 형태와 막힘 정도를 먼저 확인한 뒤 필요한 작업 방향을 안내합니다. 단순 막힘인지 반복 막힘인지에 따라 장비와 작업 시간이 달라지므로, 무리한 자가 조치보다 상담을 통해 원인을 정확히 파악하는 것이 안전합니다.",
@@ -2045,7 +2130,7 @@ def gen_dong_page(sido_ko, sido_slug, gu_ko, gu_url, dong_ko, siblings, override
             "자주 막힌다면 내부에 기름때나 퇴적물이 쌓였을 가능성이 큽니다. 내시경으로 상태를 확인하고 필요하면 고압세척으로 관 벽까지 정리하는 것이 효과적입니다."])),
         FAQ_CHEMICAL,
     ]
-    body = f"""{phero(f"{dong_ko} 배관공사", f"{dong_ko} 배관공사·하수구막힘 상담 | 스피드 배관공사", f"{gu_ko} {dong_ko}의 배관공사, 하수구막힘, 싱크대·변기·욕실 배수구 막힘 상담을 안내합니다.", crumbs)}
+    body = f"""{phero(f"{dong_ko} 배관공사", f"{dong_ko} 배관공사·하수구막힘 상담 | 스피드 배관공사", f"{gu_ko} {dong_ko}의 배관공사, 하수구막힘·배관막힘, 누수탐지·수도누수, 수전교체·변기교체, 싱크대·화장실·욕실 배수구막힘까지 24시 긴급출동으로 상담·시공을 안내합니다.", crumbs)}
 <main>
 <section class="section">
   <div class="container layout-sidebar">
@@ -2089,7 +2174,7 @@ def gen_dong_page(sido_ko, sido_slug, gu_ko, gu_url, dong_ko, siblings, override
       <h2 id="call">{dong_ko} 전화 상담</h2>
       <p>{dong_ko}에서 하수구막힘이나 배관공사 상담이 필요하다면 증상, 위치, 건물 형태, 물이 내려가는 속도, 냄새 여부를 알려주세요. 현장 조건을 먼저 확인하고 필요한 작업 방향을 안내합니다.</p>
       <div class="local-cta">
-        <a class="btn btn--primary btn--lg" href="tel:0000-0000">☎ 전화 상담하기</a>
+        <a class="btn btn--primary btn--lg" href="tel:010-5183-4300">☎ 전화 상담하기</a>
         <a class="btn btn--secondary btn--lg" href="https://t.me/googleseolab" target="_blank" rel="noopener">사진 보내기</a>
         <a class="btn btn--secondary btn--lg" href="{gu_url}">{gu_ko} 전체 보기</a>
       </div>
@@ -2101,7 +2186,7 @@ def gen_dong_page(sido_ko, sido_slug, gu_ko, gu_url, dong_ko, siblings, override
 """
     page(f"{_dir}/{dong_slug(dong_ko)}/index.html",
          f"{dong_ko} 배관공사·하수구막힘 | 싱크대·변기·배수구 막힘 상담 - 스피드 배관공사",
-         f"{gu_ko} {dong_ko} 하수구막힘·배관공사·누수탐지·고압세척 24시간 출동. 싱크대·변기·욕실 막힘 상담.",
+         f"{gu_ko} {dong_ko} 하수구막힘·배관막힘·누수탐지·누수공사·수전교체·변기교체·세면대교체·배수구뚫음·고압세척 24시 긴급출동. 싱크대·화장실·욕실 막힘, 수도누수·변기부속품 수리 전문 업체.",
          f"{S}/{_dir}/{dong_slug(dong_ko)}/", body,
          jsonld=breadcrumb_jsonld(crumbs) + faq_jsonld(faq))
 
@@ -2183,7 +2268,7 @@ GANGDONG_DONGS = [
   [("상일동","sangil"),("고덕동","godeok"),("명일동","myeongil")]),
 ]
 build_gu_system("서울특별시","seoul","/area/seoul/","강동구","gangdong",
-    "천호 상권과 둔촌·고덕 신축 아파트, 암사 주거지까지 — 강동구 전역의 배관공사, 하수구막힘, 싱크대·변기·욕실 배수구 막힘 상담을 안내합니다.",
+    "천호 상권과 둔촌·고덕 신축 아파트, 암사 주거지까지 — 강동구 전역의 배관공사, 하수구막힘·배관막힘, 누수탐지·수도누수, 수전교체·변기교체, 싱크대·화장실·욕실 배수구막힘까지 24시 긴급출동으로 상담·시공을 안내합니다.",
     ["강동구는 천호역 상권과 둔촌·고덕·강일 신축 아파트 단지, 암사·길동 주거지가 어우러진 지역입니다. 신축과 기존 주거, 상권이 섞여 있어 배관 문제의 원인이 현장마다 다양합니다.",
      "특히 천호동, 성내동, 둔촌동, 고덕동 일대는 상가와 대단지 아파트가 함께 있어 싱크대 배수 불량, 바닥 배수구 역류, 화장실 악취, 주방 기름때 막힘 상담이 자주 발생합니다.",
      "스피드 배관공사는 현장의 건물 형태와 막힘 정도를 먼저 확인한 뒤 필요한 작업 방향을 안내합니다. 단순 막힘인지 반복 막힘인지에 따라 장비와 작업 시간이 달라지므로, 무리한 자가 조치보다 상담을 통해 원인을 정확히 파악하는 것이 안전합니다."],
@@ -2258,7 +2343,7 @@ MAPO_DONGS = [
   [("합정동","hapjeong"),("신수동","sinsu"),("연남동","yeonnam")]),
 ]
 build_gu_system("서울특별시","seoul","/area/seoul/","마포구","mapo",
-    "공덕 오피스와 홍대·합정·연남 카페 상권, 상암 DMC까지 — 마포구 전역의 배관공사, 하수구막힘, 싱크대·변기·욕실 배수구 막힘 상담을 안내합니다.",
+    "공덕 오피스와 홍대·합정·연남 카페 상권, 상암 DMC까지 — 마포구 전역의 배관공사, 하수구막힘·배관막힘, 누수탐지·수도누수, 수전교체·변기교체, 싱크대·화장실·욕실 배수구막힘까지 24시 긴급출동으로 상담·시공을 안내합니다.",
     ["마포구는 공덕 오피스 상권과 홍대·합정·연남·망원의 카페·외식 상권, 상암 DMC 업무단지, 아현·도화 주거지가 어우러진 지역입니다. 상업시설 비중이 높아 영업장 배관 상담이 특히 많습니다.",
      "특히 서교동, 합정동, 연남동, 망원동 일대는 카페·음식점이 밀집해 주방 기름때 막힘과 바닥 배수구 역류 상담이 자주 발생하고, 상암·공덕은 대형 오피스 배관 수요가 많습니다.",
      "스피드 배관공사는 현장의 건물 형태와 사용 환경을 먼저 확인한 뒤 필요한 작업 방향을 안내합니다. 영업장의 반복 막힘은 배관내시경과 고압세척으로 근본 원인을 해결하는 것이 좋습니다."],
@@ -2308,7 +2393,7 @@ YEONGDEUNGPO_DONGS = [
   [("도림동","dorim"),("신길동","singil"),("영등포동","yeongdeungpo")]),
 ]
 build_gu_system("서울특별시","seoul","/area/seoul/","영등포구","yeongdeungpo",
-    "여의도 금융단지와 영등포 상권, 문래·양평 준공업까지 — 영등포구 전역의 배관공사, 하수구막힘, 싱크대·변기·욕실 배수구 막힘 상담을 안내합니다.",
+    "여의도 금융단지와 영등포 상권, 문래·양평 준공업까지 — 영등포구 전역의 배관공사, 하수구막힘·배관막힘, 누수탐지·수도누수, 수전교체·변기교체, 싱크대·화장실·욕실 배수구막힘까지 24시 긴급출동으로 상담·시공을 안내합니다.",
     ["영등포구는 여의도 금융 오피스단지와 영등포역 전통시장 상권, 문래창작촌, 양평 준공업지역, 신길·대림 주거지가 어우러진 지역입니다. 업무·상업·공업·주거가 모두 섞여 있어 배관 문제의 원인이 매우 다양합니다.",
      "특히 영등포동, 대림동 일대는 시장과 음식점이 밀집해 대량 배수와 주방 기름때 막힘 상담이 잦고, 여의도는 대형 오피스 배관, 양평·문래는 공장·작업장 배관 수요가 많습니다.",
      "스피드 배관공사는 현장의 건물 형태와 사용 환경을 먼저 확인한 뒤 필요한 작업 방향을 안내합니다. 사용량이 많은 시설과 영업장은 정기 점검과 고압세척으로 막힘을 예방하는 것이 유리합니다."],
